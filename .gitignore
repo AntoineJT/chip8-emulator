@@ -1,0 +1,9 @@
+.vs/
+x64/
+Debug/
+*.vcxproj.user
+
+*.exe
+*.pdb
+*.exp
+*.lib

@@ -1,9 +1,23 @@
-.vs/
-x64/
-Debug/
-*.vcxproj.user
+# CMake
+CMakeFiles/
+cmake_install.cmake
+CMakeCache.txt
 
+# Binaries
 *.exe
 *.pdb
 *.exp
 *.lib
+
+# Visual studio
+.vs/
+x64/
+Debug/
+*.sln
+*.vcxproj*
+
+# CodeBlocks
+*.cbp
+*.layout
+
+Makefile

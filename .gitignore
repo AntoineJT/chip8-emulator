@@ -1,0 +1,8 @@
+.vs/
+projects/
+bin/
+obj/
+*.pdb
+*.sln
+*.vcxproj
+*.vcxproj.user

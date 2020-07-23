@@ -1,5 +1,5 @@
 #include <iostream>
-#include <SDL.h>
+#include "../../ThirdParty/SDL2/include/SDL.h"
 
 #undef main
 
@@ -9,7 +9,7 @@ int main()
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         std::cout << "error initializing SDL: " << SDL_GetError() << std::endl;
     }
-    SDL_Window* const win = SDL_CreateWindow("GAME",
+    const SDL_Window* win = SDL_CreateWindow("GAME",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         1000, 1000, 0);

@@ -1,7 +1,5 @@
 require("premake", ">=5.0.0-alpha15")
 
-include "../ThirdParty/Bins/SDL2-2.0.12/module.lua"
-
 workspace "Chip8 Emulator"
     configurations { "Debug", "Release" }
 
@@ -31,6 +29,8 @@ workspace "Chip8 Emulator"
         system "Windows"
         architecture "x86_64"
 
+    include "../ThirdParty/SDL2/SDL2.lua"
+
     project "Chip8Emu"
         kind "ConsoleApp"
         language "C++"
@@ -40,4 +40,6 @@ workspace "Chip8 Emulator"
             "../Code/src/**.hpp"
         }
 
-        premake.extensions.sdl2.include()
+        links {
+            "SDL2"
+        }

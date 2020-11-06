@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstdlib>
 #include <SDL.h>
+#include <SDL_timer.h>
+#include <sdl_window.hpp>
 
 #undef main
 
@@ -10,11 +12,11 @@ int main()
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         std::cout << "error initializing SDL: " << SDL_GetError() << std::endl;
     }
-    const SDL_Window* win = SDL_CreateWindow("GAME",
+    
+    SDL2::Window win = SDL2::Window("GAME",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         1000, 1000, 0);
-    while (win != nullptr);
 
     return EXIT_SUCCESS;
 }

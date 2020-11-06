@@ -1,0 +1,23 @@
+# Visual Studio stuff
+.vs/
+projects/
+bin/
+obj/
+*.pdb
+*.sln
+*.vcxproj
+*.vcxproj.user
+
+# Xmake stuff
+.xmake/
+build/
+vsxmake2019/
+
+# MacOS Cache
+.DS_Store
+
+# Vim cache
+*.*~
+
+# VSCode folder
+.vscode/

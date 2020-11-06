@@ -2,6 +2,8 @@
 
 This is another one Chip8 Emulator on the Internet, made in C++ for learning purpose.
 
+**This is in Work in Progress state here, nothing works for now!**
+
 # How to build?
 
 To build the project, you'll need [xmake](https://xmake.io/).

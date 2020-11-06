@@ -10,5 +10,6 @@ namespace SDL2
     public:
         Renderer(SDL_Window* window, int index, Uint32 flags);
         ~Renderer();
+        SDL_Renderer* Data();
     };
 };

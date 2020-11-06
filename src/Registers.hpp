@@ -1,5 +1,6 @@
 #pragma once
 #include <array>
+#include <cstdint>
 #include "utils/byte.hpp"
 
 namespace Chip8
@@ -36,7 +37,7 @@ namespace Chip8
         std::array<byte_t, 16> m_Vx;
 
         // the I register, generally used to store memory addresses.
-        short int m_I;
+        std::uint16_t m_I;
 
         // TODO Search for friend classes to maybe use them
         // delay timer

@@ -13,3 +13,8 @@ SDL2::Renderer::~Renderer()
 {
     SDL_DestroyRenderer(m_pRenderer);
 }
+
+SDL_Renderer* SDL2::Renderer::Data()
+{
+    return m_pRenderer;
+}

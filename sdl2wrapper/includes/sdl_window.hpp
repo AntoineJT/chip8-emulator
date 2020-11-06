@@ -11,6 +11,6 @@ namespace SDL2
         public:
             Window(const char* title, int x, int y, int w, int h, Uint32 flags);
             ~Window();
-            SDL_Window* Data();
+            SDL_Window* Data() const;
     };
 };

@@ -14,7 +14,7 @@ SDL2::Window::~Window()
     SDL_DestroyWindow(m_pWindow);
 }
 
-SDL_Window* SDL2::Window::Data()
+SDL_Window* SDL2::Window::Data() const
 {
     return m_pWindow;
 }

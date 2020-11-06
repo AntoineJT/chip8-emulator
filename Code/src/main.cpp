@@ -1,11 +1,11 @@
 #include <iostream>
-#include "../../ThirdParty/SDL2/include/SDL.h"
+#include "SDL2/SDL.h"
 
 #undef main
 
 int main()
 {
-    // retutns zero on success else non-zero 
+    // returns zero on success else non-zero 
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         std::cout << "error initializing SDL: " << SDL_GetError() << std::endl;
     }

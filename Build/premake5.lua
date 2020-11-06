@@ -29,17 +29,29 @@ workspace "Chip8 Emulator"
         system "Windows"
         architecture "x86_64"
 
-    include "../ThirdParty/SDL2/SDL2.lua"
+    filter "architecture:*86"
+        links {
+            "../ThirdParty/SDL2/lib/x86/SDL2.dll"
+        }
+
+    filter "architecture:*64"
+        links {
+            "../ThirdParty/SDL2/lib/x64/SDL2.dll"
+        }
 
     project "Chip8Emu"
         kind "ConsoleApp"
         language "C++"
     
+        includedirs {
+            "../ThirdParty/SDL2/include/"
+        }
+
         files {
             "../Code/src/**.cpp",
             "../Code/src/**.hpp"
         }
 
-        links {
-            "SDL2"
-        }
+        configuration "windows"
+            postbuildcommands { 
+                "copy ..\\ThirdParty\\SDL2\\lib\\SDL2.dll projects\\bin\\%{cfg.platform}\\%{cfg.buildcfg}\\" }

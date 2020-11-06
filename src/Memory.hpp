@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
 #include <cstddef>
+#include "utils/byte.hpp"
 
 namespace Chip8
 {
@@ -11,14 +12,8 @@ namespace Chip8
 
     class Memory
     {
-        /* TODO Use std::byte when MSVC will support it 
-           (is this a bug or just a misunderstanding?) 
-           or break compatibility with it 
-         */
-        using byte = unsigned char;
-
     public:
-        using MemoryData = std::array<byte, ram_size>;
+        using MemoryData = std::array<byte_t, ram_size>;
         Memory();
         void Flush() noexcept;
         MemoryData& Data();

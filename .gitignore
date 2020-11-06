@@ -4,14 +4,18 @@ projects/
 bin/
 obj/
 *.pdb
-*.sln
-*.vcxproj
-*.vcxproj.user
 
 # Xmake stuff
 .xmake/
 build/
+
+# Auto-generated projects
+# *.sln
+# *.vcxproj
+# *.vcxproj.user
 vsxmake2019/
+makefile
+CMakeLists.txt
 
 # MacOS Cache
 .DS_Store

@@ -1,3 +1,4 @@
+# Visual Studio stuff
 .vs/
 projects/
 bin/
@@ -6,3 +7,14 @@ obj/
 *.sln
 *.vcxproj
 *.vcxproj.user
+
+# Xmake stuff
+.xmake/
+build/
+vsxmake2019/
+
+# MacOS Cache
+.DS_Store
+
+# Vim cache
+*.*~

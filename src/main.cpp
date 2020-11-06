@@ -1,11 +1,12 @@
 #include <iostream>
-#include "SDL2/SDL.h"
+#include <cstdlib>
+#include <SDL.h>
 
 #undef main
 
 int main()
 {
-    // returns zero on success else non-zero 
+     // returns zero on success else non-zero
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         std::cout << "error initializing SDL: " << SDL_GetError() << std::endl;
     }
@@ -15,5 +16,5 @@ int main()
         1000, 1000, 0);
     while (win != nullptr);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -15,12 +15,10 @@ namespace SDL2
         Renderer(Window& window, int index, Uint32 flags);
         ~Renderer();
         SDL_Renderer* Data() const;
-        bool SetRenderDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const;
         bool SetRenderDrawColor(SDL_Color color) const;
         bool RenderClear() const;
         void RenderPresent() const;
         bool RenderFillRect(const SDL_Rect* rect) const;
-        bool RenderFillRects(const SDL_Rect* rect, int count) const;
         bool RenderFillRects(std::vector<SDL_Rect> rect) const;
     };
 };

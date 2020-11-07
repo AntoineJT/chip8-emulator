@@ -18,3 +18,18 @@ SDL_Renderer* SDL2::Renderer::Data() const
 {
     return m_pRenderer;
 }
+
+bool SDL2::Renderer::SetRenderDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const
+{
+    return SDL_SetRenderDrawColor(m_pRenderer, r, g, b, a) == 0;
+}
+
+bool SDL2::Renderer::RenderClear() const
+{
+    return SDL_RenderClear(m_pRenderer) == 0;
+}
+
+void SDL2::Renderer::RenderPresent() const
+{
+    SDL_RenderPresent(m_pRenderer);
+}

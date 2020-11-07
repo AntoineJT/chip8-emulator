@@ -32,11 +32,30 @@ Chip8::Screen::Screen(SDL2::SDL& sdl, uint8_t ratio)
 {
     // TODO Faire ça proprement, pour l'instant il s'agit de tests
 
+    // set background to black
+    sdl_assert(m_renderer.SetRenderDrawColor(black));
+    // a full refresh is required here to draw the black bg
+    Refresh(true);
+
+    PixelGrid grid = {};
+    for (size_t y = 0; y < base_height; ++y)
+    {
+        grid.at(y) = {};
+        for (size_t x = 0; x < base_width; ++x)
+        {
+            grid[y][x] = x % (y + 1) == 0;
+        }
+    }
+    assert(Render(grid));
+    Refresh(false);
+
+    SDL_Delay(3000);
+
+    /*
+    // Blinking screen test
     for (int i = 5; i > 0; --i)
     {
-        // set background to black
         sdl_assert(m_renderer.SetRenderDrawColor(black));
-        // a full refresh is required here to draw the black bg
         Refresh(true);
 
         SDL_Delay(250);
@@ -46,10 +65,10 @@ Chip8::Screen::Screen(SDL2::SDL& sdl, uint8_t ratio)
 
         SDL_Delay(250);
     }
+    */
 }
 
-// TODO Maybe rename this
-bool Chip8::Screen::DrawPoints(PixelGrid grid) const
+bool Chip8::Screen::Render(PixelGrid grid) const
 {
     std::vector<SDL_Rect> pixelsOff = {};
     std::vector<SDL_Rect> pixelsOn = {};

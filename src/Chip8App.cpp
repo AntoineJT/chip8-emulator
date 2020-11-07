@@ -15,7 +15,7 @@ int main()
     // should not be ALREADY_RUNNING, at least for now
     assert(sdl.Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
 
-    auto screen = Chip8::Screen(sdl, 256, 128);
+    auto screen = Chip8::Screen(sdl, 16);
     
     return EXIT_SUCCESS;
 }

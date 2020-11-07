@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <sdl.hpp>
 
 namespace Chip8
@@ -11,6 +12,6 @@ namespace Chip8
     class Screen
     {
     public:
-        explicit Screen(SDL2::SDL& sdl, int width, int height);
+        explicit Screen(SDL2::SDL& sdl, uint8_t ratio);
     };
 };

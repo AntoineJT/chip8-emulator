@@ -1,31 +1,21 @@
 #include "Screen.hpp"
 
 #include <cassert>
-#include <cmath>
+#include <cstdint>
 
 #include "sdl.hpp"
 #include "sdl_assert.hpp"
 #include "sdl_renderer.hpp"
 #include "sdl_window.hpp"
 
-bool IsMultipleOf(const int base, const int number)
+Chip8::Screen::Screen(SDL2::SDL& sdl, uint8_t ratio)
 {
-    double d = number;
-    while (d > base)
-    {
-        d /= base;
-    }
-    return std::round(d) == d;
-}
-
-Chip8::Screen::Screen(SDL2::SDL& sdl, int width, int height)
-{
-    assert(sdl.Running());
-    assert(IsMultipleOf(Chip8::base_width, width));
-    assert(IsMultipleOf(Chip8::base_height, height));
-    assert(width / height == base_width / base_height);
-
     // TODO Faire ça proprement, pour l'instant il s'agit de tests
+    assert(sdl.Running());
+
+    const int width = base_width * ratio;
+    const int height = base_height * ratio;
+
     SDL2::Window win = SDL2::Window("Chip8Emu",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,

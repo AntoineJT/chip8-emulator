@@ -2,6 +2,8 @@
 #include <SDL.h>
 #include <vector>
 
+#include "sdl_window.hpp"
+
 namespace SDL2
 {
     class Renderer
@@ -10,6 +12,7 @@ namespace SDL2
 
     public:
         Renderer(SDL_Window* window, int index, Uint32 flags);
+        Renderer(Window& window, int index, Uint32 flags);
         ~Renderer();
         SDL_Renderer* Data() const;
         bool SetRenderDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const;

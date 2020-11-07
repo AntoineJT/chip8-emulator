@@ -28,7 +28,7 @@ constexpr SDL_Color white = { 255, 255, 255, 255 };
 Chip8::Screen::Screen(SDL2::SDL& sdl, uint8_t ratio)
     : m_ratio(ratio)
     , m_window(CreateWindow(sdl, ratio))
-    , m_renderer(SDL2::Renderer(m_window.Data(), -1, SDL_RENDERER_ACCELERATED))
+    , m_renderer(SDL2::Renderer(m_window, -1, SDL_RENDERER_ACCELERATED))
 {
     // TODO Faire ça proprement, pour l'instant il s'agit de tests
 

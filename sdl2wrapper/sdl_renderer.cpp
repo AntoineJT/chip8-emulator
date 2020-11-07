@@ -4,6 +4,8 @@
 #include <SDL.h>
 #include <vector>
 
+#include "includes/sdl_window.hpp"
+
 constexpr int SUCCESS = 0;
 
 SDL2::Renderer::Renderer(SDL_Window* window, int index, Uint32 flags)
@@ -11,6 +13,10 @@ SDL2::Renderer::Renderer(SDL_Window* window, int index, Uint32 flags)
     m_pRenderer = SDL_CreateRenderer(window, index, flags);
     assert(m_pRenderer != nullptr);
 }
+
+SDL2::Renderer::Renderer(Window& window, int index, Uint32 flags)
+    : Renderer(window.Data(), index, flags)
+{}
 
 SDL2::Renderer::~Renderer()
 {
@@ -29,7 +35,7 @@ bool SDL2::Renderer::SetRenderDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) cons
 
 bool SDL2::Renderer::SetRenderDrawColor(const SDL_Color color) const
 {
-    return SetRenderDrawColor(color.r, color.g, color.b, color.a);
+    return SDL_SetRenderDrawColor(m_pRenderer, color.r, color.g, color.b, color.a) == SUCCESS;
 }
 
 bool SDL2::Renderer::RenderClear() const

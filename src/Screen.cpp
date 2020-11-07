@@ -2,12 +2,11 @@
 
 #include <cassert>
 
-
 #include "sdl.hpp"
 #include "sdl_renderer.hpp"
 #include "sdl_window.hpp"
 
-Chip8::Screen::Screen(SDL2::SDL sdl)
+Chip8::Screen::Screen(SDL2::SDL& sdl)
 {
     assert(sdl.Running());
 

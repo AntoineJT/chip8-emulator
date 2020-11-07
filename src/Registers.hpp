@@ -7,7 +7,7 @@ namespace Chip8
 {
     struct Registers
     {
-        enum Vx {
+        enum Vx_indexes {
             V0 = 0,
             V1 = 1,
             V2 = 2,

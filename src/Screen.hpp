@@ -7,6 +7,6 @@ namespace Chip8
     class Screen
     {
     public:
-        explicit Screen(SDL2::SDL sdl);
+        explicit Screen(SDL2::SDL& sdl);
     };
 };

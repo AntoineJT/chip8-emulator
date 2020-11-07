@@ -14,7 +14,7 @@ SDL2::Renderer::~Renderer()
     SDL_DestroyRenderer(m_pRenderer);
 }
 
-SDL_Renderer* SDL2::Renderer::Data()
+SDL_Renderer* SDL2::Renderer::Data() const
 {
     return m_pRenderer;
 }

@@ -33,3 +33,8 @@ void SDL2::Renderer::RenderPresent() const
 {
     SDL_RenderPresent(m_pRenderer);
 }
+
+bool SDL2::Renderer::RenderFillRect(const SDL_Rect* rect) const
+{
+    return SDL_RenderFillRect(m_pRenderer, rect) == 0;
+}

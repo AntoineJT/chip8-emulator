@@ -31,6 +31,9 @@ namespace Chip8
              */
             VF = 15
         };
+    
+        Registers();
+        ~Registers() = default;
 
     private:
         // usual registers

@@ -14,5 +14,6 @@ namespace SDL2
         bool SetRenderDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const;
         bool RenderClear() const;
         void RenderPresent() const;
+        bool RenderFillRect(const SDL_Rect* rect) const;
     };
 };

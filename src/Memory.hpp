@@ -7,10 +7,7 @@ namespace Chip8
 {
     class Memory
     {
-        // TODO Support ETI 660
-        // See here: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#2.1
-        static constexpr std::size_t entry_point_address = 0x200; // 512
-        static constexpr std::size_t ram_size = 4096 - entry_point_address;
+        static constexpr std::size_t ram_size = 4096;
 
     public:
         using MemoryData = std::array<byte_t, ram_size>;
@@ -20,6 +17,7 @@ namespace Chip8
         MemoryData& Data();
     
     private:
-        MemoryData m_memory = {};
+        MemoryData m_memory;
+        std::size_t m_cursor; // program counter
     };
 }

@@ -27,6 +27,11 @@ bool SDL2::Renderer::SetRenderDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) cons
     return SDL_SetRenderDrawColor(m_pRenderer, r, g, b, a) == SUCCESS;
 }
 
+bool SDL2::Renderer::SetRenderDrawColor(const SDL_Color color) const
+{
+    return SetRenderDrawColor(color.r, color.g, color.b, color.a);
+}
+
 bool SDL2::Renderer::RenderClear() const
 {
     return SDL_RenderClear(m_pRenderer) == SUCCESS;

@@ -11,7 +11,9 @@ namespace Chip8
 
     class Screen
     {
+        uint8_t m_ratio;
     public:
         explicit Screen(SDL2::SDL& sdl, uint8_t ratio);
+        //bool DrawPoint();
     };
 };

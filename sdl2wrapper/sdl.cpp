@@ -4,7 +4,7 @@
 
 SDL2::SDL::~SDL()
 {
-    if (m_isRunning)
+    if (!m_isRunning)
         return;
     Quit();
 }

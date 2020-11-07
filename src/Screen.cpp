@@ -9,6 +9,7 @@
 #include "sdl_window.hpp"
 
 Chip8::Screen::Screen(SDL2::SDL& sdl, uint8_t ratio)
+    : m_ratio(ratio)
 {
     // TODO Faire ça proprement, pour l'instant il s'agit de tests
     assert(sdl.Running());
@@ -32,10 +33,16 @@ Chip8::Screen::Screen(SDL2::SDL& sdl, uint8_t ratio)
 
     sdl_assert(renderer.SetRenderDrawColor(255, 255, 255, 255));
     {
-        SDL_Rect rect = { 10, 10, 10, 10 };
+        SDL_Rect rect = { 100, 50, 250, 20 };
         sdl_assert(renderer.RenderFillRect(&rect));
     }
     renderer.RenderPresent();
 
     SDL_Delay(2000);
 }
+/*
+bool Chip8::Screen::DrawPoint()
+{
+    
+}
+*/

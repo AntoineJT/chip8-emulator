@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL.h>
+#include <vector>
 
 namespace SDL2
 {
@@ -15,5 +16,7 @@ namespace SDL2
         bool RenderClear() const;
         void RenderPresent() const;
         bool RenderFillRect(const SDL_Rect* rect) const;
+        bool RenderFillRects(const SDL_Rect* rect, int count) const;
+        bool RenderFillRects(std::vector<SDL_Rect> rect) const;
     };
 };

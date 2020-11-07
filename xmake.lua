@@ -1,5 +1,9 @@
+-- Add dev branch of the official repo, because my PR was merged on 
+-- it, and is not deployed on the master branch for now
+add_repositories("xmake-dev https://github.com/xmake-io/xmake-repo dev")
+
 add_rules("mode.debug", "mode.release")
-add_requires("libsdl 2.0.*") -- 2.0.8 for now
+add_requires("libsdl 2.0.12") -- latest version at the time
 
 target("chip8emu")
     set_kind("binary")

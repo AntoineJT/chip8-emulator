@@ -11,11 +11,11 @@
 
 int main()
 {
-    auto sdl = SDL2::SDL();
+    SDL2::SDL sdl;
     // should not be ALREADY_RUNNING, at least for now
     assert(sdl.Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
 
-    auto screen = Chip8::Screen(sdl, 16);
+    Chip8::Screen screen(sdl, 16);
     
     return EXIT_SUCCESS;
 }

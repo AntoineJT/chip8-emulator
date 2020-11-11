@@ -1,6 +1,6 @@
--- Add dev branch of the official repo, because my PR was merged on 
--- it, and is not deployed on the master branch for now
-add_repositories("xmake-dev https://github.com/xmake-io/xmake-repo dev")
+-- For some reason I need to add the official repo
+-- because libsdl v2.0.12 seems not deployed yet
+add_repositories("xmake-master https://github.com/xmake-io/xmake-repo master")
 
 add_rules("mode.debug", "mode.release")
 add_requires("libsdl 2.0.12") -- latest version at the time
@@ -9,7 +9,7 @@ target("chip8emu")
     set_kind("binary")
     set_languages("cxx17")
     add_files("src/*.cpp")
-	add_headerfiles("src/*.hpp")
+    add_headerfiles("src/*.hpp")
     add_packages("libsdl")
     add_deps("sdl2wrapper")
     add_includedirs("sdl2wrapper/includes") -- Seems to be a weird ugly way to do

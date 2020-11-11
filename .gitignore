@@ -1,21 +1,22 @@
 # Visual Studio stuff
 .vs/
-projects/
-bin/
-obj/
 *.pdb
 
 # Xmake stuff
-.xmake/
-build/
+/.xmake/
+/build/
 
 # Auto-generated projects
-# *.sln
-# *.vcxproj
-# *.vcxproj.user
-vsxmake2019/
-makefile
-CMakeLists.txt
+/CMakeFiles/
+/vsxmake2019/
+/*.sln
+/*.vcxproj
+/*.vcxproj.filters
+/*.vcxproj.user
+/CMakeCache.txt
+/CMakeLists.txt
+/cmake_install.cmake
+/makefile
 
 # MacOS Cache
 .DS_Store

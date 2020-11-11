@@ -1,7 +1,3 @@
--- For some reason I need to add the official repo
--- because libsdl v2.0.12 seems not deployed yet
-add_repositories("xmake-master https://github.com/xmake-io/xmake-repo master")
-
 add_rules("mode.debug", "mode.release")
 add_requires("libsdl 2.0.12") -- latest version at the time
 

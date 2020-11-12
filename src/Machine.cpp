@@ -126,14 +126,14 @@ void Chip8::Machine::Execute(int16_t opcode)
     case 0xE000:
         {
             // SKP
-            if (kk == 0x9E)
+            if (static_cast<int>(kk) == 0x9E)
             {
                 // TODO Implement it, needs to check keyboard status (SDL)
                 break;
             }
 
             // SKNP
-            if (kk == 0xA1)
+            if (static_cast<int>(kk) == 0xA1)
             {
                 // TODO Implement it, same as SKP but the opposite
                 break;

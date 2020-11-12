@@ -118,7 +118,7 @@ void Chip8::Machine::Execute(int16_t opcode)
             // and dist instead of creating once each time
             // i.e in a class called Random
             std::random_device rd;
-            std::uniform_int_distribution<uint8_t> dist(0, 255);
+            const std::uniform_int_distribution<int> dist(0, 255);
 
             m_memory.VX[x] = dist(rd) & kk;
         }

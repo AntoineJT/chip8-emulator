@@ -8,16 +8,11 @@
 constexpr std::size_t entry_point = 0x200; // 512
 
 Chip8::Memory::Memory()
-    : m_memory({})
-    , m_cursor(entry_point)
+    : memory({0})
+    , pc(entry_point)
+    , sp(0)
+    , VX({0})
+    , I(0)
+    , DT(0)
+    , ST(0)
 {}
-
-void Chip8::Memory::Flush() noexcept
-{
-    m_memory.fill(0);
-}
-
-Chip8::Memory::MemoryData& Chip8::Memory::Data()
-{
-    return m_memory;
-}

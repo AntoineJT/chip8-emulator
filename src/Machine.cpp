@@ -10,7 +10,7 @@ Chip8::Machine::Machine(Screen screen, Memory memory)
     , m_memory(memory)
 {}
 
-void Chip8::Machine::Execute(const uint16_t opcode)
+void Chip8::Machine::Execute(std::uint16_t opcode)
 {
 #define PRINT_UNKNOWN_OPCODE
     std::cerr << "Err: Unknown instruction (" \
@@ -23,7 +23,7 @@ void Chip8::Machine::Execute(const uint16_t opcode)
     const std::uint8_t lsb = opcode & 0x000F; // least significant bit
     const std::uint16_t nnn = opcode & 0x0FFF;
 
-    uint8_t incBy = 1;
+    std::uint8_t incBy = 1;
 
     switch(opcode & 0xF000)
     {

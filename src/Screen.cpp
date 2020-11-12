@@ -9,9 +9,8 @@
 #include "sdl_colors.hpp"
 #include "sdl_renderer.hpp"
 #include "sdl_window.hpp"
-#include "utils/byte.hpp"
 
-SDL2::Window CreateWindow(SDL2::SDL& sdl, uint8_t ratio)
+SDL2::Window CreateWindow(SDL2::SDL& sdl, std::uint8_t ratio)
 {
     assert(sdl.Running());
 
@@ -25,7 +24,7 @@ SDL2::Window CreateWindow(SDL2::SDL& sdl, uint8_t ratio)
 }
 
 
-Chip8::Screen::Screen(SDL2::SDL& sdl, uint8_t ratio)
+Chip8::Screen::Screen(SDL2::SDL& sdl, std::uint8_t ratio)
     : m_ratio(ratio)
     , m_window(CreateWindow(sdl, ratio))
     , m_renderer(SDL2::Renderer(m_window, -1, SDL_RENDERER_ACCELERATED))
@@ -87,7 +86,7 @@ void Chip8::Screen::ChangeBgColor(SDL_Color color, bool fullRefresh) const
 }
 
 // from http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
-static constexpr std::array<Chip8::byte_t, 80> font_set =
+static constexpr std::array<std::uint8_t, 80> font_set =
 {
     0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
     0x20, 0x60, 0x20, 0x20, 0x70, // 1

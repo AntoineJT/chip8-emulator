@@ -19,10 +19,10 @@ int main()
     Chip8::Screen screen(sdl, 16);
 
     Chip8::Screen::PixelGrid grid = {};
-    for (size_t y = 0; y < Chip8::base_height; ++y)
+    for (std::size_t y = 0; y < Chip8::base_height; ++y)
     {
         grid.at(y) = {};
-        for (size_t x = 0; x < Chip8::base_width; ++x)
+        for (std::size_t x = 0; x < Chip8::base_width; ++x)
         {
             grid[y][x] = x % (y + 1) == 0;
         }

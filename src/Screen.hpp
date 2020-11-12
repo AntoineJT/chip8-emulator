@@ -15,14 +15,15 @@ namespace Chip8
 
     class Screen
     {
-        uint8_t m_ratio;
+        std::uint8_t m_ratio;
         SDL2::Window m_window;
         SDL2::Renderer m_renderer;
+
     public:
         using Pixel = bool;
         using PixelGrid = std::array<std::array<Pixel, base_width>, base_height>;
 
-        explicit Screen(SDL2::SDL& sdl, uint8_t ratio);
+        explicit Screen(SDL2::SDL& sdl, std::uint8_t ratio);
         bool Render(PixelGrid grid) const;
         bool DrawPoints(SDL_Color color, std::vector<SDL_Rect> rects) const;
         void Refresh(bool fullRefresh) const;

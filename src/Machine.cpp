@@ -10,18 +10,18 @@ Chip8::Machine::Machine(Screen screen, Memory memory)
     , m_memory(memory)
 {}
 
-void Chip8::Machine::Execute(int16_t opcode)
+void Chip8::Machine::Execute(const uint16_t opcode)
 {
 #define PRINT_UNKNOWN_OPCODE
     std::cerr << "Err: Unknown instruction (" \
         << std::hex << opcode << std::dec \
         << std::endl;
 
-    const std::int8_t x = (opcode & 0x0F00) >> 8;
-    const std::int8_t y = (opcode & 0x00F0) >> 4;
-    const std::int8_t kk = opcode & 0x00FF;
-    const std::int8_t lsb = opcode & 0x000F; // least significant bit
-    const std::int16_t nnn = opcode & 0x0FFF;
+    const std::uint8_t x = (opcode & 0x0F00) >> 8;
+    const std::uint8_t y = (opcode & 0x00F0) >> 4;
+    const std::uint8_t kk = opcode & 0x00FF;
+    const std::uint8_t lsb = opcode & 0x000F; // least significant bit
+    const std::uint16_t nnn = opcode & 0x0FFF;
 
     uint8_t incBy = 1;
 
@@ -207,14 +207,14 @@ void Chip8::Machine::Execute(int16_t opcode)
     case 0xE000:
         {
             // SKP
-            if (static_cast<int>(kk) == 0x9E)
+            if (kk == 0x9E)
             {
                 // TODO Implement it, needs to check keyboard status (SDL)
                 break;
             }
 
             // SKNP
-            if (static_cast<int>(kk) == 0xA1)
+            if (kk == 0xA1)
             {
                 // TODO Implement it, the opposite of SKP
                 break;

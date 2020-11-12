@@ -58,6 +58,7 @@ void Chip8::Machine::Execute(int16_t opcode)
         {
             m_memory.pc = nnn;
             incBy = 0;
+            break;
         }
     case CALL:
         {
@@ -65,6 +66,7 @@ void Chip8::Machine::Execute(int16_t opcode)
             m_memory.stack[m_memory.sp] = m_memory.pc;
             m_memory.pc = nnn;
             incBy = 0;
+            break;
         }
     case SE_XKK:
         {
@@ -72,6 +74,7 @@ void Chip8::Machine::Execute(int16_t opcode)
             {
                 incBy = 2;
             }
+            break;
         }
     case SNE_XKK:
         {
@@ -79,6 +82,7 @@ void Chip8::Machine::Execute(int16_t opcode)
             {
                 incBy = 2;
             }
+            break;
         }
     case SE_XY:
         {
@@ -86,14 +90,17 @@ void Chip8::Machine::Execute(int16_t opcode)
             {
                 incBy = 2;
             }
+            break;
         }
     case LD_XKK:
         {
             m_memory.VX[x] = kk;
+            break;
         }
     case ADD_XKK:
         {
             m_memory.VX[x] += kk;
+            break;
         }
     case 0x8000:
         {
@@ -103,21 +110,25 @@ void Chip8::Machine::Execute(int16_t opcode)
             case 0x0:
                 {
                     m_memory.VX[x] = m_memory.VX[y];
+                    break;
                 }
             // OR
             case 0x1:
                 {
                     m_memory.VX[x] |= m_memory.VX[y];
+                    break;
                 }
             // AND_XY
             case 0x2:
                 {
                     m_memory.VX[x] &= m_memory.VX[y];
+                    break;
                 }
             // XOR
             case 0x3:
                 {
                     m_memory.VX[x] ^= m_memory.VX[y];
+                    break;
                 }
             // ADD_XY
             case 0x4:
@@ -133,6 +144,7 @@ void Chip8::Machine::Execute(int16_t opcode)
                         m_memory.VX[0xF] = 0;
                         m_memory.VX[x] = sum;
                     }
+                    break;
                 }
             // SUB
             case 0x5:
@@ -140,12 +152,14 @@ void Chip8::Machine::Execute(int16_t opcode)
                     const std::int16_t sub = m_memory.VX[x] - m_memory.VX[y];
                     m_memory.VX[0xF] = (sub > 0) ? 1 : 0;
                     m_memory.VX[x] = static_cast<uint8_t>(sub); // TODO wtf? need to check how to handle this properly
+                    break;
                 }
             // SHR
             case 0x6:
                 {
                     m_memory.VX[0xF] = m_memory.VX[x] & 0x000F;
                     m_memory.VX[x] <<= 1;
+                    break;
                 }
             // SUBN
             case 0x7:
@@ -153,17 +167,20 @@ void Chip8::Machine::Execute(int16_t opcode)
                     const std::int16_t sub = m_memory.VX[y] - m_memory.VX[x];
                     m_memory.VX[0xF] = (sub > 0) ? 1 : 0;
                     m_memory.VX[x] = static_cast<uint8_t>(sub); // TODO wtf? need to check how to handle this properly
+                    break;
                 }
             // SHL
             case 0xE:
                 {
                     m_memory.VX[0xF] = m_memory.VX[x] & 0x000F;
                     m_memory.VX[x] >>= 1;
+                    break;
                 }
             default:
                 PRINT_UNKNOWN_OPCODE
                 break;
             }
+            break;
         }
     case SNE_XY:
         {
@@ -171,15 +188,18 @@ void Chip8::Machine::Execute(int16_t opcode)
             {
                 incBy = 2;
             }
+            break;
         }
     case LD_I:
         {
             m_memory.I = nnn;
+            break;
         }
     case JP_V0:
         {
             m_memory.pc = nnn + m_memory.VX[0];
             incBy = 0;
+            break;
         }
     case RND:
         {
@@ -190,6 +210,7 @@ void Chip8::Machine::Execute(int16_t opcode)
             const std::uniform_int_distribution<int> dist(0, 255);
 
             m_memory.VX[x] = dist(rd) & kk;
+            break;
         }
     case DRW:
     case 0xE000:
@@ -209,6 +230,7 @@ void Chip8::Machine::Execute(int16_t opcode)
             }
 
             PRINT_UNKNOWN_OPCODE
+            break;
         }
     case 0xF000:
     default:

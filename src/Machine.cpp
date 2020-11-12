@@ -225,7 +225,66 @@ void Chip8::Machine::Execute(const uint16_t opcode)
         }
    
     case 0xF000:
-        // TODO
+        {
+            switch(opcode & 0x00FF)
+            {
+            // LD_XD
+            case 0x07:
+                m_memory.VX[x] = m_memory.DT;
+                break;
+
+            // LD_XK
+            case 0x0A:
+                // TODO Wait for a key press by pausing the program then
+                // store the value of the key into Vx
+                break;
+
+            // LD_DX
+            case 0x15:
+                m_memory.DT = m_memory.VX[x];
+                break;
+
+            // LD_SX
+            case 0x18:
+                m_memory.ST = m_memory.VX[x];
+                break;
+
+            // ADD_IX
+            case 0x1E:
+                m_memory.I += m_memory.VX[x];
+                break;
+                
+            // LD_FX
+            case 0x29:
+                // TODO This is the instructions to point to the fontset
+                break;
+
+            // LD_BX
+            case 0x33:
+                // TODO
+                break;
+
+            // LD_IX
+            case 0x55:
+                for (std::size_t i = 0; i <= x; ++i)
+                {
+                    m_memory.memory[m_memory.I + i] = m_memory.VX[i];
+                }
+                break;
+
+            // LD_XI
+            case 0x65:
+                for (std::size_t i = 0; i <= x; ++i)
+                {
+                    m_memory.VX[i] = m_memory.memory[m_memory.I + i];
+                }
+                break;
+
+            default:
+                PRINT_UNKNOWN_OPCODE
+                break;
+            }
+        }
 
     default:
         PRINT_UNKNOWN_OPCODE

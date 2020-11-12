@@ -10,6 +10,8 @@ Chip8::Machine::Machine(Screen screen, Memory memory)
 
 void Chip8::Machine::Execute(int16_t opcode)
 {
+    uint8_t incBy = 1;
+
     switch(opcode & 0xF000)
     {
     case 0x0000:
@@ -18,24 +20,42 @@ void Chip8::Machine::Execute(int16_t opcode)
             if (opcode == CLS)
             {
                 m_screen.Refresh(true);
-                return;
+                break;
             }
 
             // RET
             if (opcode == RET)
             {
                 assert(m_memory.sp > 0);
-                m_memory.pc = m_memory.sp;
+                m_memory.pc = m_memory.stack[m_memory.sp];
                 --m_memory.sp;
-                // return;
+                break;
             }
 
             // SYS
             // this is ignored, only used on real machine
         }
-    case 0x1000:
+    case JP:
+        {
+            m_memory.pc = opcode & 0x0FFF;
+        }
     case CALL:
+        {
+            ++m_memory.sp;
+            m_memory.stack[m_memory.sp] = m_memory.pc;
+            m_memory.pc = opcode & 0x0FFF;
+        }
     case SE_XKK:
+        {
+            const std::int8_t x = (opcode & 0x0F00) >> 8;
+            const std::int8_t kk = opcode & 0x00FF;
+
+            if (m_memory.VX[x] == kk)
+            {
+                incBy = 2;
+                break;
+            }
+        }
     case SNE_XKK:
     case SE_XY:
     case LD_XKK:
@@ -51,4 +71,6 @@ void Chip8::Machine::Execute(int16_t opcode)
     default:
         break;
     }
+
+    m_memory.pc += incBy;
 }

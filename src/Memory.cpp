@@ -13,6 +13,7 @@ Chip8::Memory::Memory()
     , sp(0)
     , VX({0})
     , I(0)
+    , stack({0})
     , DT(0)
     , ST(0)
 {}

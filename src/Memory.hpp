@@ -2,6 +2,8 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <vector>
+
 #include "utils/byte.hpp"
 
 namespace Chip8
@@ -49,6 +51,7 @@ namespace Chip8
         // Registers
         std::array<byte_t, 16> VX; // usual registers
         std::uint16_t I; // the I register, generally used to store memory addresses.
+        std::array<uint16_t, 16> stack;
         byte_t DT; // delay timer
         byte_t ST; // sound timer
     };

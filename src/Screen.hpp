@@ -26,5 +26,6 @@ namespace Chip8
         bool Render(PixelGrid grid) const;
         bool DrawPoints(SDL_Color color, std::vector<SDL_Rect> rects) const;
         void Refresh(bool fullRefresh) const;
+        void ChangeBgColor(SDL_Color color, bool fullRefresh) const;
     };
 };

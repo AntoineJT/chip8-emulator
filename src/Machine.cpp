@@ -20,6 +20,7 @@ void Chip8::Machine::Execute(int16_t opcode)
     const std::int8_t x = (opcode & 0x0F00) >> 8;
     const std::int8_t y = (opcode & 0x00F0) >> 4;
     const std::int8_t kk = opcode & 0x00FF;
+    const std::int8_t lsb = opcode & 0x000F; // least significant bit
     const std::int16_t nnn = opcode & 0x0FFF;
 
     uint8_t incBy = 1;
@@ -95,7 +96,75 @@ void Chip8::Machine::Execute(int16_t opcode)
             m_memory.VX[x] += kk;
         }
     case 0x8000:
-        // TODO
+        {
+            switch(lsb)
+            {
+            // LD_XY
+            case 0x0:
+                {
+                    m_memory.VX[x] = m_memory.VX[y];
+                }
+            // OR
+            case 0x1:
+                {
+                    m_memory.VX[x] |= m_memory.VX[y];
+                }
+            // AND_XY
+            case 0x2:
+                {
+                    m_memory.VX[x] &= m_memory.VX[y];
+                }
+            // XOR
+            case 0x3:
+                {
+                    m_memory.VX[x] ^= m_memory.VX[y];
+                }
+            // ADD_XY
+            case 0x4:
+                {
+                    const std::uint16_t sum = m_memory.VX[x] + m_memory.VX[y];
+                    if (sum > 0xFF)
+                    {
+                        m_memory.VX[0xF] = 1;
+                        m_memory.VX[x] = sum - 0xFF; // not sure about that
+                    }
+                    else
+                    {
+                        m_memory.VX[0xF] = 0;
+                        m_memory.VX[x] = sum;
+                    }
+                }
+            // SUB
+            case 0x5:
+                {
+                    const std::int16_t sub = m_memory.VX[x] - m_memory.VX[y];
+                    m_memory.VX[0xF] = (sub > 0) ? 1 : 0;
+                    m_memory.VX[x] = static_cast<uint8_t>(sub); // TODO wtf? need to check how to handle this properly
+                }
+            // SHR
+            case 0x6:
+                {
+                    m_memory.VX[0xF] = m_memory.VX[x] & 0x000F;
+                    m_memory.VX[x] <<= 1;
+                }
+            // SUBN
+            case 0x7:
+                {
+                    const std::int16_t sub = m_memory.VX[y] - m_memory.VX[x];
+                    m_memory.VX[0xF] = (sub > 0) ? 1 : 0;
+                    m_memory.VX[x] = static_cast<uint8_t>(sub); // TODO wtf? need to check how to handle this properly
+                }
+            // SHL
+            case 0xE:
+                {
+                    m_memory.VX[0xF] = m_memory.VX[x] & 0x000F;
+                    m_memory.VX[x] >>= 1;
+                }
+            default:
+                PRINT_UNKNOWN_OPCODE
+                break;
+            }
+        }
     case SNE_XY:
         {
             if (m_memory.VX[x] != m_memory.VX[y])
@@ -135,7 +204,7 @@ void Chip8::Machine::Execute(int16_t opcode)
             // SKNP
             if (static_cast<int>(kk) == 0xA1)
             {
-                // TODO Implement it, same as SKP but the opposite
+                // TODO Implement it, the opposite of SKP
                 break;
             }
 

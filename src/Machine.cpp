@@ -5,6 +5,28 @@
 #include <iostream>
 #include <random>
 
+std::vector<Chip8::Screen::Point> PointsToDraw(std::vector<uint8_t> sprite, const Chip8::Screen::Point point, uint8_t width)
+{
+    assert(width <= 8);
+    const size_t size = sprite.size();
+
+    std::vector<Chip8::Screen::Point> toDraw = {};
+
+    for (size_t y = 0; y < size; ++y)
+    {
+        const uint8_t line = sprite[y];
+        for (size_t x = 0; x < width; ++x)
+        {
+            const bool isOn = ((0x80 >> x) == 1);
+            if (isOn)
+            {
+                toDraw.push_back({ x + point.first, y + point.second });
+            }
+        }
+    }
+    return toDraw;
+}
+
 Chip8::Machine::Machine(Screen screen, Memory memory)
     : m_screen(screen)
     , m_memory(memory)
@@ -202,7 +224,26 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
         }
 
     case DRW:
-        // TODO
+        {
+            std::vector<uint8_t> sprite = {};
+            sprite.reserve(lsb);
+            for (std::size_t i = 0; i <= lsb; ++i)
+            {
+                sprite.push_back(m_memory.memory[i + m_memory.I]);
+            }
+            const Screen::Point point = { m_memory.VX[x], m_memory.VX[y] };
+            const std::vector<Screen::Point> toDraw = PointsToDraw(sprite, point, 8);
+
+            bool collides = false;
+            std::vector<Screen::Point> wrappedPoints = {};
+            for (const auto pt : toDraw)
+            {
+                collides |= m_screen.Collides(pt.first, pt.second);
+                wrappedPoints.push_back({ pt.first % base_width, pt.second % base_height });
+            }
+            m_memory.VX[0xF] = collides ? 1 : 0;
+            // TODO Call a Screen function called DrawSprite
+        }
 
     case 0xE000:
         {

@@ -44,10 +44,12 @@ void Chip8::Machine::ExecuteNextInstruction()
 
 void Chip8::Machine::Execute(std::uint16_t opcode)
 {
-#define PRINT_UNKNOWN_OPCODE
+#define PRINT_UNKNOWN_OPCODE \
     std::cerr << "Err: Unknown instruction (" \
         << std::hex << opcode << std::dec << ")" \
         << std::endl;
+
+    std::cout << "Info: Opcode '" << std::hex << opcode << std::dec << "' next!" << std::endl;
 
     const std::uint8_t x = (opcode & 0x0F00) >> 8;
     const std::uint8_t y = (opcode & 0x00F0) >> 4;

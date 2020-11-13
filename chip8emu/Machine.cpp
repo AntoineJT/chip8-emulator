@@ -44,7 +44,7 @@ void Chip8::Machine::ExecuteNextInstruction()
 
 void Chip8::Machine::Execute(std::uint16_t opcode)
 {
-#define PRINT_OPCODE(case_) \
+#define PRINT_OPCODE_STATUS(case_) \
     std::cerr << "Err: " << (case_) << " instruction (" \
         << std::hex << opcode << std::dec << ")" \
         << std::endl;
@@ -83,11 +83,11 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
             if (opcode == SYS)
             {
                 // this is ignored, only used on real machine
-                PRINT_OPCODE("Ignored")
+                PRINT_OPCODE_STATUS("Ignored")
                 break;
             }
 
-            PRINT_OPCODE("Unknown")
+            PRINT_OPCODE_STATUS("Unknown")
         }
 
     case JP:
@@ -203,7 +203,7 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
                 break;
 
             default:
-                PRINT_OPCODE("Unknown")
+                PRINT_OPCODE_STATUS("Unknown")
                 break;
             }
             break;
@@ -268,7 +268,7 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
             if (kk == 0x9E)
             {
                 // TODO Implement it, needs to check keyboard status (SDL)
-                PRINT_OPCODE("Unhandled")
+                PRINT_OPCODE_STATUS("Unhandled")
                 break;
             }
 
@@ -276,11 +276,11 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
             if (kk == 0xA1)
             {
                 // TODO Implement it, the opposite of SKP
-                PRINT_OPCODE("Unhandled")
+                PRINT_OPCODE_STATUS("Unhandled")
                 break;
             }
 
-            PRINT_OPCODE("Unknown")
+            PRINT_OPCODE_STATUS("Unknown")
             break;
         }
    
@@ -297,7 +297,7 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
             case 0xA:
                 // TODO Wait for a key press by pausing the program then
                 // store the value of the key into Vx
-                PRINT_OPCODE("Unhandled")
+                PRINT_OPCODE_STATUS("Unhandled")
                 break;
 
             // LD_DX
@@ -318,13 +318,13 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
             // LD_FX
             case 0x29:
                 // TODO This is the instructions to point to the fontset
-                PRINT_OPCODE("Unhandled")
+                PRINT_OPCODE_STATUS("Unhandled")
                 break;
 
             // LD_BX
             case 0x33:
                 // TODO
-                PRINT_OPCODE("Unhandled")
+                PRINT_OPCODE_STATUS("Unhandled")
                 break;
 
             // LD_IX
@@ -344,18 +344,18 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
                 break;
 
             default:
-                PRINT_OPCODE("Unknown")
+                PRINT_OPCODE_STATUS("Unknown")
                 break;
             }
             break;
         }
 
     default:
-        PRINT_OPCODE("Unknown")
+        PRINT_OPCODE_STATUS("Unknown")
         break;
     }
 
     m_memory.pc += incBy;
 
-#undef PRINT_OPCODE
+#undef PRINT_OPCODE_STATUS
 }

@@ -56,6 +56,7 @@ namespace Chip8
     public:
         Machine(Screen screen, Memory memory);
 
+        void ExecuteNextInstruction();
         void Execute(std::uint16_t opcode);
     };
 }

@@ -32,6 +32,16 @@ Chip8::Machine::Machine(Screen screen, Memory memory)
     , m_memory(memory)
 {}
 
+void Chip8::Machine::ExecuteNextInstruction()
+{
+    const std::uint8_t upper = m_memory.memory[m_memory.pc];
+    const std::uint8_t lower = m_memory.memory[m_memory.pc + 1];
+    const std::uint16_t opcode = (upper << 8) | lower;
+
+    Execute(opcode);
+    // TODO S'occuper des timers
+}
+
 void Chip8::Machine::Execute(std::uint16_t opcode)
 {
 #define PRINT_UNKNOWN_OPCODE
@@ -45,7 +55,7 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
     const std::uint8_t lsb = opcode & 0x000F; // least significant bit
     const std::uint16_t nnn = opcode & 0x0FFF;
 
-    std::uint8_t incBy = 1;
+    std::uint8_t incBy = 2;
 
     switch(opcode & 0xF000)
     {
@@ -92,21 +102,21 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
     case SE_XKK:
         if (m_memory.VX[x] == kk)
         {
-            incBy = 2;
+            incBy = 4;
         }
         break;
 
     case SNE_XKK:
         if (m_memory.VX[x] != kk)
         {
-            incBy = 2;
+            incBy = 4;
         }
         break;
 
     case SE_XY:
         if (m_memory.VX[x] == m_memory.VX[y])
         {
-            incBy = 2;
+            incBy = 4;
         }
         break;
 
@@ -199,7 +209,7 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
     case SNE_XY:
         if (m_memory.VX[x] != m_memory.VX[y])
         {
-            incBy = 2;
+            incBy = 4;
         }
         break;
 

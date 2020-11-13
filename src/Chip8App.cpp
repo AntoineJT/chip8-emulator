@@ -68,7 +68,8 @@ int main(int argc, char* argv[])
 
     while(true) // 
     {
-        machine.Execute(memory.memory[memory.pc]);
+        machine.ExecuteNextInstruction();
+        SDL_Delay(1 / 60 * 1000);
     }
 
     /*

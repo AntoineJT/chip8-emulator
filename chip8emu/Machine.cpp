@@ -27,7 +27,7 @@ std::vector<Chip8::Screen::Point> PointsToDraw(std::vector<uint8_t> sprite, cons
     return toDraw;
 }
 
-Chip8::Machine::Machine(Screen screen, Memory memory)
+Chip8::Machine::Machine(Screen& screen, Memory& memory)
     : m_screen(screen)
     , m_memory(memory)
 {}
@@ -35,7 +35,7 @@ Chip8::Machine::Machine(Screen screen, Memory memory)
 void Chip8::Machine::ExecuteNextInstruction()
 {
     const std::uint8_t upper = m_memory.memory[m_memory.pc];
-    const std::uint8_t lower = m_memory.memory[m_memory.pc + 1];
+    const std::uint8_t lower = m_memory.memory[static_cast<std::size_t>(m_memory.pc) + 1];
     const std::uint16_t opcode = (upper << 8) | lower;
 
     Execute(opcode);
@@ -44,8 +44,8 @@ void Chip8::Machine::ExecuteNextInstruction()
 
 void Chip8::Machine::Execute(std::uint16_t opcode)
 {
-#define PRINT_UNKNOWN_OPCODE \
-    std::cerr << "Err: Unknown instruction (" \
+#define PRINT_OPCODE(case_) \
+    std::cerr << "Err: " << (case_) << " instruction (" \
         << std::hex << opcode << std::dec << ")" \
         << std::endl;
 
@@ -83,10 +83,11 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
             if (opcode == SYS)
             {
                 // this is ignored, only used on real machine
+                PRINT_OPCODE("Ignored")
                 break;
             }
 
-            PRINT_UNKNOWN_OPCODE
+            PRINT_OPCODE("Unknown")
         }
 
     case JP:
@@ -202,7 +203,7 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
                 break;
 
             default:
-                PRINT_UNKNOWN_OPCODE
+                PRINT_OPCODE("Unknown")
                 break;
             }
             break;
@@ -250,12 +251,15 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
             std::vector<Screen::Point> wrappedPoints = {};
             for (const auto pt : toDraw)
             {
-                collides |= m_screen.Collides(pt.first, pt.second);
-                wrappedPoints.push_back({ pt.first % base_width, pt.second % base_height });
+                const uint8_t x = pt.first % base_width;
+                const uint8_t y = pt.second % base_height;
+                collides |= m_screen.Collides(x, y);
+                wrappedPoints.push_back({ x, y });
             }
             m_memory.VX[0xF] = collides ? 1 : 0;
             assert(m_screen.DrawSprite(std::move(wrappedPoints)));
             m_screen.Refresh(true);
+            break;
         }
 
     case 0xE000:
@@ -264,6 +268,7 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
             if (kk == 0x9E)
             {
                 // TODO Implement it, needs to check keyboard status (SDL)
+                PRINT_OPCODE("Unhandled")
                 break;
             }
 
@@ -271,10 +276,11 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
             if (kk == 0xA1)
             {
                 // TODO Implement it, the opposite of SKP
+                PRINT_OPCODE("Unhandled")
                 break;
             }
 
-            PRINT_UNKNOWN_OPCODE
+            PRINT_OPCODE("Unknown")
             break;
         }
    
@@ -283,14 +289,15 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
             switch(opcode & 0x00FF)
             {
             // LD_XD
-            case 0x07:
+            case 0x7:
                 m_memory.VX[x] = m_memory.DT;
                 break;
 
             // LD_XK
-            case 0x0A:
+            case 0xA:
                 // TODO Wait for a key press by pausing the program then
                 // store the value of the key into Vx
+                PRINT_OPCODE("Unhandled")
                 break;
 
             // LD_DX
@@ -311,11 +318,13 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
             // LD_FX
             case 0x29:
                 // TODO This is the instructions to point to the fontset
+                PRINT_OPCODE("Unhandled")
                 break;
 
             // LD_BX
             case 0x33:
                 // TODO
+                PRINT_OPCODE("Unhandled")
                 break;
 
             // LD_IX
@@ -335,17 +344,18 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
                 break;
 
             default:
-                PRINT_UNKNOWN_OPCODE
+                PRINT_OPCODE("Unknown")
                 break;
             }
+            break;
         }
 
     default:
-        PRINT_UNKNOWN_OPCODE
+        PRINT_OPCODE("Unknown")
         break;
     }
 
     m_memory.pc += incBy;
 
-#undef PRINT_UNKNOWN_OPCODE
+#undef PRINT_OPCODE
 }

@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
     Chip8::Screen screen(sdl, 16);
     Chip8::Memory memory;
     memory.LoadProgram(content);
-    Chip8::Machine machine(std::move(screen), memory);
+    Chip8::Machine machine(screen, memory);
 
     while(true) // 
     {

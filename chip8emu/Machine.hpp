@@ -6,13 +6,12 @@
 
 namespace Chip8
 {
-    class Screen;
     class Memory;
 
     class Machine
     {
-        Screen m_screen;
-        Memory m_memory;
+        Screen& m_screen;
+        Memory& m_memory;
 
         enum instruction
         {
@@ -54,7 +53,7 @@ namespace Chip8
         };
 
     public:
-        Machine(Screen screen, Memory memory);
+        Machine(Screen& screen, Memory& memory);
 
         void ExecuteNextInstruction();
         void Execute(std::uint16_t opcode);

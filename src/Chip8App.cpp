@@ -1,23 +1,77 @@
 #include <cassert>
+#include <cstring>
 #include <iostream>
 #include <cstdlib>
+#include <fstream>
 #include <SDL.h>
 
+#include "Machine.hpp"
 #include "Screen.hpp"
 #include "sdl.hpp"
 #include "sdl_assert.hpp"
-#include "sdl_colors.hpp"
 
 #undef main // removes SDL main entry redefinition
 
-int main()
+void PrintUsage(std::string const& filename)
 {
+    std::cout << "Usage: " << filename << " [inputfile]" << std::endl;
+}
+
+int main(int argc, char* argv[])
+{
+    std::string filename;
+
+    if (argc == 1) {
+        std::cout << "Not enough arguments." << std::endl;
+        PrintUsage(argv[0]);
+        return EXIT_FAILURE;
+    }
+    if (argc == 2) {
+        filename = argv[1];
+    }
+    else {
+        std::cout << "Too much arguments." << std::endl;
+        PrintUsage(argv[0]);
+        return EXIT_FAILURE;
+    }
+
+    std::ifstream file(filename, std::ios::binary | std::ios::ate);
+
+    if (!file.is_open()) {
+        std::cout << "Failed to open '" << filename << "'." << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    const auto end = file.tellg();
+    file.seekg(0, std::ios::beg);
+    const auto size = std::size_t(end - file.tellg());
+
+    if (size == 0) {
+        std::cout << "The file '" << filename << "' was empty." << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    std::vector<char> content(size);
+    if (!file.read(content.data(), content.size())) {
+        throw std::runtime_error(filename + ": " + std::strerror(errno));
+    }
+    file.close();
+
     SDL2::SDL sdl;
     // should not be ALREADY_RUNNING, at least for now
     assert(sdl.Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
 
     Chip8::Screen screen(sdl, 16);
+    Chip8::Memory memory;
+    memory.LoadProgram(content);
+    Chip8::Machine machine(std::move(screen), memory);
 
+    while(true) // 
+    {
+        machine.Execute(memory.memory[memory.pc]);
+    }
+
+    /*
     Chip8::Screen::PixelGrid grid = {};
     for (std::size_t y = 0; y < Chip8::base_height; ++y)
     {
@@ -40,6 +94,7 @@ int main()
         screen.ChangeBgColor(SDL2::Colors::WHITE, true);
         SDL_Delay(250);
     }
+    */
     
     return EXIT_SUCCESS;
 }

@@ -36,7 +36,7 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
 {
 #define PRINT_UNKNOWN_OPCODE
     std::cerr << "Err: Unknown instruction (" \
-        << std::hex << opcode << std::dec \
+        << std::hex << opcode << std::dec << ")" \
         << std::endl;
 
     const std::uint8_t x = (opcode & 0x0F00) >> 8;

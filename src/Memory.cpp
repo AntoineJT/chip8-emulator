@@ -1,5 +1,7 @@
 #include "Memory.hpp"
 
+#include <vector>
+
 // TODO Support ETI 660
 // See here: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#2.1
 // Begins at 0x200, because generally
@@ -17,3 +19,13 @@ Chip8::Memory::Memory()
     , DT(0)
     , ST(0)
 {}
+
+void Chip8::Memory::LoadProgram(std::vector<char> data)
+{
+    std::size_t index = pc;
+    for (char& c : data)
+    {
+        memory[index] = c;
+        ++index;
+    }
+}

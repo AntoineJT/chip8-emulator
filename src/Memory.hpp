@@ -2,6 +2,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <vector>
 
 namespace Chip8
 {
@@ -11,7 +12,9 @@ namespace Chip8
         
     public:
         using MemoryData = std::array<uint8_t, ram_size>;
+
         Memory();
+        void LoadProgram(std::vector<char> data);
 
         MemoryData memory;
 

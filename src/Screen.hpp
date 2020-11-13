@@ -21,9 +21,9 @@ namespace Chip8
         explicit Screen(SDL2::SDL& sdl, std::uint8_t ratio);
         bool Render(PixelGrid grid) const;
         bool DrawPoints(SDL_Color color, std::vector<SDL_Rect> rects) const;
-        bool DrawSprite(std::vector<Point> pixelsOn) const;
-        void Refresh(bool fullRefresh) const;
-        void ChangeBgColor(SDL_Color color, bool fullRefresh) const;
+        bool DrawSprite(std::vector<Point> pixelsOn);
+        void Refresh(bool fullRefresh);
+        void ChangeBgColor(SDL_Color color, bool fullRefresh);
         bool Collides(uint8_t x, uint8_t y) const;
 
     private:
@@ -32,6 +32,7 @@ namespace Chip8
         SDL2::Window m_window;
         SDL2::Renderer m_renderer;
 
-        void ResetGrid();
+        static void ResetGrid(PixelGrid& grid);
+        static PixelGrid InitGrid();
     };
 };

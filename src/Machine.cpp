@@ -242,7 +242,8 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
                 wrappedPoints.push_back({ pt.first % base_width, pt.second % base_height });
             }
             m_memory.VX[0xF] = collides ? 1 : 0;
-            // TODO Call a Screen function called DrawSprite
+            assert(m_screen.DrawSprite(std::move(wrappedPoints)));
+            m_screen.Refresh(true);
         }
 
     case 0xE000:

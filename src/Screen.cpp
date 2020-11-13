@@ -24,19 +24,31 @@ SDL2::Window CreateWindow(SDL2::SDL& sdl, std::uint8_t ratio)
         width, height, 0);
 }
 
-void Chip8::Screen::ResetGrid()
+void Chip8::Screen::ResetGrid(PixelGrid& grid)
 {
-    // Don't know if it will work
-    std::fill(m_grid.begin(), m_grid.end(), false);
+    for (std::size_t y = 0; y < base_height; ++y)
+    {
+        grid[y] = {};
+        for (std::size_t x = 0; x < base_width; ++x)
+        {
+            grid[y][x] = false;
+        }
+    }
+}
+
+Chip8::Screen::PixelGrid Chip8::Screen::InitGrid()
+{
+    PixelGrid grid = {};
+    ResetGrid(grid);
+    return grid;
 }
 
 Chip8::Screen::Screen(SDL2::SDL& sdl, std::uint8_t ratio)
     : m_ratio(ratio)
-    , m_grid({})
+    , m_grid(InitGrid())
     , m_window(CreateWindow(sdl, ratio))
     , m_renderer(SDL2::Renderer(m_window, -1, SDL_RENDERER_ACCELERATED))
 {
-    ResetGrid();
     // set background to black
     sdl_assert(m_renderer.SetRenderDrawColor(SDL2::Colors::BLACK));
     // a full refresh is required here to draw the black bg
@@ -75,7 +87,7 @@ bool Chip8::Screen::DrawPoints(SDL_Color color, std::vector<SDL_Rect> rects) con
     return m_renderer.RenderFillRects(std::move(rects));
 }
 
-bool Chip8::Screen::DrawSprite(std::vector<Point> pixelsOn) const
+bool Chip8::Screen::DrawSprite(std::vector<Point> pixelsOn)
 {
     std::vector<SDL_Rect> rects = {};
     rects.reserve(pixelsOn.size());
@@ -93,20 +105,20 @@ bool Chip8::Screen::DrawSprite(std::vector<Point> pixelsOn) const
     return DrawPoints(SDL2::Colors::WHITE, std::move(rects));
 }
 
-void Chip8::Screen::Refresh(bool fullRefresh) const
+void Chip8::Screen::Refresh(bool fullRefresh)
 {
     if (fullRefresh)
     {
         // clears screen
         sdl_assert(m_renderer.RenderClear());
         // clears grid cache
-        std::fill(std::begin(m_grid), std::end(m_grid), 0);
+        ResetGrid(m_grid);
     }
     // renders screen
     m_renderer.RenderPresent();
 }
 
-void Chip8::Screen::ChangeBgColor(SDL_Color color, bool fullRefresh) const
+void Chip8::Screen::ChangeBgColor(SDL_Color color, bool fullRefresh)
 {
     sdl_assert(m_renderer.SetRenderDrawColor(color));
     Refresh(fullRefresh);

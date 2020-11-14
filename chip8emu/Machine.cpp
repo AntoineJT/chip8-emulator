@@ -63,31 +63,22 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
     {
     case 0x0000:
         {
-            // CLS
-            if (opcode == CLS)
+            switch(opcode)
             {
+            case CLS:
                 m_screen.Refresh(true);
                 break;
-            }
-
-            // RET
-            if (opcode == RET)
-            {
+            case RET:
                 assert(m_memory.sp > 0);
                 m_memory.pc = m_memory.stack[m_memory.sp];
                 --m_memory.sp;
                 break;
-            }
-
-            // SYS
-            if (opcode == SYS)
-            {
+            default:
+                // SYS is 0NNN so all that remains after CLS and RET
                 // this is ignored, only used on real machine
                 PRINT_OPCODE_STATUS("Ignored")
                 break;
             }
-
-            PRINT_OPCODE_STATUS("Unknown")
             break;
         }
 

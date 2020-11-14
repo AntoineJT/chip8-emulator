@@ -17,19 +17,11 @@ void PrintUsage(std::string const& filename)
     std::cout << "Usage: " << filename << " [inputfile]" << std::endl;
 }
 
-struct LoadedFile_t
-{
-    std::ifstream file;
-    std::string name;
-    std::size_t size;
-};
-
-LoadedFile_t LoadFile(const std::string filename)
+std::vector<char> LoadFile(const std::string filename)
 {
     std::ifstream file(filename, std::ios::binary | std::ios::ate);
 
-    if (!file.is_open()) 
-    {
+    if (!file.is_open()) {
         throw std::runtime_error("Failed to open '" + filename + "'.");
     }
 
@@ -37,20 +29,13 @@ LoadedFile_t LoadFile(const std::string filename)
     file.seekg(0, std::ios::beg);
     const auto size = std::size_t(end - file.tellg());
 
-    if (size == 0) 
-    {
+    if (size == 0) {
         throw std::runtime_error("The file '" + filename + "' was empty.");
     }
-    return { std::move(file), filename, size };
-}
 
-std::vector<char> LoadFileContent(LoadedFile_t loadedFile)
-{
-    auto& file = loadedFile.file;
-
-    std::vector<char> content(loadedFile.size);
+    std::vector<char> content(size);
     if (!file.read(content.data(), content.size())) {
-        throw std::runtime_error(loadedFile.name + ": " + std::strerror(errno));
+        throw std::runtime_error(filename + ": " + std::strerror(errno));
     }
     file.close();
 
@@ -79,8 +64,7 @@ int main(int argc, char* argv[])
     // should not be ALREADY_RUNNING, at least for now
     assert(sdl.Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
 
-    auto loadedFile = LoadFile(filename);
-    const auto content = LoadFileContent(std::move(loadedFile));
+    const auto content = LoadFile(std::move(filename));
 
     Chip8::Screen screen(sdl, 16);
     Chip8::Memory memory;

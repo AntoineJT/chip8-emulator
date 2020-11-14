@@ -19,9 +19,9 @@ namespace Chip8
         using Point = std::pair<uint8_t, uint8_t>;
 
         explicit Screen(SDL2::SDL& sdl, std::uint8_t ratio);
-        bool Render(PixelGrid grid) const;
-        bool DrawPoints(SDL_Color color, std::vector<SDL_Rect> rects) const;
-        bool DrawSprite(std::vector<Point> pixelsOn);
+        void Render(PixelGrid grid) const;
+        void DrawPoints(SDL_Color color, std::vector<SDL_Rect> rects) const;
+        void DrawSprite(std::vector<Point> pixelsOn);
         void Refresh(bool fullRefresh);
         void ChangeBgColor(SDL_Color color, bool fullRefresh);
         bool Collides(uint8_t x, uint8_t y) const;

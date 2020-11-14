@@ -17,7 +17,7 @@ std::vector<Chip8::Screen::Point> PointsToDraw(std::vector<uint8_t> sprite, cons
         const uint8_t line = sprite[y];
         for (size_t x = 0; x < width; ++x)
         {
-            const bool isOn = ((0x80 >> x) == 1);
+            const bool isOn = ((line >> x) == 1);
             if (isOn)
             {
                 toDraw.push_back({ x + point.first, y + point.second });
@@ -258,7 +258,7 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
                 wrappedPoints.push_back({ x, y });
             }
             m_memory.VX[0xF] = collides ? 1 : 0;
-            assert(m_screen.DrawSprite(std::move(wrappedPoints)));
+            m_screen.DrawSprite(std::move(wrappedPoints));
             m_screen.Refresh(true);
             break;
         }

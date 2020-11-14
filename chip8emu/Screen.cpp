@@ -56,7 +56,7 @@ Chip8::Screen::Screen(SDL2::SDL& sdl, std::uint8_t ratio)
 }
 
 // this will be used for internal splashscreen for example
-bool Chip8::Screen::Render(PixelGrid grid) const
+void Chip8::Screen::Render(PixelGrid grid) const
 {
     std::vector<SDL_Rect> pixelsOff = {};
     std::vector<SDL_Rect> pixelsOn = {};
@@ -77,17 +77,17 @@ bool Chip8::Screen::Render(PixelGrid grid) const
         }
     }
 
-    return DrawPoints(SDL2::Colors::BLACK, pixelsOff)
-        && DrawPoints(SDL2::Colors::WHITE, pixelsOn);
+    DrawPoints(SDL2::Colors::BLACK, pixelsOff);
+    DrawPoints(SDL2::Colors::WHITE, pixelsOn);
 }
 
-bool Chip8::Screen::DrawPoints(SDL_Color color, std::vector<SDL_Rect> rects) const
+void Chip8::Screen::DrawPoints(SDL_Color color, std::vector<SDL_Rect> rects) const
 {
     sdl_assert(m_renderer.SetRenderDrawColor(color));
-    return m_renderer.RenderFillRects(std::move(rects));
+    sdl_assert(m_renderer.RenderFillRects(std::move(rects)));
 }
 
-bool Chip8::Screen::DrawSprite(std::vector<Point> pixelsOn)
+void Chip8::Screen::DrawSprite(std::vector<Point> pixelsOn)
 {
     std::vector<SDL_Rect> rects = {};
     rects.reserve(pixelsOn.size());

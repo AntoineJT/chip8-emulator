@@ -17,7 +17,7 @@ void PrintUsage(std::string const& filename)
     std::cout << "Usage: " << filename << " [inputfile]" << std::endl;
 }
 
-std::vector<char> LoadFile(const std::string filename)
+std::vector<char> LoadFile(const std::string& filename)
 {
     std::ifstream file(filename, std::ios::binary | std::ios::ate);
 
@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
     // should not be ALREADY_RUNNING, at least for now
     assert(sdl.Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
 
-    const auto content = LoadFile(std::move(filename));
+    const auto content = LoadFile(filename);
 
     Chip8::Screen screen(sdl, 16);
     Chip8::Memory memory;

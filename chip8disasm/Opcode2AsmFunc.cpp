@@ -3,7 +3,7 @@
 #include "Hex.hpp"
 
 // here I think it is a good
-// using namespace usage
+// using namespace use case
 using namespace Chip8::Instructions;
 
 std::string Chip8::Disasm::Opcode2Asm(std::uint16_t opcode)

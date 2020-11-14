@@ -88,6 +88,7 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
             }
 
             PRINT_OPCODE_STATUS("Unknown")
+            break;
         }
 
     case JP:

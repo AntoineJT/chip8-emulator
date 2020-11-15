@@ -16,7 +16,7 @@ std::string Chip8::Disasm::Opcode2Asm(std::uint16_t opcode)
 
     const std::string opcodeHex = Hex::OpcodeHexValue(opcode);
     const std::string nnnHex = Hex::AddrHexValue(nnn);
-    const std::string kkHex = Hex::ByteHexValue(kk);
+    const std::string kkHex = Hex::ByteHexValue(kk); // TODO this seems to be broken, fix it
     const std::string xHex = std::string(1, Hex::Uint4HexValue(x));
     const std::string yHex = std::string(1, Hex::Uint4HexValue(y));
     const std::string lsbHex = std::string(1, Hex::Uint4HexValue(lsb));

@@ -1,11 +1,11 @@
-#include "includes/sdl_renderer.hpp"
+#include "include/sdl_renderer.hpp"
 
 #include <cassert>
 #include <memory>
 #include <SDL.h>
 #include <vector>
 
-#include "includes/sdl_window.hpp"
+#include "include/sdl_window.hpp"
 
 constexpr int SUCCESS = 0;
 

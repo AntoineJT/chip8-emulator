@@ -43,7 +43,7 @@ std::string Chip8::Hex::AddrHexValue(std::uint16_t nnn)
     const std::uint8_t upper = (nnn & 0xF00) >> 8;
     const std::uint8_t lower = nnn & 0x0FF;
 
-    return std::to_string(Uint4HexValue(upper)).append(ByteHexValue(lower));
+    return std::string(1, Uint4HexValue(upper)).append(ByteHexValue(lower));
 }
 
 std::string Chip8::Hex::OpcodeHexValue(std::uint16_t opcode)

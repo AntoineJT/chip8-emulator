@@ -2,7 +2,6 @@
 #include <cstdlib>
 #include <fstream>
 
-
 #include "../chip8utils/includes/LoadFileFunc.hpp"
 #include "Opcode2AsmFunc.hpp"
 

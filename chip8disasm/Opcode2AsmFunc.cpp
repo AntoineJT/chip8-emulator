@@ -14,14 +14,13 @@ std::string Chip8::Disasm::Opcode2Asm(std::uint16_t opcode)
     const std::uint8_t lsb = opcode & 0x000F; // least significant bit
     const std::uint16_t nnn = opcode & 0x0FFF;
 
-    const std::string opcodeHex = Hex::OpcodeHexValue(opcode);
     const std::string nnnHex = Hex::AddrHexValue(nnn);
     const std::string kkHex = Hex::ByteHexValue(kk); // TODO this seems to be broken, fix it
     const std::string xHex = std::string(1, Hex::Uint4HexValue(x));
     const std::string yHex = std::string(1, Hex::Uint4HexValue(y));
     const std::string lsbHex = std::string(1, Hex::Uint4HexValue(lsb));
 
-    const std::string UNKNOWN = "; Unknown Opcode: " + opcodeHex;
+    const std::string UNKNOWN = "; Unknown Opcode: " + Hex::OpcodeHexValue(opcode);
 
     switch (opcode & 0xF000)
     {
@@ -33,12 +32,11 @@ std::string Chip8::Disasm::Opcode2Asm(std::uint16_t opcode)
             return "CLS";
         case RET:
             return "RET";
-        case SYS:
-            return "SYS 0x" + opcodeHex;
+
+        // SYS is 0NNN
         default:
-            break;
+            return "SYS 0x" + nnnHex;
         }
-        return UNKNOWN;
     }
     case JP:
         return "JP 0x" + nnnHex;

@@ -5,6 +5,7 @@
 #include <fstream>
 #include <SDL.h>
 
+#include "LoadFileFunc.hpp"
 #include "Machine.hpp"
 #include "Screen.hpp"
 #include "sdl.hpp"
@@ -15,31 +16,6 @@
 void PrintUsage(std::string const& filename)
 {
     std::cout << "Usage: " << filename << " [inputfile]" << std::endl;
-}
-
-std::vector<char> LoadFile(const std::string& filename)
-{
-    std::ifstream file(filename, std::ios::binary | std::ios::ate);
-
-    if (!file.is_open()) {
-        throw std::runtime_error("Failed to open '" + filename + "'.");
-    }
-
-    const auto end = file.tellg();
-    file.seekg(0, std::ios::beg);
-    const auto size = std::size_t(end - file.tellg());
-
-    if (size == 0) {
-        throw std::runtime_error("The file '" + filename + "' was empty.");
-    }
-
-    std::vector<char> content(size);
-    if (!file.read(content.data(), content.size())) {
-        throw std::runtime_error(filename + ": " + std::strerror(errno));
-    }
-    file.close();
-
-    return content;
 }
 
 int main(int argc, char* argv[])
@@ -64,7 +40,7 @@ int main(int argc, char* argv[])
     // should not be ALREADY_RUNNING, at least for now
     assert(sdl.Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
 
-    const auto content = LoadFile(filename);
+    const auto content = Chip8::Utils::LoadFile(filename);
 
     Chip8::Screen screen(sdl, 16);
     Chip8::Memory memory;

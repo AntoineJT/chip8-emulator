@@ -15,7 +15,7 @@ std::string Chip8::Disasm::Opcode2Asm(std::uint16_t opcode)
     const std::uint16_t nnn = opcode & 0x0FFF;
 
     const std::string opcodeHex = Hex::OpcodeHexValue(opcode);
-    const std::string nnnHex = Hex::AddrHexValue(nnn);
+    const std::string nnnHex = Hex::AddrHexValue(nnn); // this seems broken
     const std::string kkHex = Hex::ByteHexValue(kk);
     const std::string xHex = std::to_string(Hex::Uint4HexValue(x));
     const std::string yHex = std::to_string(Hex::Uint4HexValue(y));
@@ -51,7 +51,7 @@ std::string Chip8::Disasm::Opcode2Asm(std::uint16_t opcode)
     case SE_XY:
         return "SE 0x" + xHex + ", 0x" + yHex + " ; XY";
     case LD_XKK:
-        return "LD 0x" + xHex + ", 0x", yHex + " ; XKK";
+        return "LD 0x" + xHex + ", 0x" + yHex + " ; XKK";
     case ADD_XKK:
         return "ADD 0x" + xHex + ", 0x" + yHex + " ; XKK";
     case 0x8000:

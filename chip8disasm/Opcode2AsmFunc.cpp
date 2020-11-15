@@ -1,4 +1,8 @@
 #include "Opcode2AsmFunc.hpp"
+
+#include <cassert>
+#include <stdexcept>
+
 #include "Hex.hpp"
 #include "Instructions.hpp"
 
@@ -6,22 +10,60 @@
 // using namespace use case
 using namespace Chip8::Utils::Instructions;
 
+enum request
+{
+    X,
+    XY,
+    XKK,
+    NNN
+};
+
+std::string GetOperands(uint16_t opcode, const request req)
+{
+    assert(req == X || req == XY || req == XKK || req == NNN);
+
+    const std::uint8_t x = (opcode & 0x0F00) >> 8;
+    const std::string xHex(1, Chip8::Hex::Uint4HexValue(x));
+
+    switch(req)
+    {
+    case X:
+        return "0x" + xHex;
+    case XY:
+        {
+            const std::uint8_t y = (opcode & 0x00F0) >> 4;
+            const std::string yHex(1, Chip8::Hex::Uint4HexValue(y));
+            return "0x" + xHex + ", 0x" + yHex;
+        }
+    case XKK:
+        {
+            const std::uint8_t kk = opcode & 0x00FF;
+            return "0x" + xHex + ", 0x" + Chip8::Hex::ByteHexValue(kk);
+        }
+    case NNN:
+        {
+            const std::uint16_t nnn = opcode & 0x0FFF;
+            return "0x" + Chip8::Hex::AddrHexValue(nnn);
+        }
+    default:
+        break;
+    }
+}
+
+std::string DrawOperands(uint16_t opcode)
+{
+    const std::uint8_t lsb = opcode & 0x000F; // least significant bit
+//    const std::string lsbHex(1, Chip8::Hex::Uint4HexValue(lsb));
+    return GetOperands(opcode, XY) + ", 0x" + Chip8::Hex::Uint4HexValue(lsb);
+}
+
+std::string UnknownOpcode(uint16_t opcode)
+{
+    return "; Unknown Opcode: " + Chip8::Hex::OpcodeHexValue(opcode);
+}
+
 std::string Chip8::Disasm::Opcode2Asm(std::uint16_t opcode)
 {
-    const std::uint8_t x = (opcode & 0x0F00) >> 8;
-    const std::uint8_t y = (opcode & 0x00F0) >> 4;
-    const std::uint8_t kk = opcode & 0x00FF;
-    const std::uint8_t lsb = opcode & 0x000F; // least significant bit
-    const std::uint16_t nnn = opcode & 0x0FFF;
-
-    const std::string nnnHex = Hex::AddrHexValue(nnn);
-    const std::string kkHex = Hex::ByteHexValue(kk); // TODO this seems to be broken, fix it
-    const std::string xHex = std::string(1, Hex::Uint4HexValue(x));
-    const std::string yHex = std::string(1, Hex::Uint4HexValue(y));
-    const std::string lsbHex = std::string(1, Hex::Uint4HexValue(lsb));
-
-    const std::string UNKNOWN = "; Unknown Opcode: " + Hex::OpcodeHexValue(opcode);
-
     switch (opcode & 0xF000)
     {
     case 0x0000:
@@ -35,97 +77,99 @@ std::string Chip8::Disasm::Opcode2Asm(std::uint16_t opcode)
 
         // SYS is 0NNN
         default:
-            return "SYS 0x" + nnnHex;
+            return "SYS " + GetOperands(opcode, NNN);
         }
     }
     case JP:
-        return "JP 0x" + nnnHex;
+        return "JP " + GetOperands(opcode, NNN);
     case CALL:
-        return "CALL 0x" + nnnHex;
+        return "CALL " + GetOperands(opcode, NNN);
     case SE_XKK:
-        return "SE 0x" + xHex + ", 0x" + kkHex + " ; XKK";
+        return "SE " + GetOperands(opcode, XKK) + " ; XKK";
     case SNE_XKK:
-        return "SNE 0x" + xHex + ", 0x" + kkHex + " ; XKK";
+        return "SNE " + GetOperands(opcode, XKK) + " ; XKK";
     case SE_XY:
-        return "SE 0x" + xHex + ", 0x" + yHex + " ; XY";
+        return "SE " + GetOperands(opcode, XY) + " ; XY";
     case LD_XKK:
-        return "LD 0x" + xHex + ", 0x" + kkHex + " ; XKK";
+        return "LD " + GetOperands(opcode, XKK) + " ; XKK";
     case ADD_XKK:
-        return "ADD 0x" + xHex + ", 0x" + kkHex + " ; XKK";
+        return "ADD " + GetOperands(opcode, XKK) + " ; XKK";
     case 0x8000:
     {
+        const std::uint8_t lsb = opcode & 0x000F; // least significant bit
         switch (lsb)
         {
         case LD_XY:
-            return "LD 0x" + xHex + ", 0x" + yHex + " ; XY";
+            return "LD " + GetOperands(opcode, XY) + " ; XY";
         case OR:
-            return "OR 0x" + xHex + ", 0x" + yHex;
+            return "OR " + GetOperands(opcode, XY);
         case AND_XY:
-            return "AND 0x" + xHex + ", 0x" + yHex + " ; XY";
+            return "AND " + GetOperands(opcode, XY) + " ; XY";
         case XOR:
-            return "XOR 0x" + xHex + ", 0x" + yHex;
+            return "XOR " + GetOperands(opcode, XY);
         case ADD_XY:
-            return "ADD 0x" + xHex + ", 0x" + yHex + " ; XY";
+            return "ADD " + GetOperands(opcode, XY) + " ; XY";
         case SUB:
-            return "SUB 0x" + xHex + ", 0x" + yHex;
+            return "SUB " + GetOperands(opcode, XY);
         case SHR:
-            return "SHR 0x" + xHex + ", 0x" + yHex;
+            return "SHR " + GetOperands(opcode, XY);
         case SUBN:
-            return "SUBN 0x" + xHex + ", 0x" + yHex;
+            return "SUBN " + GetOperands(opcode, XY);
         case SHL:
-            return "SHL 0x" + xHex + ", 0x" + yHex;
+            return "SHL " + GetOperands(opcode, XY);
         default:
             break;
         }
-        return UNKNOWN;
+        return UnknownOpcode(opcode);
     }
     case SNE_XY:
-        return "SNE 0x" + xHex + ", 0x" + yHex + " ; XY";
+        return "SNE " + GetOperands(opcode, XY) + " ; XY";
     case LD_I:
-        return "LD I, 0x" + nnnHex;
+        return "LD I, " + GetOperands(opcode, NNN);
     case JP_V0:
-        return "JP V0, 0x" + nnnHex;
+        return "JP V0, " + GetOperands(opcode, NNN);
     case RND:
-        return "RND 0x" + xHex + ", 0x" + kkHex;
+        return "RND " + GetOperands(opcode, XKK);
     case DRW:
-        return "DRW 0x" + xHex + ", 0x" + yHex + ", 0x" + lsbHex;
+        return "DRW " + DrawOperands(opcode);
     case 0xE000:
     {
+        const std::uint8_t kk = opcode & 0x00FF;
         if (kk == SKP)
-            return "SKP 0x" + xHex;
+            return "SKP " + GetOperands(opcode, X);
         if (kk == SKNP)
-            return "SKNP 0x" + xHex;
-        return UNKNOWN;
+            return "SKNP " + GetOperands(opcode, X);
+        return UnknownOpcode(opcode);
     }
     case 0xF000:
     {
         switch (opcode & 0x00FF)
         {
         case LD_XD:
-            return "LD 0x" + xHex + ", DT";
+            return "LD " + GetOperands(opcode, X) + ", DT";
         case LD_XK:
-            return "LD 0x" + xHex + ", K";
+            return "LD " + GetOperands(opcode, X) + ", K";
         case LD_DX:
-            return "LD DT, 0x" + xHex;
+            return "LD DT, " + GetOperands(opcode, X);
         case LD_SX:
-            return "LD ST, 0x" + xHex;
+            return "LD ST, " + GetOperands(opcode, X);
         case ADD_IX:
-            return "ADD I, 0x" + xHex;
+            return "ADD I, " + GetOperands(opcode, X);
         case LD_FX:
-            return "LD F, 0x" + xHex;
+            return "LD F, " + GetOperands(opcode, X);
         case LD_BX:
-            return "LD B, 0x" + xHex;
+            return "LD B, " + GetOperands(opcode, X);
         case LD_IX:
-            return "LD [I], 0x" + xHex;
+            return "LD [I], " + GetOperands(opcode, X);
         case LD_XI:
-            return "LD 0x" + xHex + ", [I]";
+            return "LD " + GetOperands(opcode, X) + ", [I]";
         default:
             break;
         }
-        return UNKNOWN;
+        return UnknownOpcode(opcode);
     }
 
     default:
-        return UNKNOWN;
+        return UnknownOpcode(opcode);
     }
 }

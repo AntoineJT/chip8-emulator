@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 
-namespace Chip8::Instructions
+namespace Chip8::Utils::Instructions
 {
     // these opcodes are used to make the switch statements
     // more readables

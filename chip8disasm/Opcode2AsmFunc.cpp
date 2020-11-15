@@ -4,7 +4,7 @@
 
 // here I think it is a good
 // using namespace use case
-using namespace Chip8::Instructions;
+using namespace Chip8::Utils::Instructions;
 
 std::string Chip8::Disasm::Opcode2Asm(std::uint16_t opcode)
 {

@@ -5,6 +5,11 @@
 #include <iostream>
 #include <random>
 
+#include "Instructions.hpp"
+
+// I think it suits to the use case
+using namespace Chip8::Utils::Instructions;
+
 std::vector<Chip8::Screen::Point> PointsToDraw(std::vector<uint8_t> sprite, const Chip8::Screen::Point point, uint8_t width)
 {
     assert(width <= 8);
@@ -127,28 +132,23 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
         {
             switch(lsb)
             {
-            // LD_XY
-            case 0x0:
+            case LD_XY:
                 m_memory.VX[x] = m_memory.VX[y];
                 break;
 
-            // OR
-            case 0x1:
+            case OR:
                 m_memory.VX[x] |= m_memory.VX[y];
                 break;
 
-            // AND_XY
-            case 0x2:
+            case AND_XY:
                 m_memory.VX[x] &= m_memory.VX[y];
                 break;
 
-            // XOR
-            case 0x3:
+            case XOR:
                 m_memory.VX[x] ^= m_memory.VX[y];
                 break;
 
-            // ADD_XY
-            case 0x4:
+            case ADD_XY:
                 {
                     const std::uint16_t sum = m_memory.VX[x] + m_memory.VX[y];
                     if (sum > 0xFF)
@@ -164,8 +164,7 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
                     break;
                 }
 
-            // SUB
-            case 0x5:
+            case SUB:
                 {
                     const std::int16_t sub = m_memory.VX[x] - m_memory.VX[y];
                     m_memory.VX[0xF] = (sub > 0) ? 1 : 0;
@@ -173,14 +172,12 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
                     break;
                 }
 
-            // SHR
-            case 0x6:
+            case SHR:
                 m_memory.VX[0xF] = m_memory.VX[x] & 0x000F;
                 m_memory.VX[x] <<= 1;
                 break;
 
-            // SUBN
-            case 0x7:
+            case SUBN:
                 {
                     const std::int16_t sub = m_memory.VX[y] - m_memory.VX[x];
                     m_memory.VX[0xF] = (sub > 0) ? 1 : 0;
@@ -188,8 +185,7 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
                     break;
                 }
 
-            // SHL
-            case 0xE:
+            case SHL:
                 m_memory.VX[0xF] = m_memory.VX[x] & 0x000F;
                 m_memory.VX[x] >>= 1;
                 break;
@@ -216,6 +212,7 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
         m_memory.pc = nnn + m_memory.VX[0];
         incBy = 0;
         break;
+
     case RND:
         {
             // TODO Move it elsewhere, use only one rd
@@ -228,6 +225,7 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
             break;
         }
 
+    // TODO Fix this
     case DRW:
         {
             std::vector<uint8_t> sprite = {};
@@ -256,16 +254,14 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
 
     case 0xE000:
         {
-            // SKP
-            if (kk == 0x9E)
+            if (kk == SKP)
             {
                 // TODO Implement it, needs to check keyboard status (SDL)
                 PRINT_OPCODE_STATUS("Unhandled")
                 break;
             }
 
-            // SKNP
-            if (kk == 0xA1)
+            if (kk == SKNP)
             {
                 // TODO Implement it, the opposite of SKP
                 PRINT_OPCODE_STATUS("Unhandled")
@@ -280,55 +276,46 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
         {
             switch(opcode & 0x00FF)
             {
-            // LD_XD
-            case 0x7:
+            case LD_XD:
                 m_memory.VX[x] = m_memory.DT;
                 break;
 
-            // LD_XK
-            case 0xA:
+            case LD_XK:
                 // TODO Wait for a key press by pausing the program then
                 // store the value of the key into Vx
                 PRINT_OPCODE_STATUS("Unhandled")
                 break;
 
-            // LD_DX
-            case 0x15:
+            case LD_DX:
                 m_memory.DT = m_memory.VX[x];
                 break;
 
-            // LD_SX
-            case 0x18:
+            case LD_SX:
                 m_memory.ST = m_memory.VX[x];
                 break;
 
-            // ADD_IX
-            case 0x1E:
+            case ADD_IX:
                 m_memory.I += m_memory.VX[x];
                 break;
                 
-            // LD_FX
-            case 0x29:
+            case LD_FX:
                 // TODO This is the instructions to point to the fontset
                 PRINT_OPCODE_STATUS("Unhandled")
                 break;
 
-            // LD_BX
-            case 0x33:
+            case LD_BX:
                 // TODO
                 PRINT_OPCODE_STATUS("Unhandled")
                 break;
 
-            // LD_IX
-            case 0x55:
+            case LD_IX:
                 for (std::size_t i = 0; i <= x; ++i)
                 {
                     m_memory.memory[m_memory.I + i] = m_memory.VX[i];
                 }
                 break;
 
-            // LD_XI
-            case 0x65:
+            case LD_XI:
                 for (std::size_t i = 0; i <= x; ++i)
                 {
                     m_memory.VX[i] = m_memory.memory[m_memory.I + i];

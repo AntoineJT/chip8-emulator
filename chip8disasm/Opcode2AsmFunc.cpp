@@ -1,6 +1,6 @@
 #include "Opcode2AsmFunc.hpp"
-#include "Instructions.hpp"
 #include "Hex.hpp"
+#include "Instructions.hpp"
 
 // here I think it is a good
 // using namespace use case

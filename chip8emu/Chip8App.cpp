@@ -1,8 +1,8 @@
 #include <cassert>
-#include <cstring>
-#include <iostream>
 #include <cstdlib>
+#include <cstring>
 #include <fstream>
+#include <iostream>
 #include <SDL.h>
 
 #include "LoadFileFunc.hpp"

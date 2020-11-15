@@ -1,7 +1,7 @@
 #include "Screen.hpp"
 
-#include <array>
 #include <algorithm>
+#include <array>
 #include <cassert>
 #include <cstdint>
 

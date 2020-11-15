@@ -1,8 +1,8 @@
-#include <iostream>
 #include <cstdlib>
 #include <fstream>
+#include <iostream>
 
-#include "../chip8utils/includes/LoadFileFunc.hpp"
+#include "LoadFileFunc.hpp"
 #include "Opcode2AsmFunc.hpp"
 
 void PrintUsage(std::string const& filename)
@@ -16,7 +16,7 @@ uint16_t ParseOpcodeValue(uint8_t upper, uint8_t lower)
 }
 
 // Write file, removes all its previous content
-void WriteTextFile(const std::string& filename, std::string textContent)
+void WriteTextFile(const std::string& filename, const std::string& textContent)
 {
     std::fstream file;
     file.open(filename, std::ios::out | std::ios::trunc);

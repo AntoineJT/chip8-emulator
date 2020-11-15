@@ -1,5 +1,5 @@
-#include <SDL.h>
 #include "includes/sdl_window.hpp"
+#include <SDL.h>
 
 #include <cassert>
 

@@ -51,9 +51,9 @@ std::string Chip8::Disasm::Opcode2Asm(std::uint16_t opcode)
     case SE_XY:
         return "SE 0x" + xHex + ", 0x" + yHex + " ; XY";
     case LD_XKK:
-        return "LD 0x" + xHex + ", 0x" + yHex + " ; XKK";
+        return "LD 0x" + xHex + ", 0x" + kkHex + " ; XKK";
     case ADD_XKK:
-        return "ADD 0x" + xHex + ", 0x" + yHex + " ; XKK";
+        return "ADD 0x" + xHex + ", 0x" + kkHex + " ; XKK";
     case 0x8000:
     {
         switch (lsb)

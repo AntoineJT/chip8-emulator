@@ -30,9 +30,6 @@ void WriteTextFile(const std::string& filename, std::string textContent)
 
 int main(int argc, char* argv[])
 {
-    std::cout << "THIS IS BROKEN FOR NOW" << std::endl
-        << "At least the lowest 8 bits of opcode (kk) are wrong" << std::endl;
-
     std::string filename;
 
     if (argc == 1) {

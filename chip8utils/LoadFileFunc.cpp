@@ -1,5 +1,6 @@
 #include "include/LoadFileFunc.hpp"
 
+#include <cstring>
 #include <fstream>
 #include <stdexcept>
 

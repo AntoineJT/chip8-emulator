@@ -218,8 +218,11 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
             // TODO Move it elsewhere, use only one rd
             // and dist instead of creating once each time
             // i.e in a class called Random
-            std::random_device rd;
-            const std::uniform_int_distribution<int> dist(0, 255);
+            
+			// NOTE if those are const, then it doesn't compile
+			// with gcc on linux
+			std::random_device rd;
+			std::uniform_int_distribution<int> dist(0, 255);
 
             m_memory.VX[x] = dist(rd) & kk;
             break;

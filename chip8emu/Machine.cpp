@@ -13,14 +13,14 @@ using namespace Chip8::Utils::Instructions;
 std::vector<Chip8::Screen::Point> PointsToDraw(std::vector<uint8_t> sprite, const Chip8::Screen::Point point, uint8_t width)
 {
     assert(width <= 8);
-    const size_t size = sprite.size();
+    const std::size_t size = sprite.size();
 
-    std::vector<Chip8::Screen::Point> toDraw = {};
+    std::vector<Chip8::Screen::Point> toDraw(size);
 
-    for (size_t y = 0; y < size; ++y)
+    for (std::size_t y = 0; y < size; ++y)
     {
-        const uint8_t line = sprite[y];
-        for (size_t x = 0; x < width; ++x)
+        const std::uint8_t line = sprite[y];
+        for (std::size_t x = 0; x < width; ++x)
         {
             const bool isOn = ((line >> x) == 1);
             if (isOn)
@@ -154,12 +154,12 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
                     if (sum > 0xFF)
                     {
                         m_memory.VX[0xF] = 1;
-                        m_memory.VX[x] = sum - 0xFF; // not sure about that
+                        m_memory.VX[x] = static_cast<uint8_t>((sum - 0xFF) % 256); // not sure about that
                     }
                     else
                     {
                         m_memory.VX[0xF] = 0;
-                        m_memory.VX[x] = sum;
+                        m_memory.VX[x] = static_cast<uint8_t>(sum);
                     }
                     break;
                 }
@@ -168,7 +168,7 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
                 {
                     const std::int16_t sub = m_memory.VX[x] - m_memory.VX[y];
                     m_memory.VX[0xF] = (sub > 0) ? 1 : 0;
-                    m_memory.VX[x] = sub; // TODO wtf? need to check how to handle this properly
+                    m_memory.VX[x] = static_cast<uint8_t>(sub % 256); // TODO wtf? need to check how to handle this properly
                     break;
                 }
 
@@ -181,7 +181,7 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
                 {
                     const std::int16_t sub = m_memory.VX[y] - m_memory.VX[x];
                     m_memory.VX[0xF] = (sub > 0) ? 1 : 0;
-                    m_memory.VX[x] = sub; // TODO wtf? need to check how to handle this properly
+                    m_memory.VX[x] = static_cast<uint8_t>(sub % 256); // TODO wtf? need to check how to handle this properly
                     break;
                 }
 
@@ -231,8 +231,7 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
     // TODO Fix this
     case DRW:
         {
-            std::vector<uint8_t> sprite = {};
-            sprite.reserve(lsb);
+            std::vector<uint8_t> sprite(lsb);
             for (std::size_t i = 0; i <= lsb; ++i)
             {
                 sprite.push_back(m_memory.memory[i + m_memory.I]);
@@ -241,17 +240,17 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
             const std::vector<Screen::Point> toDraw = PointsToDraw(sprite, point, 8);
 
             bool collides = false;
-            std::vector<Screen::Point> wrappedPoints = {};
+            std::vector<Screen::Point> wrappedPoints(toDraw.size());
             for (const auto pt : toDraw)
             {
-                const uint8_t x = pt.first % base_width;
-                const uint8_t y = pt.second % base_height;
-                collides |= m_screen.Collides(x, y);
-                wrappedPoints.push_back({ x, y });
+                const uint8_t x2 = pt.first % base_width;
+                const uint8_t y2 = pt.second % base_height;
+                collides |= m_screen.Collides(x2, y2);
+                wrappedPoints.push_back({ x2, y2 });
             }
             m_memory.VX[0xF] = collides ? 1 : 0;
             m_screen.DrawSprite(std::move(wrappedPoints));
-            m_screen.Refresh(true);
+            m_screen.Refresh(false);
             break;
         }
 

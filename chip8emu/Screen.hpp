@@ -18,7 +18,7 @@ namespace Chip8
         using PixelGrid = std::array<std::array<bool, base_width>, base_height>;
         using Point = std::pair<uint8_t, uint8_t>;
 
-        explicit Screen(SDL2::SDL& sdl, std::uint8_t ratio);
+        explicit Screen(const SDL2::SDL& sdl, std::uint8_t ratio);
         void Render(PixelGrid grid) const;
         void DrawPoints(SDL_Color color, std::vector<SDL_Rect> rects) const;
         void DrawSprite(std::vector<Point> pixelsOn);

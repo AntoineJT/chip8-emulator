@@ -43,7 +43,7 @@ Chip8::Screen::PixelGrid Chip8::Screen::InitGrid()
     return grid;
 }
 
-Chip8::Screen::Screen(SDL2::SDL& sdl, std::uint8_t ratio)
+Chip8::Screen::Screen(const SDL2::SDL& sdl, std::uint8_t ratio)
     : m_ratio(ratio)
     , m_grid(InitGrid())
     , m_window(CreateWindow(sdl, ratio))
@@ -89,8 +89,7 @@ void Chip8::Screen::DrawPoints(SDL_Color color, std::vector<SDL_Rect> rects) con
 
 void Chip8::Screen::DrawSprite(std::vector<Point> pixelsOn)
 {
-    std::vector<SDL_Rect> rects = {};
-    rects.reserve(pixelsOn.size());
+    std::vector<SDL_Rect> rects(pixelsOn.size());
     for (const auto& pt : pixelsOn)
     {
         m_grid[pt.second][pt.first] ^= true;

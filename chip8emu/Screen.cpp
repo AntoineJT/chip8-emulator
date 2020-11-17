@@ -11,7 +11,7 @@
 #include "sdl_renderer.hpp"
 #include "sdl_window.hpp"
 
-SDL2::Window CreateWindow(SDL2::SDL& sdl, std::uint8_t ratio)
+SDL2::Window CreateWindow(const SDL2::SDL& sdl, std::uint8_t ratio)
 {
     assert(sdl.Running());
 

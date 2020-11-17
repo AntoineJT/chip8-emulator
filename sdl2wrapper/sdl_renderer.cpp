@@ -23,7 +23,7 @@ SDL2::Renderer::Renderer(SDL_Renderer* renderer)
     assert(renderer != nullptr);
 }
 
-SDL2::Renderer::Renderer(Window& window, int index, Uint32 flags)
+SDL2::Renderer::Renderer(const Window& window, int index, Uint32 flags)
     : Renderer(window.Data(), index, flags)
 {}
 

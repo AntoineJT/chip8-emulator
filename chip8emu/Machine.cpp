@@ -168,7 +168,7 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
                 {
                     const std::int16_t sub = m_memory.VX[x] - m_memory.VX[y];
                     m_memory.VX[0xF] = (sub > 0) ? 1 : 0;
-                    m_memory.VX[x] = static_cast<uint8_t>(sub); // TODO wtf? need to check how to handle this properly
+                    m_memory.VX[x] = sub; // TODO wtf? need to check how to handle this properly
                     break;
                 }
 
@@ -181,7 +181,7 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
                 {
                     const std::int16_t sub = m_memory.VX[y] - m_memory.VX[x];
                     m_memory.VX[0xF] = (sub > 0) ? 1 : 0;
-                    m_memory.VX[x] = static_cast<uint8_t>(sub); // TODO wtf? need to check how to handle this properly
+                    m_memory.VX[x] = sub; // TODO wtf? need to check how to handle this properly
                     break;
                 }
 

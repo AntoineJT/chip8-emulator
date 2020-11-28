@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
     while(true) // 
     {
         machine.ExecuteNextInstruction();
-        SDL_Delay(500);
+        SDL_Delay(1000 / 60);
     }
 
     /*

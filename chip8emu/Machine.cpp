@@ -10,19 +10,23 @@
 // I think it suits to the use case
 using namespace Chip8::Utils::Instructions;
 
+// TODO Find the underlying problem: sometimes it returns empty vector
 std::vector<Chip8::Screen::Point> PointsToDraw(std::vector<uint8_t> sprite, const Chip8::Screen::Point point, uint8_t width)
 {
     assert(width <= 8);
     const std::size_t size = sprite.size();
 
-    std::vector<Chip8::Screen::Point> toDraw(size);
+    std::vector<Chip8::Screen::Point> toDraw; //(size);
 
     for (std::size_t y = 0; y < size; ++y)
     {
         const std::uint8_t line = sprite[y];
         for (std::size_t x = 0; x < width; ++x)
         {
-            const bool isOn = ((line >> x) == 1);
+            constexpr std::uint8_t MSB = 0x80;
+
+            // const bool isOn = ((line >> x) == 1);
+            const bool isOn = line & ((MSB >> x) != 0);
             if (isOn)
             {
                 toDraw.push_back({ x + point.first, y + point.second });
@@ -231,16 +235,16 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
     // TODO Fix this
     case DRW:
         {
-            std::vector<uint8_t> sprite(lsb);
+            std::vector<uint8_t> sprite; // (lsb);
             for (std::size_t i = 0; i <= lsb; ++i)
             {
                 sprite.push_back(m_memory.memory[i + m_memory.I]);
             }
-            const Screen::Point point = { m_memory.VX[x], m_memory.VX[y] };
+            const Screen::Point point(m_memory.VX[x], m_memory.VX[y]);
             const std::vector<Screen::Point> toDraw = PointsToDraw(sprite, point, 8);
 
             bool collides = false;
-            std::vector<Screen::Point> wrappedPoints(toDraw.size());
+            std::vector<Screen::Point> wrappedPoints; // (toDraw.size());
             for (const auto pt : toDraw)
             {
                 const uint8_t x2 = pt.first % base_width;

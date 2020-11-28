@@ -28,17 +28,13 @@ void Chip8::Screen::ResetGrid(PixelGrid& grid)
 {
     for (std::size_t y = 0; y < base_height; ++y)
     {
-        grid[y] = {};
-        for (std::size_t x = 0; x < base_width; ++x)
-        {
-            grid[y][x] = false;
-        }
+        grid[y].fill(false);
     }
 }
 
 Chip8::Screen::PixelGrid Chip8::Screen::InitGrid()
 {
-    PixelGrid grid = {};
+    PixelGrid grid;
     ResetGrid(grid);
     return grid;
 }
@@ -65,7 +61,7 @@ void Chip8::Screen::Render(PixelGrid grid) const
     {
         for (size_t x = 0; x < base_width; ++x)
         {
-            const bool isOn = grid.at(y).at(x);
+            const bool isOn = grid[y][x];
             const SDL_Rect rect = {
                 static_cast<int>(x) * m_ratio,
                 static_cast<int>(y) * m_ratio,

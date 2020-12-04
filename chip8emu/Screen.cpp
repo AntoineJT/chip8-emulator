@@ -6,7 +6,7 @@
 #include <cstdint>
 
 #include "sdl.hpp"
-#include "sdl_assert.hpp"
+#include "sdl_assert.h"
 #include "sdl_colors.hpp"
 #include "sdl_renderer.hpp"
 #include "sdl_window.hpp"
@@ -85,6 +85,8 @@ void Chip8::Screen::DrawPoints(SDL_Color color, std::vector<SDL_Rect> rects) con
 
 void Chip8::Screen::DrawSprite(std::vector<Point> pixelsOn)
 {
+    assert(!pixelsOn.empty());
+
     std::vector<SDL_Rect> rects; // (pixelsOn.size());
     for (const auto& pt : pixelsOn)
     {
@@ -97,7 +99,7 @@ void Chip8::Screen::DrawSprite(std::vector<Point> pixelsOn)
         };
         rects.push_back(rect);
     }
-    return DrawPoints(SDL2::Colors::WHITE, std::move(rects));
+    DrawPoints(SDL2::Colors::WHITE, std::move(rects));
 }
 
 void Chip8::Screen::Refresh(bool fullRefresh)

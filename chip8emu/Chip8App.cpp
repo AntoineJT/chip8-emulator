@@ -9,7 +9,7 @@
 #include "Machine.hpp"
 #include "Screen.hpp"
 #include "sdl.hpp"
-#include "sdl_assert.hpp"
+#include "sdl_assert.h"
 
 #undef main // removes SDL main entry redefinition
 

@@ -25,14 +25,16 @@ std::vector<Chip8::Screen::Point> PointsToDraw(std::vector<uint8_t> sprite, cons
         {
             constexpr std::uint8_t MSB = 0x80;
 
-            // const bool isOn = ((line >> x) == 1);
-            const bool isOn = line & ((MSB >> x) != 0);
+            const std::uint8_t offset = MSB >> x;
+            const bool isOn = (line & offset) != 0;
             if (isOn)
             {
                 toDraw.push_back({ x + point.first, y + point.second });
             }
         }
     }
+
+    assert(!toDraw.empty());
     return toDraw;
 }
 

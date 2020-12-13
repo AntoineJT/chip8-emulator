@@ -237,10 +237,10 @@ void Chip8::Machine::Execute(std::uint16_t opcode)
     // TODO Fix this
     case DRW:
         {
-            std::vector<uint8_t> sprite; // (lsb);
+            std::vector<uint8_t> sprite(lsb + 1);
             for (std::size_t i = 0; i <= lsb; ++i)
             {
-                sprite.push_back(m_memory.memory[i + m_memory.I]);
+                sprite[i] = m_memory.memory[i + m_memory.I];
             }
             const Screen::Point point(m_memory.VX[x], m_memory.VX[y]);
             const std::vector<Screen::Point> toDraw = PointsToDraw(sprite, point, 8);

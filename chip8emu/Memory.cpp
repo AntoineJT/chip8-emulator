@@ -57,7 +57,7 @@ void Chip8::Memory::LoadFontSet()
 void Chip8::Memory::LoadProgram(std::vector<char> data)
 {
     std::size_t index = pc;
-    for (char& c : data)
+    for (const char& c : data)
     {
         memory[index] = c;
         ++index;

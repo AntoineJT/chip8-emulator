@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    auto content = Chip8::Utils::LoadFile(filename);
+    const auto content = Chip8::Utils::LoadFile(filename);
 
     const std::size_t size = content.size();
     std::string output;

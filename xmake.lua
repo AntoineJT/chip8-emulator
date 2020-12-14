@@ -1,6 +1,8 @@
 add_rules("mode.debug", "mode.release")
 add_requires("libsdl 2.0.12") -- latest version at the time
 
+add_packages("libsdl")
+
 target("chip8emu")
     set_kind("binary")
     set_languages("cxx17")
@@ -10,7 +12,6 @@ target("chip8emu")
     add_deps("chip8emu_core")
     add_includedirs("chip8emu_core/include")
 
-    add_packages("libsdl")
     add_deps("sdl2wrapper")
     add_includedirs("sdl2wrapper/include")
     add_deps("chip8utils")
@@ -21,8 +22,6 @@ target("sdl2wrapper")
     set_languages("cxx17")
     add_files("sdl2wrapper/*.cpp")
     add_headerfiles("sdl2wrapper/include/*.hpp")
-
-    add_packages("libsdl")
 
 target("chip8disasm")
     set_kind("binary")
@@ -46,7 +45,6 @@ target("chip8emu_core")
     set_languages("cxx17")
     add_files("chip8emu_core/*.cpp")
     
-    add_packages("libsdl")
     add_deps("sdl2wrapper")
     add_includedirs("sdl2wrapper/include")
     add_deps("chip8utils")

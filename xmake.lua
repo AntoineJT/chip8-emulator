@@ -11,7 +11,6 @@ target("chip8emu")
 
     add_deps("chip8emu_core")
     add_includedirs("chip8emu_core/include")
-
     add_deps("sdl2wrapper")
     add_includedirs("sdl2wrapper/include")
     add_deps("chip8utils")
@@ -35,8 +34,6 @@ target("chip8disasm")
     add_includedirs("chip8utils/include")
 
 target("chip8utils")
--- Will be a shared lib when it'll be bigger
--- and I understand how to link it correctly
     set_kind("static")
     set_languages("cxx17")
     add_files("chip8utils/*.cpp")
@@ -58,6 +55,23 @@ target("chip8disasm_core")
     set_languages("cxx17")
     add_files("chip8disasm_core/*.cpp")
     add_headerfiles("chip8disasm_core/include/*.hpp")
+
+    add_deps("chip8utils")
+    add_includedirs("chip8utils/include")
+
+target("chip8dump")
+    set_kind("binary")
+    set_languages("cxx17")
+    add_files("chip8dump/*.cpp")
+    add_headerfiles("chip8dump/*.hpp")
+
+    add_deps("chip8emu_core")
+    add_includedirs("chip8emu_core/include")
+    add_deps("sdl2wrapper")
+    add_includedirs("sdl2wrapper/include")
+
+    add_deps("chip8disasm_core")
+    add_includedirs("chip8disasm_core/include")
 
     add_deps("chip8utils")
     add_includedirs("chip8utils/include")

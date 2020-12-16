@@ -46,7 +46,8 @@ std::string GetOperands(uint16_t opcode, const request req)
             return "0x" + Chip8::Hex::AddrHexValue(nnn);
         }
     default:
-        break;
+        // should never happen because of the assertion
+        throw std::runtime_error("GetOperands: bad request");
     }
 }
 

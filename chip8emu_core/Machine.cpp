@@ -6,6 +6,7 @@
 #include <random>
 
 #include "Instructions.hpp"
+#include "OpcodeValueFunc.hpp"
 
 // I think it suits to the use case
 using namespace Chip8::Utils::Instructions;
@@ -47,9 +48,8 @@ void Chip8::Machine::ExecuteNextInstruction()
 {
     const std::uint8_t upper = m_memory.memory[m_memory.pc];
     const std::uint8_t lower = m_memory.memory[static_cast<std::size_t>(m_memory.pc) + 1];
-    const std::uint16_t opcode = (upper << 8) | lower;
 
-    Execute(opcode);
+    Execute(Utils::OpcodeValue(upper, lower));
     // TODO S'occuper des timers
 }
 

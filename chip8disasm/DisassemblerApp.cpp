@@ -4,15 +4,11 @@
 
 #include "LoadFileFunc.hpp"
 #include "Opcode2AsmFunc.hpp"
+#include "OpcodeValueFunc.hpp"
 
 void PrintUsage(std::string const& filename)
 {
     std::cout << "Usage: " << filename << " [inputfile]" << std::endl;
-}
-
-uint16_t ParseOpcodeValue(uint8_t upper, uint8_t lower)
-{
-    return (upper << 8) | lower;
 }
 
 // Write file, removes all its previous content
@@ -52,7 +48,7 @@ int main(int argc, char* argv[])
     std::string output;
     for (std::size_t i = 0; i < size; i += 2)
     {
-        const uint16_t opcode = ParseOpcodeValue(content[i], content[i + 1]);
+        const uint16_t opcode = Chip8::Utils::OpcodeValue(content[i], content[i + 1]);
         output.append(Chip8::Disasm::Opcode2Asm(opcode));
         output.push_back('\n');
     }

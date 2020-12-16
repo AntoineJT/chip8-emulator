@@ -8,12 +8,12 @@ namespace Chip8
 {
     class Memory
     {
-        static constexpr std::size_t ram_size = 4096;
         static constexpr std::size_t fontset_location = 0x0000;
 
         void LoadFontSet();
 
     public:
+        static constexpr std::size_t ram_size = 4096;
         using MemoryData = std::array<uint8_t, ram_size>;
 
         Memory();

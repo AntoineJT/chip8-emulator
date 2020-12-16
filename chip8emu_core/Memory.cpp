@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include "OpcodeValueFunc.hpp"
+
 // TODO Support ETI 660
 // See here: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#2.1
 // Begins at 0x200, because generally
@@ -62,4 +64,10 @@ void Chip8::Memory::LoadProgram(std::vector<char> data)
         memory[index] = c;
         ++index;
     }
+}
+
+std::uint16_t Chip8::Memory::NextInstruction() const noexcept
+{
+    const auto index = static_cast<std::size_t>(pc);
+    return Utils::OpcodeValue(memory[index], memory[index + 1]);
 }

@@ -46,10 +46,7 @@ Chip8::Machine::Machine(Screen& screen, Memory& memory)
 
 void Chip8::Machine::ExecuteNextInstruction()
 {
-    const std::uint8_t upper = m_memory.memory[m_memory.pc];
-    const std::uint8_t lower = m_memory.memory[static_cast<std::size_t>(m_memory.pc) + 1];
-
-    Execute(Utils::OpcodeValue(upper, lower));
+    Execute(m_memory.NextInstruction());
     // TODO S'occuper des timers
 }
 

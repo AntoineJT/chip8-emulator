@@ -16,6 +16,9 @@ namespace SDL2
         Renderer(SDL_Renderer* renderer);
         Renderer(const Window& window, int index, Uint32 flags);
         ~Renderer();
+        Renderer(Renderer&&) = default;
+        Renderer& operator=(Renderer&&) = default;
+
         SDL_Renderer* Data() const;
         bool SetRenderDrawColor(SDL_Color color) const;
         bool RenderClear() const;

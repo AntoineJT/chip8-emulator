@@ -13,6 +13,9 @@ namespace SDL2
 
         SDL() = default;
         ~SDL();
+        SDL(SDL&&) = default;
+        SDL& operator=(SDL&&) = default;
+
         int Init(Uint32 flags);
         bool Running() const;
         void Quit();

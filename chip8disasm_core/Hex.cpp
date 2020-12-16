@@ -1,4 +1,4 @@
-#include "Hex.hpp"
+#include "include/Hex.hpp"
 
 #include <cassert>
 #include <string>

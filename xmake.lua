@@ -29,6 +29,8 @@ target("chip8disasm")
     add_files("chip8disasm/*.cpp")
     add_headerfiles("chip8disasm/*.hpp")
 
+    add_deps("chip8disasm_core")
+    add_includedirs("chip8disasm_core/include")
     add_deps("chip8utils")
     add_includedirs("chip8utils/include")
 
@@ -44,8 +46,18 @@ target("chip8emu_core")
     set_kind("static")
     set_languages("cxx17")
     add_files("chip8emu_core/*.cpp")
+    add_headerfiles("chip8emu_core/include/*.hpp")
     
     add_deps("sdl2wrapper")
     add_includedirs("sdl2wrapper/include")
+    add_deps("chip8utils")
+    add_includedirs("chip8utils/include")
+
+target("chip8disasm_core")
+    set_kind("static")
+    set_languages("cxx17")
+    add_files("chip8disasm_core/*.cpp")
+    add_headerfiles("chip8disasm_core/include/*.hpp")
+
     add_deps("chip8utils")
     add_includedirs("chip8utils/include")

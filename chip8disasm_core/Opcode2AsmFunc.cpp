@@ -1,9 +1,9 @@
-#include "Opcode2AsmFunc.hpp"
+#include "include/Opcode2AsmFunc.hpp"
+#include "include/Hex.hpp"
 
 #include <cassert>
 #include <stdexcept>
 
-#include "Hex.hpp"
 #include "Instructions.hpp"
 
 // here I think it is a good

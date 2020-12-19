@@ -13,6 +13,8 @@
 #include "Screen.hpp"
 #include "sdl.hpp"
 
+#include <SDL.h>
+
 #undef main
 
 void PrintUsage(std::string const& filename)

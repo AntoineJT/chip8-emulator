@@ -15,12 +15,9 @@
 
 #include <SDL.h>
 
-#undef main
+#include "PrintUsageFunc.hpp"
 
-void PrintUsage(std::string const& filename)
-{
-    std::cout << "Usage: " << filename << " [inputfile]" << std::endl;
-}
+#undef main
 
 // TODO include this in output filename
 std::string CurrentDate()

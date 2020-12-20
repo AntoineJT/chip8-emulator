@@ -5,11 +5,7 @@
 #include "LoadFileFunc.hpp"
 #include "Opcode2AsmFunc.hpp"
 #include "OpcodeValueFunc.hpp"
-
-void PrintUsage(std::string const& filename)
-{
-    std::cout << "Usage: " << filename << " [inputfile]" << std::endl;
-}
+#include "PrintUsageFunc.hpp"
 
 // Write file, removes all its previous content
 void WriteTextFile(const std::string& filename, const std::string& textContent)

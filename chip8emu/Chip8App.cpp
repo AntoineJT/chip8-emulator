@@ -7,16 +7,12 @@
 
 #include "LoadFileFunc.hpp"
 #include "Machine.hpp"
+#include "PrintUsageFunc.hpp"
 #include "Screen.hpp"
 #include "sdl.hpp"
 #include "sdl_assert.h"
 
 #undef main // removes SDL main entry redefinition
-
-void PrintUsage(std::string const& filename)
-{
-    std::cout << "Usage: " << filename << " [inputfile]" << std::endl;
-}
 
 int main(int argc, char* argv[])
 {

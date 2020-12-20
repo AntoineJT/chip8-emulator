@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 
     if (argc == 1) {
         std::cout << "Not enough arguments." << std::endl;
-        PrintUsage(argv[0]);
+        Chip8::Utils::PrintUsage(argv[0]);
         return EXIT_FAILURE;
     }
     if (argc == 2) {
@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
     }
     else {
         std::cout << "Too much arguments." << std::endl;
-        PrintUsage(argv[0]);
+        Chip8::Utils::PrintUsage(argv[0]);
         return EXIT_FAILURE;
     }
 

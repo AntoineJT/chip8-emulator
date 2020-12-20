@@ -1,3 +1,6 @@
 #pragma once
 
-void PrintUsage(const char* filename);
+namespace Chip8::Utils
+{
+    void PrintUsage(const char* filename);
+}

@@ -50,6 +50,4 @@ int main(int argc, char* argv[])
     }
 
     WriteTextFile(filename + "_DIS.ASM", output);
-
-    return EXIT_SUCCESS;
 }

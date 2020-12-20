@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
     memory.LoadProgram(content);
     Chip8::Machine machine(screen, memory);
 
-    while(true) // 
+    while(true)
     {
         machine.ExecuteNextInstruction();
         SDL_Delay(1000 / 60);
@@ -73,6 +73,4 @@ int main(int argc, char* argv[])
         SDL_Delay(250);
     }
     */
-    
-    return EXIT_SUCCESS;
 }

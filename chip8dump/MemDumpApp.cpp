@@ -25,8 +25,15 @@ void PrintUsage(std::string const& filename)
 // TODO include this in output filename
 std::string CurrentDate()
 {
+    constexpr std::size_t buffer_size = 50;
+    auto* buffer = new char[buffer_size];
+
     const std::time_t time = std::time(nullptr);
-    std::string date(std::asctime(std::localtime(&time)));
+    const auto localtime = std::localtime(&time);
+    std::strftime(buffer, buffer_size, "%Y_%b_%a_%d-%H_%M_%S", localtime);
+
+    std::string date(buffer);
+    delete[] buffer;
 
     // 2 calls to replace is probably not efficient
     std::replace(date.begin(), date.end(), ' ', '_');
@@ -80,11 +87,11 @@ std::string DumpMemory(const Chip8::Memory& mem)
 
     // memory
     stream << "Memory: " << '\n';
-    constexpr uint16_t turns = 64;
+    constexpr std::size_t turns = 64;
     static_assert(turns * turns == Chip8::Memory::ram_size);
-    for (auto i = 0; i < turns; ++i)
+    for (std::size_t i = 0; i < turns; ++i)
     {
-        for (auto j = 0; j < turns; ++j)
+        for (std::size_t j = 0; j < turns; ++j)
         {
             stream << mem.memory[i * turns + j];
         }
@@ -112,7 +119,7 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    std::ofstream output(filename + "_" + std::to_string(std::time(nullptr)) + "_dump.txt");
+    std::ofstream output(filename + "_" + CurrentDate() + "_dump.txt");
     assert(output.is_open());
 
     // sets up the emulator to be able to dump memory

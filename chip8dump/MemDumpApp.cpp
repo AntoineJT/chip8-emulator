@@ -47,7 +47,7 @@ std::string ToHex(T number)
     static_assert(std::is_arithmetic<T>::value, "ToHex only accepts numeric types!");
 
     std::ostringstream stream;
-    stream << std::hex << number;
+    stream << "0x" << std::hex << std::to_string(number);
     return stream.str();
 }
 
@@ -57,11 +57,14 @@ std::string DumpMemory(const Chip8::Memory& mem)
 
     constexpr auto U16ToHex = ToHex<std::uint16_t>;
     constexpr auto U8ToHex = ToHex<std::uint8_t>;
-    
+
+    // TODO Remove either U8ToHex or Chip8::Hex::ByteHexValue
+
     // V0 - VF registers
     for (std::uint8_t i = 0x0; i <= 0xF; ++i)
     {
-        stream << 'V' << Chip8::Hex::Uint4HexValue(i) << ": " << mem.VX[i] << '\n';
+        stream << 'V' << Chip8::Hex::Uint4HexValue(i) << ": "
+               << U8ToHex(mem.VX[i]) << '\n';
     }
 
     // I register
@@ -73,7 +76,8 @@ std::string DumpMemory(const Chip8::Memory& mem)
     // stack content
     for (std::uint8_t i = 0x0; i <= 0xF; ++i)
     {
-        stream << 'S' << Chip8::Hex::Uint4HexValue(i) << ": " << mem.stack[i] << '\n';
+        stream << 'S' << Chip8::Hex::Uint4HexValue(i) << ": "
+               << U16ToHex(mem.stack[i]) << '\n';
     }
 
     // delay timer

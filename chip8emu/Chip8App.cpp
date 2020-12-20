@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
     std::string filename;
 
     if (argc == 1) {
-        std::cout << "Not enough arguments." << std::endl;
+        std::cerr << "Not enough arguments." << std::endl;
         Chip8::Utils::PrintUsage(argv[0]);
         return EXIT_FAILURE;
     }
@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
         filename = argv[1];
     }
     else {
-        std::cout << "Too much arguments." << std::endl;
+        std::cerr << "Too much arguments." << std::endl;
         Chip8::Utils::PrintUsage(argv[0]);
         return EXIT_FAILURE;
     }

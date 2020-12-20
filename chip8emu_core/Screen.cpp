@@ -11,7 +11,7 @@
 #include "sdl_renderer.hpp"
 #include "sdl_window.hpp"
 
-SDL2::Window CreateWindow(const SDL2::SDL& sdl, const std::uint8_t ratio)
+SDL2::Window CreateWindow(const SDL2::SDL& sdl, const std::uint8_t ratio) noexcept
 {
     assert(sdl.Running());
 
@@ -24,7 +24,7 @@ SDL2::Window CreateWindow(const SDL2::SDL& sdl, const std::uint8_t ratio)
         width, height, 0);
 }
 
-void Chip8::Screen::ResetGrid(PixelGrid& grid)
+void Chip8::Screen::ResetGrid(PixelGrid& grid) noexcept
 {
     for (std::size_t y = 0; y < base_height; ++y)
     {
@@ -32,14 +32,14 @@ void Chip8::Screen::ResetGrid(PixelGrid& grid)
     }
 }
 
-Chip8::Screen::PixelGrid Chip8::Screen::InitGrid()
+Chip8::Screen::PixelGrid Chip8::Screen::InitGrid() noexcept
 {
     PixelGrid grid;
     ResetGrid(grid);
     return grid;
 }
 
-Chip8::Screen::Screen(const SDL2::SDL& sdl, const std::uint8_t ratio)
+Chip8::Screen::Screen(const SDL2::SDL& sdl, const std::uint8_t ratio) noexcept
     : m_ratio(ratio)
     , m_grid(InitGrid())
     , m_window(CreateWindow(sdl, ratio))
@@ -52,7 +52,7 @@ Chip8::Screen::Screen(const SDL2::SDL& sdl, const std::uint8_t ratio)
 }
 
 // this will be used for internal splashscreen for example
-void Chip8::Screen::Render(const PixelGrid grid) const
+void Chip8::Screen::Render(const PixelGrid grid) const noexcept
 {
     std::vector<SDL_Rect> pixelsOff;
     std::vector<SDL_Rect> pixelsOn;
@@ -77,13 +77,13 @@ void Chip8::Screen::Render(const PixelGrid grid) const
     DrawPoints(SDL2::Colors::WHITE, pixelsOn);
 }
 
-void Chip8::Screen::DrawPoints(const SDL_Color color, std::vector<SDL_Rect> rects) const
+void Chip8::Screen::DrawPoints(const SDL_Color color, std::vector<SDL_Rect> rects) const noexcept
 {
     sdl_assert(m_renderer.SetRenderDrawColor(color));
     sdl_assert(m_renderer.RenderFillRects(std::move(rects)));
 }
 
-void Chip8::Screen::DrawSprite(const std::vector<Point> pixelsOn)
+void Chip8::Screen::DrawSprite(const std::vector<Point> pixelsOn) noexcept
 {
     assert(!pixelsOn.empty());
 
@@ -102,7 +102,7 @@ void Chip8::Screen::DrawSprite(const std::vector<Point> pixelsOn)
     DrawPoints(SDL2::Colors::WHITE, std::move(rects));
 }
 
-void Chip8::Screen::Refresh(const bool fullRefresh)
+void Chip8::Screen::Refresh(const bool fullRefresh) noexcept
 {
     if (fullRefresh)
     {
@@ -115,13 +115,13 @@ void Chip8::Screen::Refresh(const bool fullRefresh)
     m_renderer.RenderPresent();
 }
 
-void Chip8::Screen::ChangeBgColor(const SDL_Color color, const bool fullRefresh)
+void Chip8::Screen::ChangeBgColor(const SDL_Color color, const bool fullRefresh) noexcept
 {
     sdl_assert(m_renderer.SetRenderDrawColor(color));
     Refresh(fullRefresh);
 }
 
-bool Chip8::Screen::Collides(const uint8_t x, const uint8_t y) const
+bool Chip8::Screen::Collides(const uint8_t x, const uint8_t y) const noexcept
 {
     assert(x >= 0 && x <= base_width);
     assert(y >= 0 && y <= base_height);

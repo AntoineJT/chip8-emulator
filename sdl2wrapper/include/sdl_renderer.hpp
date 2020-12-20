@@ -12,18 +12,18 @@ namespace SDL2
         SDL_Renderer* m_pRenderer;
 
     public:
-        Renderer(SDL_Window* window, int index, Uint32 flags);
-        Renderer(SDL_Renderer* renderer);
-        Renderer(const Window& window, int index, Uint32 flags);
-        ~Renderer();
+        Renderer(SDL_Window* window, int index, Uint32 flags) noexcept;
+        Renderer(SDL_Renderer* renderer) noexcept;
+        Renderer(const Window& window, int index, Uint32 flags) noexcept;
+        ~Renderer() noexcept;
         Renderer(Renderer&&) = default;
         Renderer& operator=(Renderer&&) = default;
 
-        SDL_Renderer* Data() const;
-        bool SetRenderDrawColor(SDL_Color color) const;
-        bool RenderClear() const;
-        void RenderPresent() const;
-        bool RenderFillRect(std::unique_ptr<SDL_Rect> rect) const;
-        bool RenderFillRects(std::vector<SDL_Rect> rect) const;
+        SDL_Renderer* Data() const noexcept;
+        bool SetRenderDrawColor(SDL_Color color) const noexcept;
+        bool RenderClear() const noexcept;
+        void RenderPresent() const noexcept;
+        bool RenderFillRect(std::unique_ptr<SDL_Rect> rect) const noexcept;
+        bool RenderFillRects(std::vector<SDL_Rect> rect) const noexcept;
     };
 };

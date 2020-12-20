@@ -8,7 +8,7 @@
 #include "PrintUsageFunc.hpp"
 
 // Write file, removes all its previous content
-void WriteTextFile(const std::string& filename, const std::string& textContent)
+void WriteTextFile(const std::string& filename, const std::string& textContent) noexcept
 {
     std::fstream file;
     file.open(filename, std::ios::out | std::ios::trunc);

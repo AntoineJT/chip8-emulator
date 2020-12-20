@@ -18,13 +18,13 @@ namespace Chip8
         using PixelGrid = std::array<std::array<bool, base_width>, base_height>;
         using Point = std::pair<uint8_t, uint8_t>;
 
-        explicit Screen(const SDL2::SDL& sdl, std::uint8_t ratio);
-        void Render(PixelGrid grid) const;
-        void DrawPoints(SDL_Color color, std::vector<SDL_Rect> rects) const;
-        void DrawSprite(std::vector<Point> pixelsOn);
-        void Refresh(bool fullRefresh);
-        void ChangeBgColor(SDL_Color color, bool fullRefresh);
-        bool Collides(uint8_t x, uint8_t y) const;
+        explicit Screen(const SDL2::SDL& sdl, std::uint8_t ratio) noexcept;
+        void Render(PixelGrid grid) const noexcept;
+        void DrawPoints(SDL_Color color, std::vector<SDL_Rect> rects) const noexcept;
+        void DrawSprite(std::vector<Point> pixelsOn) noexcept;
+        void Refresh(bool fullRefresh) noexcept;
+        void ChangeBgColor(SDL_Color color, bool fullRefresh) noexcept;
+        bool Collides(uint8_t x, uint8_t y) const noexcept;
 
     private:
         std::uint8_t m_ratio;
@@ -32,7 +32,7 @@ namespace Chip8
         SDL2::Window m_window;
         SDL2::Renderer m_renderer;
 
-        static void ResetGrid(PixelGrid& grid);
-        static PixelGrid InitGrid();
+        static void ResetGrid(PixelGrid& grid) noexcept;
+        static PixelGrid InitGrid() noexcept;
     };
 };

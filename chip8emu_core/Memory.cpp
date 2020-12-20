@@ -32,7 +32,7 @@ static constexpr std::array<std::uint8_t, 80> font_set =
     0xF0, 0x80, 0xF0, 0x80, 0x80 // F
 };
 
-Chip8::Memory::Memory()
+Chip8::Memory::Memory() noexcept
     : memory({0})
     , pc(entry_point)
     , sp(0)
@@ -46,7 +46,7 @@ Chip8::Memory::Memory()
     LoadFontSet();
 }
 
-void Chip8::Memory::LoadFontSet()
+void Chip8::Memory::LoadFontSet() noexcept
 {
     // TODO take a look at std::copy later
     constexpr size_t size = font_set.size();
@@ -56,7 +56,7 @@ void Chip8::Memory::LoadFontSet()
     }
 }
 
-void Chip8::Memory::LoadProgram(const std::vector<char> data)
+void Chip8::Memory::LoadProgram(const std::vector<char> data) noexcept
 {
     std::size_t index = pc;
     for (const char& c : data)

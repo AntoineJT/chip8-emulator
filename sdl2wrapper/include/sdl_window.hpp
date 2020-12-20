@@ -9,11 +9,11 @@ namespace SDL2
             SDL_Window* m_pWindow;
         
         public:
-            Window(const char* title, int x, int y, int w, int h, Uint32 flags);
-            ~Window();
+            Window(const char* title, int x, int y, int w, int h, Uint32 flags) noexcept;
+            ~Window() noexcept;
             Window(Window&&) = default;
             Window& operator=(Window&&) = default;
 
-            SDL_Window* Data() const;
+            SDL_Window* Data() const noexcept;
     };
 };

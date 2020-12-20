@@ -12,13 +12,13 @@ namespace SDL2
         static constexpr int ALREADY_RUNNING = 1;
 
         SDL() = default;
-        ~SDL();
+        ~SDL() noexcept;
         SDL(SDL&&) = default;
         SDL& operator=(SDL&&) = default;
 
-        int Init(Uint32 flags);
-        bool Running() const;
-        void Quit();
+        int Init(Uint32 flags) noexcept;
+        bool Running() const noexcept;
+        void Quit() noexcept;
 
     private:
         bool m_isRunning = false;

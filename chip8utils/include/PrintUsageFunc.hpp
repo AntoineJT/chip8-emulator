@@ -2,5 +2,5 @@
 
 namespace Chip8::Utils
 {
-    void PrintUsage(const char* filename);
+    void PrintUsage(const char* filename) noexcept;
 }

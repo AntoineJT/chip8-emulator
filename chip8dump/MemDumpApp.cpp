@@ -20,7 +20,7 @@
 #undef main
 
 // TODO include this in output filename
-std::string CurrentDate()
+std::string CurrentDate() noexcept
 {
     constexpr std::size_t buffer_size = 50;
     auto* buffer = new char[buffer_size];
@@ -35,7 +35,7 @@ std::string CurrentDate()
 }
 
 template<typename T>
-std::string ToHex(const T number)
+std::string ToHex(const T number) noexcept
 {
     static_assert(std::is_arithmetic<T>::value, "ToHex only accepts numeric types!");
 
@@ -44,7 +44,7 @@ std::string ToHex(const T number)
     return stream.str();
 }
 
-std::string DumpMemory(const Chip8::Memory& mem)
+std::string DumpMemory(const Chip8::Memory& mem) noexcept
 {
     std::ostringstream stream;
 

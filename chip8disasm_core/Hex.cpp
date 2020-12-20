@@ -3,7 +3,7 @@
 #include <cassert>
 #include <string>
 
-char Chip8::Hex::Uint4HexValue(const std::uint8_t hexInt)
+char Chip8::Hex::Uint4HexValue(const std::uint8_t hexInt) noexcept
 {
     assert(hexInt <= 0xF);
     switch (hexInt)
@@ -25,7 +25,7 @@ char Chip8::Hex::Uint4HexValue(const std::uint8_t hexInt)
     }
 }
 
-std::string Chip8::Hex::ByteHexValue(const std::uint8_t byte)
+std::string Chip8::Hex::ByteHexValue(const std::uint8_t byte) noexcept
 {
     const std::uint8_t upper = (byte & 0xF0) >> 4;
     const std::uint8_t lower = byte & 0x0F;
@@ -37,7 +37,7 @@ std::string Chip8::Hex::ByteHexValue(const std::uint8_t byte)
     return ret;
 }
 
-std::string Chip8::Hex::AddrHexValue(const std::uint16_t nnn)
+std::string Chip8::Hex::AddrHexValue(const std::uint16_t nnn) noexcept
 {
     assert(nnn <= 0xFFF);
     const std::uint8_t upper = (nnn & 0xF00) >> 8;
@@ -46,7 +46,7 @@ std::string Chip8::Hex::AddrHexValue(const std::uint16_t nnn)
     return std::string(2, Uint4HexValue(upper)).append(ByteHexValue(lower));
 }
 
-std::string Chip8::Hex::OpcodeHexValue(const std::uint16_t opcode)
+std::string Chip8::Hex::OpcodeHexValue(const std::uint16_t opcode) noexcept
 {
     const std::uint8_t upper = (opcode & 0xFF00) >> 8;
     const std::uint8_t lower = opcode & 0x00FF;

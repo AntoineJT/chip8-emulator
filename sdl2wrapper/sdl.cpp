@@ -2,21 +2,21 @@
 
 #include <cassert>
 
-SDL2::SDL::~SDL()
+SDL2::SDL::~SDL() noexcept
 {
     if (!m_isRunning)
         return;
     Quit();
 }
 
-void SDL2::SDL::Quit()
+void SDL2::SDL::Quit() noexcept
 {
     assert(m_isRunning);
     m_isRunning = false;
     SDL_Quit();
 }
 
-int SDL2::SDL::Init(Uint32 flags)
+int SDL2::SDL::Init(const Uint32 flags) noexcept
 {
     if (m_isRunning)
         return ALREADY_RUNNING;
@@ -29,7 +29,7 @@ int SDL2::SDL::Init(Uint32 flags)
     return INIT_SUCCESS;
 }
 
-bool SDL2::SDL::Running() const
+bool SDL2::SDL::Running() const noexcept
 {
     return m_isRunning;
 }

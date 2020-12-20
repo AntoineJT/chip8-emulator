@@ -14,9 +14,9 @@ namespace Chip8
         Memory& m_memory;
 
     public:
-        Machine(Screen& screen, Memory& memory);
+        Machine(Screen& screen, Memory& memory) noexcept;
 
-        void ExecuteNextInstruction();
-        void Execute(std::uint16_t opcode);
+        void ExecuteNextInstruction() noexcept;
+        void Execute(std::uint16_t opcode) noexcept;
     };
 }

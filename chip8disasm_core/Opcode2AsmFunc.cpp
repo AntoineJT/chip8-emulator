@@ -17,7 +17,7 @@ enum request
     NNN
 };
 
-std::string GetOperands(const uint16_t opcode, const request req)
+std::string GetOperands(const uint16_t opcode, const request req) noexcept
 {
     const std::uint8_t x = (opcode & 0x0F00) >> 8;
     const std::string xHex(1, Chip8::Hex::Uint4HexValue(x));
@@ -46,18 +46,18 @@ std::string GetOperands(const uint16_t opcode, const request req)
     }
 }
 
-std::string DrawOperands(const uint16_t opcode)
+std::string DrawOperands(const uint16_t opcode) noexcept
 {
     const std::uint8_t lsb = opcode & 0x000F; // least significant bit
     return GetOperands(opcode, XY) + ", 0x" + Chip8::Hex::Uint4HexValue(lsb);
 }
 
-std::string UnknownOpcode(const uint16_t opcode)
+std::string UnknownOpcode(const uint16_t opcode) noexcept
 {
     return "; Unknown Opcode: " + Chip8::Hex::OpcodeHexValue(opcode);
 }
 
-std::string Chip8::Disasm::Opcode2Asm(const std::uint16_t opcode)
+std::string Chip8::Disasm::Opcode2Asm(const std::uint16_t opcode) noexcept
 {
     switch (opcode & 0xF000)
     {

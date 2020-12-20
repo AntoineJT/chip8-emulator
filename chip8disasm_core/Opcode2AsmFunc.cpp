@@ -1,7 +1,6 @@
 #include "include/Opcode2AsmFunc.hpp"
 #include "include/Hex.hpp"
 
-#include <cassert>
 #include <stdexcept>
 
 #include "Instructions.hpp"
@@ -20,8 +19,6 @@ enum request
 
 std::string GetOperands(uint16_t opcode, const request req)
 {
-    assert(req == X || req == XY || req == XKK || req == NNN);
-
     const std::uint8_t x = (opcode & 0x0F00) >> 8;
     const std::string xHex(1, Chip8::Hex::Uint4HexValue(x));
 
@@ -32,8 +29,7 @@ std::string GetOperands(uint16_t opcode, const request req)
     case XY:
         {
             const std::uint8_t y = (opcode & 0x00F0) >> 4;
-            const std::string yHex(1, Chip8::Hex::Uint4HexValue(y));
-            return "0x" + xHex + ", 0x" + yHex;
+            return "0x" + xHex + ", 0x" + Chip8::Hex::Uint4HexValue(y);
         }
     case XKK:
         {
@@ -46,7 +42,6 @@ std::string GetOperands(uint16_t opcode, const request req)
             return "0x" + Chip8::Hex::AddrHexValue(nnn);
         }
     default:
-        // should never happen because of the assertion
         throw std::runtime_error("GetOperands: bad request");
     }
 }
@@ -54,7 +49,6 @@ std::string GetOperands(uint16_t opcode, const request req)
 std::string DrawOperands(uint16_t opcode)
 {
     const std::uint8_t lsb = opcode & 0x000F; // least significant bit
-//    const std::string lsbHex(1, Chip8::Hex::Uint4HexValue(lsb));
     return GetOperands(opcode, XY) + ", 0x" + Chip8::Hex::Uint4HexValue(lsb);
 }
 

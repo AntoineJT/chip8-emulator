@@ -26,15 +26,11 @@ std::string CurrentDate()
     auto* buffer = new char[buffer_size];
 
     const std::time_t time = std::time(nullptr);
-    const auto localtime = std::localtime(&time);
-    std::strftime(buffer, buffer_size, "%Y_%b_%a_%d-%H_%M_%S", localtime);
+    std::strftime(buffer, buffer_size, "%Y_%b_%a_%d-%H_%M_%S", std::localtime(&time));
 
     std::string date(buffer);
     delete[] buffer;
 
-    // 2 calls to replace is probably not efficient
-    std::replace(date.begin(), date.end(), ' ', '_');
-    std::replace(date.begin(), date.end(), ':', '-');
     return date;
 }
 
@@ -137,7 +133,6 @@ int main(int argc, char* argv[])
         const std::string instruction = Chip8::Disasm::Opcode2Asm(opcode);
 
         machine.Execute(opcode);
-        // TODO Dump memory too
         output << instruction << '\n'
             << DumpMemory(mem) << '\n';
     }

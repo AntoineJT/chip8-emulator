@@ -3,7 +3,7 @@
 
 #include <cassert>
 
-SDL2::Window::Window(const char* title, int x, int y, int w, int h, Uint32 flags)
+SDL2::Window::Window(const char* title, const int x, const int y, const int w, const int h, const Uint32 flags)
 {
     m_pWindow = SDL_CreateWindow(title, x, y, w, h, flags);
     assert(m_pWindow != nullptr);

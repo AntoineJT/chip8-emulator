@@ -6,18 +6,17 @@
 #include <random>
 
 #include "Instructions.hpp"
-#include "OpcodeValueFunc.hpp"
 
 // I think it suits to the use case
 using namespace Chip8::Utils::Instructions;
 
 // TODO Find the underlying problem: sometimes it returns empty vector
-std::vector<Chip8::Screen::Point> PointsToDraw(std::vector<uint8_t> sprite, const Chip8::Screen::Point point, uint8_t width)
+std::vector<Chip8::Screen::Point> PointsToDraw(const std::vector<uint8_t> sprite, const Chip8::Screen::Point point, const uint8_t width)
 {
     assert(width <= 8);
     const std::size_t size = sprite.size();
 
-    std::vector<Chip8::Screen::Point> toDraw; //(size);
+    std::vector<Chip8::Screen::Point> toDraw;
 
     for (std::size_t y = 0; y < size; ++y)
     {
@@ -50,7 +49,7 @@ void Chip8::Machine::ExecuteNextInstruction()
     // TODO S'occuper des timers
 }
 
-void Chip8::Machine::Execute(std::uint16_t opcode)
+void Chip8::Machine::Execute(const std::uint16_t opcode)
 {
 #define PRINT_OPCODE_STATUS(case_) \
     std::cerr << "Err: " << (case_) << " instruction (" \

@@ -35,7 +35,7 @@ std::string CurrentDate()
 }
 
 template<typename T>
-std::string ToHex(T number)
+std::string ToHex(const T number)
 {
     static_assert(std::is_arithmetic<T>::value, "ToHex only accepts numeric types!");
 

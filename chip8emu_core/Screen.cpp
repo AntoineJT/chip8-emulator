@@ -11,7 +11,7 @@
 #include "sdl_renderer.hpp"
 #include "sdl_window.hpp"
 
-SDL2::Window CreateWindow(const SDL2::SDL& sdl, std::uint8_t ratio)
+SDL2::Window CreateWindow(const SDL2::SDL& sdl, const std::uint8_t ratio)
 {
     assert(sdl.Running());
 
@@ -39,7 +39,7 @@ Chip8::Screen::PixelGrid Chip8::Screen::InitGrid()
     return grid;
 }
 
-Chip8::Screen::Screen(const SDL2::SDL& sdl, std::uint8_t ratio)
+Chip8::Screen::Screen(const SDL2::SDL& sdl, const std::uint8_t ratio)
     : m_ratio(ratio)
     , m_grid(InitGrid())
     , m_window(CreateWindow(sdl, ratio))
@@ -52,7 +52,7 @@ Chip8::Screen::Screen(const SDL2::SDL& sdl, std::uint8_t ratio)
 }
 
 // this will be used for internal splashscreen for example
-void Chip8::Screen::Render(PixelGrid grid) const
+void Chip8::Screen::Render(const PixelGrid grid) const
 {
     std::vector<SDL_Rect> pixelsOff;
     std::vector<SDL_Rect> pixelsOn;
@@ -77,13 +77,13 @@ void Chip8::Screen::Render(PixelGrid grid) const
     DrawPoints(SDL2::Colors::WHITE, pixelsOn);
 }
 
-void Chip8::Screen::DrawPoints(SDL_Color color, std::vector<SDL_Rect> rects) const
+void Chip8::Screen::DrawPoints(const SDL_Color color, std::vector<SDL_Rect> rects) const
 {
     sdl_assert(m_renderer.SetRenderDrawColor(color));
     sdl_assert(m_renderer.RenderFillRects(std::move(rects)));
 }
 
-void Chip8::Screen::DrawSprite(std::vector<Point> pixelsOn)
+void Chip8::Screen::DrawSprite(const std::vector<Point> pixelsOn)
 {
     assert(!pixelsOn.empty());
 
@@ -102,7 +102,7 @@ void Chip8::Screen::DrawSprite(std::vector<Point> pixelsOn)
     DrawPoints(SDL2::Colors::WHITE, std::move(rects));
 }
 
-void Chip8::Screen::Refresh(bool fullRefresh)
+void Chip8::Screen::Refresh(const bool fullRefresh)
 {
     if (fullRefresh)
     {
@@ -115,13 +115,13 @@ void Chip8::Screen::Refresh(bool fullRefresh)
     m_renderer.RenderPresent();
 }
 
-void Chip8::Screen::ChangeBgColor(SDL_Color color, bool fullRefresh)
+void Chip8::Screen::ChangeBgColor(const SDL_Color color, const bool fullRefresh)
 {
     sdl_assert(m_renderer.SetRenderDrawColor(color));
     Refresh(fullRefresh);
 }
 
-bool Chip8::Screen::Collides(uint8_t x, uint8_t y) const
+bool Chip8::Screen::Collides(const uint8_t x, const uint8_t y) const
 {
     assert(x >= 0 && x <= base_width);
     assert(y >= 0 && y <= base_height);

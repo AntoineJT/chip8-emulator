@@ -1,24 +1,11 @@
 #include <cstdlib>
-#include <fstream>
 #include <iostream>
 
 #include "LoadFileFunc.hpp"
 #include "Opcode2AsmFunc.hpp"
 #include "OpcodeValueFunc.hpp"
 #include "PrintUsageFunc.hpp"
-
-// Write file, removes all its previous content
-void WriteTextFile(const std::string& filename, const std::string& textContent) noexcept
-{
-    std::fstream file;
-    file.open(filename, std::ios::out | std::ios::trunc);
-    if (!file.is_open())
-    {
-        throw std::runtime_error("Can't create file '" + filename + "'.");
-    }
-    file << textContent;
-    file.close();
-}
+#include "WriteTextFileFunc.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -49,5 +36,5 @@ int main(int argc, char* argv[])
         output.push_back('\n');
     }
 
-    WriteTextFile(filename + "_DIS.ASM", output);
+    Chip8::Disasm::WriteTextFile(filename + "_DIS.ASM", output);
 }

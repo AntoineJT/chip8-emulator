@@ -251,7 +251,7 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) noexcept
                 wrappedPoints.push_back({ x2, y2 });
             }
             m_memory.VX[0xF] = collides ? 1 : 0;
-            m_screen.DrawSprite(std::move(wrappedPoints));
+            m_screen.DrawSprite(wrappedPoints);
             m_screen.Refresh(false);
             break;
         }

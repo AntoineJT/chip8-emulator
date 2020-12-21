@@ -99,7 +99,7 @@ void Chip8::Screen::DrawSprite(const std::vector<Point>& pixelsOn)
         };
         rects.push_back(rect);
     }
-    DrawPoints(SDL2::Colors::WHITE, std::move(rects));
+    DrawPoints(SDL2::Colors::WHITE, rects);
 }
 
 void Chip8::Screen::Refresh(const bool fullRefresh) noexcept

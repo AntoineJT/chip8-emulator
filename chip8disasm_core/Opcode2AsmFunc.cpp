@@ -1,5 +1,5 @@
 #include "include/Opcode2AsmFunc.hpp"
-#include "include/Hex.hpp"
+#include "Hex.hpp"
 
 #include <stdexcept>
 

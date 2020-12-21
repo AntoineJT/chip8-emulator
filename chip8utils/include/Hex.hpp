@@ -6,9 +6,9 @@
 namespace Chip8::Hex
 {
     char Uint4HexValue(std::uint8_t hexInt) noexcept;
-    std::string ByteHexValue(std::uint8_t byte) noexcept;
-    std::string AddrHexValue(std::uint16_t nnn) noexcept;
-    std::string OpcodeHexValue(std::uint16_t opcode) noexcept;
+    std::string ByteHexValue(std::uint8_t byte);
+    std::string AddrHexValue(std::uint16_t nnn);
+    std::string OpcodeHexValue(std::uint16_t opcode);
 
     template<typename T>
     std::string ToHex(const T number) noexcept

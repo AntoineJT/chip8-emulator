@@ -24,6 +24,6 @@ namespace SDL2
         bool RenderClear() const noexcept;
         void RenderPresent() const noexcept;
         bool RenderFillRect(std::unique_ptr<SDL_Rect> rect) const noexcept;
-        bool RenderFillRects(std::vector<SDL_Rect> rect) const noexcept;
+        bool RenderFillRects(const std::vector<SDL_Rect>& rect) const noexcept;
     };
 };

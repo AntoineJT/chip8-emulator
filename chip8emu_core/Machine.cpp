@@ -11,7 +11,7 @@
 using namespace Chip8::Utils::Instructions;
 
 // TODO Find the underlying problem: sometimes it returns empty vector
-std::vector<Chip8::Screen::Point> PointsToDraw(const std::vector<uint8_t> sprite, const Chip8::Screen::Point point, const uint8_t width) noexcept
+std::vector<Chip8::Screen::Point> PointsToDraw(const std::vector<uint8_t>& sprite, const Chip8::Screen::Point point, const uint8_t width) noexcept
 {
     assert(width <= 8);
     const std::size_t size = sprite.size();

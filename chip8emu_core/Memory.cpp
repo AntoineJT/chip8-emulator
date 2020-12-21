@@ -56,7 +56,7 @@ void Chip8::Memory::LoadFontSet() noexcept
     }
 }
 
-void Chip8::Memory::LoadProgram(const std::vector<char> data) noexcept
+void Chip8::Memory::LoadProgram(const std::vector<char>& data) noexcept
 {
     std::size_t index = pc;
     for (const char& c : data)

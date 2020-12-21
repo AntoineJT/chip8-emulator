@@ -52,7 +52,7 @@ Chip8::Screen::Screen(const SDL2::SDL& sdl, const std::uint8_t ratio) noexcept
 }
 
 // this will be used for internal splashscreen for example
-void Chip8::Screen::Render(const PixelGrid grid) const noexcept
+void Chip8::Screen::Render(const PixelGrid& grid) const
 {
     std::vector<SDL_Rect> pixelsOff;
     std::vector<SDL_Rect> pixelsOn;
@@ -77,13 +77,13 @@ void Chip8::Screen::Render(const PixelGrid grid) const noexcept
     DrawPoints(SDL2::Colors::WHITE, pixelsOn);
 }
 
-void Chip8::Screen::DrawPoints(const SDL_Color color, std::vector<SDL_Rect> rects) const noexcept
+void Chip8::Screen::DrawPoints(const SDL_Color color, const std::vector<SDL_Rect>& rects) const noexcept
 {
     sdl_assert(m_renderer.SetRenderDrawColor(color));
-    sdl_assert(m_renderer.RenderFillRects(std::move(rects)));
+    sdl_assert(m_renderer.RenderFillRects(rects));
 }
 
-void Chip8::Screen::DrawSprite(const std::vector<Point> pixelsOn) noexcept
+void Chip8::Screen::DrawSprite(const std::vector<Point>& pixelsOn)
 {
     assert(!pixelsOn.empty());
 

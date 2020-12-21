@@ -22,9 +22,9 @@ int SDL2::SDL::Init(const Uint32 flags) noexcept
         return ALREADY_RUNNING;
 
     m_isRunning = true;
-    const int retval = SDL_Init(flags);
+    const int ret = SDL_Init(flags);
 
-    if (retval < INIT_SUCCESS)
+    if (ret < INIT_SUCCESS)
         return INIT_FAILURE;
     return INIT_SUCCESS;
 }

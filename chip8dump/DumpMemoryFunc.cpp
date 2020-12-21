@@ -17,7 +17,7 @@ std::string Chip8::Dump::DumpMemory(const Chip8::Memory& mem) noexcept
     // V0 - VF registers
     for (std::uint8_t i = 0x0; i <= 0xF; ++i)
     {
-        stream << 'V' << Chip8::Hex::Uint4HexValue(i) << ": "
+        stream << 'V' << Hex::Uint4HexValue(i) << ": "
             << U8ToHex(mem.VX[i]) << '\n';
     }
 
@@ -30,7 +30,7 @@ std::string Chip8::Dump::DumpMemory(const Chip8::Memory& mem) noexcept
     // stack content
     for (std::uint8_t i = 0x0; i <= 0xF; ++i)
     {
-        stream << 'S' << Chip8::Hex::Uint4HexValue(i) << ": "
+        stream << 'S' << Hex::Uint4HexValue(i) << ": "
             << U16ToHex(mem.stack[i]) << '\n';
     }
 
@@ -46,7 +46,7 @@ std::string Chip8::Dump::DumpMemory(const Chip8::Memory& mem) noexcept
     // memory
     stream << "Memory: " << '\n';
     constexpr std::size_t turns = 64;
-    static_assert(turns * turns == Chip8::Memory::ram_size);
+    static_assert(turns * turns == Memory::ram_size);
     for (std::size_t i = 0; i < turns; ++i)
     {
         for (std::size_t j = 0; j < turns; ++j)

@@ -58,8 +58,10 @@ bool SDL2::Renderer::RenderFillRect(const std::unique_ptr<SDL_Rect> rect) const 
     return SDL_RenderFillRect(m_pRenderer, rect.get()) == SUCCESS;
 }
 
-bool SDL2::Renderer::RenderFillRects(const std::vector<SDL_Rect> rect) const noexcept
+bool SDL2::Renderer::RenderFillRects(const std::vector<SDL_Rect>& rect) const noexcept
 {
-    return SDL_RenderFillRects(m_pRenderer, rect.data(), rect.size())
+    const auto size = rect.size();
+    assert(size <= INT_MAX);
+    return SDL_RenderFillRects(m_pRenderer, rect.data(), static_cast<int>(size))
         == SUCCESS;
 }

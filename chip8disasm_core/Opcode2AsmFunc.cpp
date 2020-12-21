@@ -17,7 +17,7 @@ enum request
     NNN
 };
 
-std::string GetOperands(const uint16_t opcode, const request req) noexcept
+std::string GetOperands(const uint16_t opcode, const request req)
 {
     const std::uint8_t x = (opcode & 0x0F00) >> 8;
     const std::string xHex(1, Chip8::Hex::Uint4HexValue(x));
@@ -46,7 +46,7 @@ std::string GetOperands(const uint16_t opcode, const request req) noexcept
     }
 }
 
-std::string DrawOperands(const uint16_t opcode) noexcept
+std::string DrawOperands(const uint16_t opcode)
 {
     const std::uint8_t lsb = opcode & 0x000F; // least significant bit
     return GetOperands(opcode, XY) + ", 0x" + Chip8::Hex::Uint4HexValue(lsb);

@@ -4,7 +4,7 @@
 #include <fstream>
 #include <stdexcept>
 
-std::vector<char> Chip8::Utils::LoadFile(const std::string& filename) noexcept
+std::vector<char> Chip8::Utils::LoadFile(const std::string& filename)
 {
     std::ifstream file(filename, std::ios::binary | std::ios::ate);
 

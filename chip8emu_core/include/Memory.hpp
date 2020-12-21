@@ -17,7 +17,7 @@ namespace Chip8
         using MemoryData = std::array<uint8_t, ram_size>;
 
         Memory() noexcept;
-        void LoadProgram(std::vector<char> data) noexcept;
+        void LoadProgram(const std::vector<char>& data) noexcept;
         std::uint16_t NextInstruction() const noexcept;
 
         MemoryData memory;

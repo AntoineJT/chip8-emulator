@@ -26,7 +26,7 @@ std::string CurrentDate() noexcept
     auto* buffer = new char[buffer_size];
 
     const std::time_t time = std::time(nullptr);
-    std::strftime(buffer, buffer_size, "%Y_%b_%a_%d-%H_%M_%S", std::localtime(&time));
+    std::strftime(buffer, buffer_size, "%Y_%m_%d-%H_%M_%S", std::localtime(&time));
 
     std::string date(buffer);
     delete[] buffer;

@@ -57,12 +57,23 @@ int main(int argc, char* argv[])
     mem.LoadProgram(content);
     Chip8::Machine machine(screen, mem);
 
+    std::string lastHeapDump;
     while(true)
     {
         const std::uint16_t opcode = mem.NextInstruction();
 
         machine.Execute(opcode);
         output << Chip8::Disasm::Opcode2Asm(opcode) << '\n'
-            << Chip8::Dump::DumpMemory(mem) << '\n';
+            << Chip8::Dump::DumpMemoryV2(mem) << '\n';
+
+        // TODO Fix it
+        /*
+        std::string heapDump = Chip8::Dump::DumpHeap(mem);
+
+        output << Chip8::Disasm::Opcode2Asm(opcode) << '\n'
+            << Chip8::Dump::DumpMemoryV2(mem, lastHeapDump, heapDump) << '\n';
+
+        lastHeapDump = std::move(heapDump);
+        */
     }
 }

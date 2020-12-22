@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
 
         machine.Execute(opcode);
         output << Chip8::Disasm::Opcode2Asm(opcode) << '\n'
-            << Chip8::Dump::DumpMemoryV2(mem) << '\n';
+            << Chip8::Dump::DumpMemory(mem) << '\n';
 
         // TODO Fix it
         /*

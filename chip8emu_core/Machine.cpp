@@ -233,7 +233,7 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) noexcept
     // TODO Fix this
     case DRW:
         {
-            std::vector<uint8_t> sprite(lsb + 1);
+            std::vector<uint8_t> sprite(static_cast<std::size_t>(lsb) + 1);
             for (std::size_t i = 0; i <= lsb; ++i)
             {
                 sprite[i] = m_memory.memory[i + m_memory.I];

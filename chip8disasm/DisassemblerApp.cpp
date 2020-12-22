@@ -26,13 +26,8 @@ int main(int argc, char* argv[])
     }
 
     std::vector<char> content;
-    try
+    if (!Chip8::Utils::LoadFile(content, filename))
     {
-        content = Chip8::Utils::LoadFile(filename);
-    }
-    catch (const std::runtime_error& err)
-    {
-        std::cerr << "Can't load '" << filename << "' content: " << err.what() << std::endl;
         return EXIT_FAILURE;
     }
 

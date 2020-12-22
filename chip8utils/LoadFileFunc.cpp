@@ -2,6 +2,7 @@
 
 #include <cstring>
 #include <fstream>
+#include <iostream>
 #include <stdexcept>
 
 std::vector<char> Chip8::Utils::LoadFile(const std::string& filename)
@@ -30,4 +31,18 @@ std::vector<char> Chip8::Utils::LoadFile(const std::string& filename)
     file.close();
 
     return content;
+}
+
+bool Chip8::Utils::LoadFile(std::vector<char>& content, const std::string& filename) noexcept
+{
+    try
+    {
+        content = LoadFile(filename);
+    }
+    catch (const std::runtime_error& err)
+    {
+        std::cerr << "Can't load '" << filename << "' content: " << err.what() << std::endl;
+        return false;
+    }
+    return true;
 }

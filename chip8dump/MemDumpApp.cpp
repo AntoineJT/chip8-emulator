@@ -49,7 +49,12 @@ int main(int argc, char* argv[])
     assert(sdl.Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
     Chip8::Screen screen(sdl, 1);
     Chip8::Memory mem;
-    mem.LoadProgram(Chip8::Utils::LoadFile(filename));
+    std::vector<char> content;
+    if (!Chip8::Utils::LoadFile(content, filename))
+    {
+        return EXIT_FAILURE;
+    }
+    mem.LoadProgram(content);
     Chip8::Machine machine(screen, mem);
 
     while(true)

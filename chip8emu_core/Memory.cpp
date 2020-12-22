@@ -4,13 +4,6 @@
 
 #include "OpcodeValueFunc.hpp"
 
-// TODO Support ETI 660
-// See here: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#2.1
-// Begins at 0x200, because generally
-// from 0x000 to 0x1FF, the memory was
-// reserved for the interpreter
-constexpr std::size_t entry_point = 0x200; // 512
-
 // from http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
 static constexpr std::array<std::uint8_t, 80> font_set =
 {
@@ -33,14 +26,6 @@ static constexpr std::array<std::uint8_t, 80> font_set =
 };
 
 Chip8::Memory::Memory() noexcept
-    : memory({0})
-    , pc(entry_point)
-    , sp(0)
-    , VX({0})
-    , I(0)
-    , stack({0})
-    , DT(0)
-    , ST(0)
 {
     // loads font set into memory
     LoadFontSet();

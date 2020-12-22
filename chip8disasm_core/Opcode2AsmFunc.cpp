@@ -34,12 +34,12 @@ std::string GetOperands(const uint16_t opcode, const request req)
     case XKK:
         {
             const std::uint8_t kk = opcode & 0x00FF;
-            return "0x" + xHex + ", 0x" + Chip8::Hex::ByteHexValue(kk);
+            return "0x" + xHex + ", " + Chip8::Hex::U8ToHex(kk);
         }
     case NNN:
         {
             const std::uint16_t nnn = opcode & 0x0FFF;
-            return "0x" + Chip8::Hex::AddrHexValue(nnn);
+            return Chip8::Hex::AddrHexValue(nnn);
         }
     default:
         throw std::runtime_error("GetOperands: bad request");
@@ -54,7 +54,7 @@ std::string DrawOperands(const uint16_t opcode)
 
 std::string UnknownOpcode(const uint16_t opcode) noexcept
 {
-    return "; Unknown Opcode: " + Chip8::Hex::OpcodeHexValue(opcode);
+    return "; Unknown Opcode: " + Chip8::Hex::U16ToHex(opcode);
 }
 
 std::string Chip8::Disasm::Opcode2Asm(const std::uint16_t opcode) noexcept

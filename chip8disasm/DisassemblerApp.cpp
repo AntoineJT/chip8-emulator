@@ -25,7 +25,16 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    const auto content = Chip8::Utils::LoadFile(filename);
+    std::vector<char> content;
+    try
+    {
+        content = Chip8::Utils::LoadFile(filename);
+    }
+    catch (const std::runtime_error& err)
+    {
+        std::cerr << "Can't load '" << filename << "' content: " << err.what() << std::endl;
+        return EXIT_FAILURE;
+    }
 
     const std::size_t size = content.size();
     std::string output;

@@ -36,8 +36,13 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    std::ofstream output(filename + "_" + CurrentDate() + "_dump.txt");
-    assert(output.is_open());
+    const std::string ofname = filename + "_" + CurrentDate() + "_dump.txt";
+    std::ofstream output(ofname);
+    if (!output.is_open())
+    {
+        std::cerr << "Can't create file '" << ofname << "'!" << std::endl;
+        return EXIT_FAILURE;
+    }
 
     // sets up the emulator to be able to dump memory
     SDL2::SDL sdl;
@@ -50,10 +55,9 @@ int main(int argc, char* argv[])
     while(true)
     {
         const std::uint16_t opcode = mem.NextInstruction();
-        const std::string instruction = Chip8::Disasm::Opcode2Asm(opcode);
 
         machine.Execute(opcode);
-        output << instruction << '\n'
+        output << Chip8::Disasm::Opcode2Asm(opcode) << '\n'
             << Chip8::Dump::DumpMemory(mem) << '\n';
     }
 }

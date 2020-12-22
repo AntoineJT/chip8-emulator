@@ -36,7 +36,16 @@ int main(int argc, char* argv[])
     // should not be ALREADY_RUNNING, at least for now
     assert(sdl.Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
 
-    const auto content = Chip8::Utils::LoadFile(filename);
+    std::vector<char> content;
+    try
+    {
+        content = Chip8::Utils::LoadFile(filename);
+    }
+    catch(const std::runtime_error& err)
+    {
+        std::cerr << "Can't load '" << filename << "' content: " << err.what() << std::endl;
+        return EXIT_FAILURE;
+    }
 
     Chip8::Screen screen(sdl, 16);
     Chip8::Memory memory;

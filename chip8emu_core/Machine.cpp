@@ -243,7 +243,7 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) noexcept
 
             bool collides = false;
             std::vector<Screen::Point> wrappedPoints; // (toDraw.size());
-            for (const auto pt : toDraw)
+            for (const auto& pt : toDraw)
             {
                 const uint8_t x2 = pt.first % base_width;
                 const uint8_t y2 = pt.second % base_height;

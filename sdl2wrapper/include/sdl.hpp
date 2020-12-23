@@ -12,6 +12,7 @@ namespace SDL2
         static constexpr int ALREADY_RUNNING = 1;
 
         SDL() = default;
+        explicit SDL(bool mainHandled) noexcept;
         ~SDL() noexcept;
         SDL(SDL&&) = default;
         SDL& operator=(SDL&&) = default;

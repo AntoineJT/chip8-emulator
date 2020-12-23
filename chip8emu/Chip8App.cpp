@@ -32,8 +32,7 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    SDL2::SDL sdl;
-    SDL_SetMainReady();
+    SDL2::SDL sdl(true);
     // should not be ALREADY_RUNNING, at least for now
     assert(sdl.Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
 

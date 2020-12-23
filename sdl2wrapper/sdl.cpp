@@ -2,6 +2,17 @@
 
 #include <cassert>
 
+// Set mainHandled to true if you remove
+// the SDL_main entry point by defining
+// SDL_MAIN_HANDLED before to include SDL
+SDL2::SDL::SDL(const bool mainHandled) noexcept
+{
+    if (mainHandled)
+    {
+        SDL_SetMainReady();
+    }
+}
+
 SDL2::SDL::~SDL() noexcept
 {
     if (!m_isRunning)

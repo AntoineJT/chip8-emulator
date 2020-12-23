@@ -44,8 +44,7 @@ int main(int argc, char* argv[])
     }
 
     // sets up the emulator to be able to dump memory
-    SDL2::SDL sdl;
-    SDL_SetMainReady();
+    SDL2::SDL sdl(true);
     assert(sdl.Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
     Chip8::Screen screen(sdl, 1);
     Chip8::Memory mem;

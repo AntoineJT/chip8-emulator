@@ -1,9 +1,9 @@
 #include <cassert>
 #include <cstdlib>
 #include <cstring>
-#include <fstream>
 #include <iostream>
-#include <SDL.h>
+
+#define SDL_MAIN_HANDLED
 
 #include "LoadFileFunc.hpp"
 #include "Machine.hpp"
@@ -12,7 +12,7 @@
 #include "sdl.hpp"
 #include "sdl_assert.h"
 
-#undef main // removes SDL main entry redefinition
+#include <SDL.h>
 
 int main(int argc, char* argv[])
 {
@@ -33,6 +33,7 @@ int main(int argc, char* argv[])
     }
 
     SDL2::SDL sdl;
+    SDL_SetMainReady();
     // should not be ALREADY_RUNNING, at least for now
     assert(sdl.Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
 

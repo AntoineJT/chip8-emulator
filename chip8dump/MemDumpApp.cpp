@@ -3,20 +3,19 @@
 #include <fstream>
 #include <iostream>
 
+#define SDL_MAIN_HANDLED
+
+#include "CurrentDateFunc.hpp"
+#include "DumpMemoryFunc.hpp"
 #include "LoadFileFunc.hpp"
 #include "Machine.hpp"
 #include "Memory.hpp"
 #include "Opcode2AsmFunc.hpp"
+#include "PrintUsageFunc.hpp"
 #include "Screen.hpp"
 #include "sdl.hpp"
 
 #include <SDL.h>
-
-#include "CurrentDateFunc.hpp"
-#include "DumpMemoryFunc.hpp"
-#include "PrintUsageFunc.hpp"
-
-#undef main
 
 int main(int argc, char* argv[])
 {
@@ -46,6 +45,7 @@ int main(int argc, char* argv[])
 
     // sets up the emulator to be able to dump memory
     SDL2::SDL sdl;
+    SDL_SetMainReady();
     assert(sdl.Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
     Chip8::Screen screen(sdl, 1);
     Chip8::Memory mem;

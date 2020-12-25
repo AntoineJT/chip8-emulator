@@ -1,6 +1,7 @@
 #include "DumpMemoryFunc.hpp"
 
 #include <cassert>
+#include <cmath>
 #include <string>
 #include <sstream>
 

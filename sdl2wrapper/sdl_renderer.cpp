@@ -1,6 +1,7 @@
 #include "include/sdl_renderer.hpp"
 
 #include <cassert>
+#include <climits>
 #include <memory>
 #include <SDL.h>
 #include <vector>

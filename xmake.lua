@@ -1,4 +1,4 @@
-set_project("Chip8Emu")
+set_project("chip8emu")
 set_version("wip") -- will follow semver later
 
 add_rules("mode.debug", "mode.release")
@@ -7,14 +7,15 @@ set_symbols("debug", "edit")
 
 add_requires("libsdl 2.0.12") -- latest version at the time
 
-target("chip8emu")
+target("Chip8Emulator")
     set_kind("binary")
+	set_basename("chip8emu")
 
-    add_files("chip8emu/*.cpp")
-    add_headerfiles("chip8emu/*.hpp")
+    add_files("Chip8Emulator/*.cpp")
+    add_headerfiles("Chip8Emulator/*.hpp")
 
-    add_deps("chip8emu_core", "chip8utils", "sdl2wrapper")
-    add_includedirs("chip8emu_core/include")
+    add_deps("Chip8Emulatorlator.Core", "chip8utils", "sdl2wrapper")
+    add_includedirs("Chip8Emulatorlator.Core/include")
     add_includedirs("sdl2wrapper/include")
     add_includedirs("chip8utils/include")
 
@@ -28,14 +29,15 @@ target("sdl2wrapper")
 
     add_packages("libsdl")
 
-target("chip8disasm")
+target("Chip8Disassembler")
     set_kind("binary")
+	set_basename("chip8disasm")
 
-    add_files("chip8disasm/*.cpp")
-    add_headerfiles("chip8disasm/*.hpp")
+    add_files("Chip8Disassembler/*.cpp")
+    add_headerfiles("Chip8Disassembler/*.hpp")
 
-    add_deps("chip8disasm_core", "chip8utils")
-    add_includedirs("chip8disasm_core/include")
+    add_deps("Chip8Disassembler.Core", "chip8utils")
+    add_includedirs("Chip8Disassembler.Core/include")
     add_includedirs("chip8utils/include")
 
 target("chip8utils")
@@ -44,11 +46,11 @@ target("chip8utils")
     add_files("chip8utils/*.cpp")
     add_headerfiles("chip8utils/include/*.hpp")
 
-target("chip8emu_core")
+target("Chip8Emulatorlator.Core")
     set_kind("static")
 
-    add_files("chip8emu_core/*.cpp")
-    add_headerfiles("chip8emu_core/include/*.hpp")
+    add_files("Chip8Emulatorlator.Core/*.cpp")
+    add_headerfiles("Chip8Emulatorlator.Core/include/*.hpp")
 
     add_deps("chip8utils", "sdl2wrapper")
     add_includedirs("sdl2wrapper/include")
@@ -56,11 +58,11 @@ target("chip8emu_core")
 
     add_packages("libsdl")
 
-target("chip8disasm_core")
+target("Chip8Disassembler.Core")
     set_kind("static")
 
-    add_files("chip8disasm_core/*.cpp")
-    add_headerfiles("chip8disasm_core/include/*.hpp")
+    add_files("Chip8Disassembler.Core/*.cpp")
+    add_headerfiles("Chip8Disassembler.Core/include/*.hpp")
 
     add_deps("chip8utils")
     add_includedirs("chip8utils/include")
@@ -71,10 +73,10 @@ target("chip8dump")
     add_files("chip8dump/*.cpp")
     add_headerfiles("chip8dump/*.hpp")
 
-    add_deps("chip8emu_core", "chip8disasm_core", "chip8utils", "sdl2wrapper")
-    add_includedirs("chip8emu_core/include")
+    add_deps("Chip8Emulatorlator.Core", "Chip8Disassembler.Core", "chip8utils", "sdl2wrapper")
+    add_includedirs("Chip8Emulatorlator.Core/include")
     add_includedirs("sdl2wrapper/include")
-    add_includedirs("chip8disasm_core/include")
+    add_includedirs("Chip8Disassembler.Core/include")
     add_includedirs("chip8utils/include")
 
     add_packages("libsdl")

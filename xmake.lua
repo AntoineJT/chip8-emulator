@@ -7,9 +7,8 @@ set_symbols("debug", "edit")
 
 add_requires("libsdl 2.0.12") -- latest version at the time
 
-target("Chip8Emulator")
+target("chip8emu")
     set_kind("binary")
-	set_basename("chip8emu")
 
     add_files("Chip8Emulator/*.cpp")
     add_headerfiles("Chip8Emulator/*.hpp")
@@ -29,9 +28,8 @@ target("sdl2wrapper")
 
     add_packages("libsdl")
 
-target("Chip8Disassembler")
+target("chip8disasm")
     set_kind("binary")
-	set_basename("chip8disasm")
 
     add_files("Chip8Disassembler/*.cpp")
     add_headerfiles("Chip8Disassembler/*.hpp")

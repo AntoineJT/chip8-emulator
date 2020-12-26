@@ -308,10 +308,15 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) noexcept
                 break;
 
             case LD_BX:
-                // TODO
-                PRINT_OPCODE_STATUS("Unhandled")
-                break;
+                {
+                    const std::uint8_t value = m_memory.VX[x];
+                    const std::size_t index = m_memory.I;
 
+                    m_memory.memory[index] = static_cast<std::uint8_t>(std::trunc(value / 100));
+                    m_memory.memory[index + 1] = static_cast<std::uint8_t>(std::trunc((value % 100) / 10));
+                    m_memory.memory[index + 2] = value % 10;
+                    break;
+                }
             case LD_IX:
                 for (std::size_t i = 0; i <= x; ++i)
                 {

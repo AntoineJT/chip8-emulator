@@ -7,13 +7,20 @@ set_symbols("debug", "edit")
 
 add_requires("libsdl 2.0.12") -- latest version at the time
 
+if is_mode("release") then
+    set_optimize("fastest")
+end
+
+set_default(false)
+
 target("chip8emu")
     set_kind("binary")
+    set_default(true)
 
     add_files("Chip8Emulator/*.cpp")
     add_headerfiles("Chip8Emulator/*.hpp")
 
-    add_deps("Chip8Emulator.Core", "chip8utils", "sdl2wrapper")
+    add_deps("chip8emu.core", "chip8utils", "sdl2wrapper")
     add_includedirs("Chip8Emulator.Core/include")
     add_includedirs("sdl2wrapper/include")
     add_includedirs("chip8utils/include")
@@ -34,7 +41,7 @@ target("chip8disasm")
     add_files("Chip8Disassembler/*.cpp")
     add_headerfiles("Chip8Disassembler/*.hpp")
 
-    add_deps("Chip8Disassembler.Core", "chip8utils")
+    add_deps("chip8disasm.core", "chip8utils")
     add_includedirs("Chip8Disassembler.Core/include")
     add_includedirs("chip8utils/include")
 
@@ -44,8 +51,9 @@ target("chip8utils")
     add_files("chip8utils/*.cpp")
     add_headerfiles("chip8utils/include/*.hpp")
 
-target("Chip8Emulator.Core")
+target("chip8emu.core")
     set_kind("static")
+    set_basename("Chip8Emulator.Core")
 
     add_files("Chip8Emulator.Core/*.cpp")
     add_headerfiles("Chip8Emulator.Core/include/*.hpp")
@@ -56,8 +64,9 @@ target("Chip8Emulator.Core")
 
     add_packages("libsdl")
 
-target("Chip8Disassembler.Core")
+target("chip8disasm.core")
     set_kind("static")
+    set_basename("Chip8Disassembler.Core")
 
     add_files("Chip8Disassembler.Core/*.cpp")
     add_headerfiles("Chip8Disassembler.Core/include/*.hpp")
@@ -71,10 +80,12 @@ target("chip8dump")
     add_files("chip8dump/*.cpp")
     add_headerfiles("chip8dump/*.hpp")
 
-    add_deps("Chip8Emulator.Core", "Chip8Disassembler.Core", "chip8utils", "sdl2wrapper")
+    add_deps("chip8emu.core", "chip8disasm.core", "chip8utils", "sdl2wrapper")
     add_includedirs("Chip8Emulator.Core/include")
     add_includedirs("sdl2wrapper/include")
     add_includedirs("Chip8Disassembler.Core/include")
     add_includedirs("chip8utils/include")
 
     add_packages("libsdl")
+
+target_end()

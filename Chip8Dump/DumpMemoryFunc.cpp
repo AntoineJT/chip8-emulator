@@ -119,6 +119,7 @@ std::string Chip8::Dump::DumpMemoryV2(const Memory& mem, std::string& prevHeapDu
     auto diff = CompareHeapDumps(prevHeapDump, heapDump);
     for (const diff_t& d : diff)
     {
+        // TODO use trunc instead of floor
         stream << "@" << d.first - static_cast<std::size_t>(std::floor(d.first / turns)) << ": " << d.second << " -> " << heapDump[d.first];
     }
     return stream.str();

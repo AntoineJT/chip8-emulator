@@ -14,12 +14,12 @@ namespace Chip8
         // from 0x000 to 0x1FF, the memory was
         // reserved for the interpreter
         static constexpr std::size_t entry_point = 0x200; // 512
-        static constexpr std::size_t fontset_location = 0x0000;
 
         void LoadFontSet() noexcept;
 
     public:
         static constexpr std::size_t ram_size = 4096;
+        static constexpr std::size_t fontset_location = 0x0;
         using MemoryData = std::array<uint8_t, ram_size>;
 
         Memory() noexcept;

@@ -301,10 +301,13 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) noexcept
             case ADD_IX:
                 m_memory.I += m_memory.VX[x];
                 break;
-                
+
             case LD_FX:
-                // TODO This is the instructions to point to the fontset
-                PRINT_OPCODE_STATUS("Unhandled")
+                {
+                    constexpr std::size_t char_size = 5;
+                    const std::uint16_t index = Memory::fontset_location + x * char_size;
+                    m_memory.I = index;
+                }
                 break;
 
             case LD_BX:

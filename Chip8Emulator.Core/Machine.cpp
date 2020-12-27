@@ -41,6 +41,7 @@ std::vector<Chip8::Screen::Point> PointsToDraw(const std::vector<uint8_t>& sprit
 Chip8::Machine::Machine(Screen& screen, Memory& memory) noexcept
     : m_screen(screen)
     , m_memory(memory)
+    , m_cpu(CPU(screen, memory))
 {}
 
 void Chip8::Machine::ExecuteNextInstruction() noexcept
@@ -69,35 +70,31 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) noexcept
     switch(opcode & 0xF000)
     {
     case 0x0000:
+        switch(opcode)
         {
-            switch(opcode)
-            {
-            case CLS:
-                m_screen.Refresh(true);
-                break;
-            case RET:
-                assert(m_memory.sp > 0);
-                m_memory.pc = m_memory.stack[m_memory.sp];
-                --m_memory.sp;
-                break;
-            default:
-                // SYS is 0NNN so all that remains after CLS and RET
-                // this is ignored, only used on real machine
-                PRINT_OPCODE_STATUS("Ignored")
-                break;
-            }
+        case CLS:
+            m_cpu.CLS();
+            break;
+
+        case RET:
+            m_cpu.RET();
+            break;
+
+        default:
+            // SYS is 0NNN so all that remains after CLS and RET
+            // this is ignored, only used on real machine
+            PRINT_OPCODE_STATUS("Ignored")
             break;
         }
+        break;
 
     case JP:
-        m_memory.pc = nnn;
+        m_cpu.JP(nnn);
         incBy = 0;
         break;
 
     case CALL:
-        ++m_memory.sp;
-        m_memory.stack[m_memory.sp] = m_memory.pc;
-        m_memory.pc = nnn;
+        m_cpu.CALL(nnn);
         incBy = 0;
         break;
 
@@ -123,81 +120,57 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) noexcept
         break;
 
     case LD_XKK:
-        m_memory.VX[x] = kk;
+        m_cpu.LD_XKK(x, kk);
         break;
 
     case ADD_XKK:
-        m_memory.VX[x] += kk;
+        m_cpu.ADD_XKK(x, kk);
         break;
 
     case 0x8000:
+        switch(lsb)
         {
-            switch(lsb)
-            {
-            case LD_XY:
-                m_memory.VX[x] = m_memory.VX[y];
-                break;
+        case LD_XY:
+            m_cpu.LD_XY(x, y);
+            break;
 
-            case OR:
-                m_memory.VX[x] |= m_memory.VX[y];
-                break;
+        case OR:
+            m_cpu.OR(x, y);
+            break;
 
-            case AND_XY:
-                m_memory.VX[x] &= m_memory.VX[y];
-                break;
+        case AND_XY:
+            m_cpu.AND_XY(x, y);
+            break;
 
-            case XOR:
-                m_memory.VX[x] ^= m_memory.VX[y];
-                break;
+        case XOR:
+            m_cpu.XOR(x, y);
+            break;
 
-            case ADD_XY:
-                {
-                    const std::uint16_t sum = m_memory.VX[x] + m_memory.VX[y];
-                    if (sum > 0xFF)
-                    {
-                        m_memory.VX[0xF] = 1;
-                        m_memory.VX[x] = static_cast<uint8_t>((sum - 0xFF) % 256); // not sure about that
-                    }
-                    else
-                    {
-                        m_memory.VX[0xF] = 0;
-                        m_memory.VX[x] = static_cast<uint8_t>(sum);
-                    }
-                    break;
-                }
+        case ADD_XY:
+            m_cpu.ADD_XY(x, y);
+            break;
 
-            case SUB:
-                {
-                    const std::int16_t sub = m_memory.VX[x] - m_memory.VX[y];
-                    m_memory.VX[0xF] = (sub > 0) ? 1 : 0;
-                    m_memory.VX[x] = static_cast<uint8_t>(sub % 256); // TODO wtf? need to check how to handle this properly
-                    break;
-                }
+        case SUB:
+            m_cpu.SUB(x, y);
+            break;
 
-            case SHR:
-                m_memory.VX[0xF] = m_memory.VX[x] & 0x000F;
-                m_memory.VX[x] <<= 1;
-                break;
+        case SHR:
+            m_cpu.SHR(x);
+            break;
 
-            case SUBN:
-                {
-                    const std::int16_t sub = m_memory.VX[y] - m_memory.VX[x];
-                    m_memory.VX[0xF] = (sub > 0) ? 1 : 0;
-                    m_memory.VX[x] = static_cast<uint8_t>(sub % 256); // TODO wtf? need to check how to handle this properly
-                    break;
-                }
+        case SUBN:
+            m_cpu.SUBN(x, y);
+            break;
 
-            case SHL:
-                m_memory.VX[0xF] = m_memory.VX[x] & 0x000F;
-                m_memory.VX[x] >>= 1;
-                break;
+        case SHL:
+            m_cpu.SHL(x);
+            break;
 
-            default:
-                PRINT_OPCODE_STATUS("Unknown")
-                break;
-            }
+        default:
+            PRINT_OPCODE_STATUS("Unknown")
             break;
         }
+        break;
 
     case SNE_XY:
         if (m_memory.VX[x] != m_memory.VX[y])
@@ -207,30 +180,19 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) noexcept
         break;
 
     case LD_I:
-        m_memory.I = nnn;
+        m_cpu.LD_I(nnn);
         break;
 
     case JP_V0:
-        m_memory.pc = nnn + m_memory.VX[0];
+        m_cpu.JP_V0(nnn);
         incBy = 0;
         break;
 
     case RND:
-        {
-            // TODO Move it elsewhere, use only one rd
-            // and dist instead of creating once each time
-            // i.e in a class called Random
-            
-			// NOTE if those are const, then it doesn't compile
-			// with gcc on linux
-			std::random_device rd;
-			std::uniform_int_distribution<int> dist(0, 255);
+        m_cpu.RND(x, kk);
+        break;
 
-            m_memory.VX[x] = dist(rd) & kk;
-            break;
-        }
-
-    // TODO Fix this
+    // TODO Fix this, move it to CPU
     case DRW:
         {
             std::vector<uint8_t> sprite(static_cast<std::size_t>(lsb) + 1);
@@ -277,69 +239,51 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) noexcept
         }
    
     case 0xF000:
+        switch(opcode & 0x00FF)
         {
-            switch(opcode & 0x00FF)
-            {
-            case LD_XD:
-                m_memory.VX[x] = m_memory.DT;
-                break;
+        case LD_XD:
+            m_cpu.LD_XD(x);
+            break;
 
-            case LD_XK:
-                // TODO Wait for a key press by pausing the program then
-                // store the value of the key into Vx
-                PRINT_OPCODE_STATUS("Unhandled")
-                break;
+        case LD_XK:
+            // TODO Wait for a key press by pausing the program then
+            // store the value of the key into Vx
+            PRINT_OPCODE_STATUS("Unhandled")
+            break;
 
-            case LD_DX:
-                m_memory.DT = m_memory.VX[x];
-                break;
+        case LD_DX:
+            m_cpu.LD_DX(x);
+            break;
 
-            case LD_SX:
-                m_memory.ST = m_memory.VX[x];
-                break;
+        case LD_SX:
+            m_cpu.LD_SX(x);
+            break;
 
-            case ADD_IX:
-                m_memory.I += m_memory.VX[x];
-                break;
+        case ADD_IX:
+            m_cpu.ADD_IX(x);
+            break;
 
-            case LD_FX:
-                {
-                    constexpr std::size_t char_size = 5;
-                    const std::uint16_t index = Memory::fontset_location + x * char_size;
-                    m_memory.I = index;
-                }
-                break;
+        case LD_FX:
+            m_cpu.LD_FX(x);
+            break;
 
-            case LD_BX:
-                {
-                    const std::uint8_t value = m_memory.VX[x];
-                    const std::size_t index = m_memory.I;
+        case LD_BX:
+            m_cpu.LD_BX(x);
+            break;
 
-                    m_memory.memory[index] = static_cast<std::uint8_t>(std::trunc(value / 100));
-                    m_memory.memory[index + 1] = static_cast<std::uint8_t>(std::trunc((value % 100) / 10));
-                    m_memory.memory[index + 2] = value % 10;
-                    break;
-                }
-            case LD_IX:
-                for (std::size_t i = 0; i <= x; ++i)
-                {
-                    m_memory.memory[m_memory.I + i] = m_memory.VX[i];
-                }
-                break;
+        case LD_IX:
+            m_cpu.LD_IX(x);
+            break;
 
-            case LD_XI:
-                for (std::size_t i = 0; i <= x; ++i)
-                {
-                    m_memory.VX[i] = m_memory.memory[m_memory.I + i];
-                }
-                break;
+        case LD_XI:
+            m_cpu.LD_XI(x);
+            break;
 
-            default:
-                PRINT_OPCODE_STATUS("Unknown")
-                break;
-            }
+        default:
+            PRINT_OPCODE_STATUS("Unknown")
             break;
         }
+        break;
 
     default:
         PRINT_OPCODE_STATUS("Unknown")

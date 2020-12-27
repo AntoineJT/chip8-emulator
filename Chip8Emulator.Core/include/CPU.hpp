@@ -1,5 +1,7 @@
 #pragma once
+
 #include "Memory.hpp"
+#include "Random.hpp"
 #include "Screen.hpp"
 
 namespace Chip8
@@ -8,6 +10,7 @@ namespace Chip8
     {
         Screen& m_screen;
         Memory& m_memory;
+        Random random = Random(0, 255);
 
     public:
         CPU(Screen& screen, Memory& memory) noexcept;

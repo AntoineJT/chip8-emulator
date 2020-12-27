@@ -119,16 +119,7 @@ void Chip8::CPU::JP_V0(const std::uint16_t nnn) const noexcept
 
 void Chip8::CPU::RND(const std::uint8_t x, const std::uint8_t kk) const noexcept
 {
-    // TODO Use only one rd and dist
-    // instead of creating once each time
-    // i.e in a class called Random
-
-    // NOTE if those are const, then it doesn't compile
-    // with gcc on linux
-    std::random_device rd;
-    std::uniform_int_distribution<int> dist(0, 255);
-
-    m_memory.VX[x] = dist(rd) & kk;
+    m_memory.VX[x] = random.Pick() & kk;
 }
 
 void Chip8::CPU::LD_XD(const std::uint8_t x) const noexcept

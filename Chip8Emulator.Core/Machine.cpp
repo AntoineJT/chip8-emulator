@@ -41,13 +41,13 @@ Chip8::Machine::Machine(Screen& screen, Memory& memory) noexcept
     , m_cpu(CPU(screen, memory))
 {}
 
-void Chip8::Machine::ExecuteNextInstruction() noexcept
+void Chip8::Machine::ExecuteNextInstruction() const noexcept
 {
     Execute(m_memory.NextInstruction());
     // TODO S'occuper des timers
 }
 
-void Chip8::Machine::Execute(const std::uint16_t opcode) noexcept
+void Chip8::Machine::Execute(const std::uint16_t opcode) const noexcept
 {
 #define PRINT_OPCODE_STATUS(case_) \
     std::cerr << "Err: " << (case_) << " instruction (" \

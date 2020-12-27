@@ -28,7 +28,7 @@ namespace Chip8
 
     private:
         std::uint8_t m_ratio;
-        PixelGrid m_grid;
+        PixelGrid m_grid = InitGrid();
         SDL2::Window m_window;
         SDL2::Renderer m_renderer;
 

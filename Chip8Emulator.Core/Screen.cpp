@@ -41,7 +41,6 @@ Chip8::Screen::PixelGrid Chip8::Screen::InitGrid() noexcept
 
 Chip8::Screen::Screen(const SDL2::SDL& sdl, const std::uint8_t ratio) noexcept
     : m_ratio(ratio)
-    , m_grid(InitGrid())
     , m_window(CreateWindow(sdl, ratio))
     , m_renderer(SDL2::Renderer(m_window, -1, SDL_RENDERER_ACCELERATED))
 {

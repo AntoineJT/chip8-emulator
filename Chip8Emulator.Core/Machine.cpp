@@ -8,33 +8,6 @@
 // I think it suits to the use case
 using namespace Chip8::Utils::Instructions;
 
-std::vector<Chip8::Screen::Point> PointsToDraw(const std::vector<uint8_t>& sprite, const Chip8::Screen::Point point, const uint8_t width) noexcept
-{
-    assert(width <= 8);
-    const std::size_t size = sprite.size();
-
-    std::vector<Chip8::Screen::Point> toDraw;
-
-    for (std::size_t y = 0; y < size; ++y)
-    {
-        const std::uint8_t line = sprite[y];
-        for (std::size_t x = 0; x < width; ++x)
-        {
-            constexpr std::uint8_t MSB = 0x80;
-
-            const std::uint8_t offset = MSB >> x;
-            const bool isOn = (line & offset) != 0;
-            if (isOn)
-            {
-                toDraw.push_back({ x + point.first, y + point.second });
-            }
-        }
-    }
-
-    assert(!toDraw.empty());
-    return toDraw;
-}
-
 Chip8::Machine::Machine(Screen& screen, Memory& memory) noexcept
     : m_screen(screen)
     , m_memory(memory)
@@ -56,6 +29,7 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) const noexcept
 
     std::cout << "Info: Opcode '" << std::hex << opcode << std::dec << "' next!" << std::endl;
 
+    // TODO wtf? Here and in disasm, rename lsb to ls4b (least significant 4 bits)
     const std::uint8_t x = (opcode & 0x0F00) >> 8;
     const std::uint8_t y = (opcode & 0x00F0) >> 4;
     const std::uint8_t kk = opcode & 0x00FF;
@@ -189,33 +163,9 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) const noexcept
         m_cpu.RND(x, kk);
         break;
 
-    // TODO Move it to CPU
-    // TODO Draw: fix render being bad
-    // TODO SDL: fix it crashing if clicking on the window
     case DRW:
-        {
-            std::vector<uint8_t> sprite(static_cast<std::size_t>(lsb) + 1);
-            for (std::size_t i = 0; i <= lsb; ++i)
-            {
-                sprite[i] = m_memory.memory[i + m_memory.I];
-            }
-            const Screen::Point point(m_memory.VX[x], m_memory.VX[y]);
-            const std::vector<Screen::Point> toDraw = PointsToDraw(sprite, point, 8);
-
-            bool collides = false;
-            std::vector<Screen::Point> wrappedPoints; // (toDraw.size());
-            for (const auto& pt : toDraw)
-            {
-                const uint8_t x2 = pt.first % base_width;
-                const uint8_t y2 = pt.second % base_height;
-                collides |= m_screen.Collides(x2, y2);
-                wrappedPoints.push_back({ x2, y2 });
-            }
-            m_memory.VX[0xF] = collides ? 1 : 0;
-            m_screen.DrawSprite(wrappedPoints);
-            m_screen.Refresh(false);
-            break;
-        }
+        m_cpu.DRW(lsb, x, y);
+        break;
 
     case 0xE000:
         {

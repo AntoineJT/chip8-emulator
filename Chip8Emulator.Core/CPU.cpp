@@ -122,6 +122,62 @@ void Chip8::CPU::RND(const std::uint8_t x, const std::uint8_t kk) const noexcept
     m_memory.VX[x] = random.Pick() & kk;
 }
 
+/* DRW Stuff */
+std::vector<Chip8::Screen::Point> PointsToDraw(const std::vector<uint8_t>& sprite, const Chip8::Screen::Point point, const uint8_t width) noexcept
+{
+    assert(width <= 8);
+    const std::size_t size = sprite.size();
+
+    std::vector<Chip8::Screen::Point> toDraw;
+
+    for (std::size_t y = 0; y < size; ++y)
+    {
+        const std::uint8_t line = sprite[y];
+        for (std::size_t x = 0; x < width; ++x)
+        {
+            constexpr std::uint8_t MSB = 0x80;
+
+            const std::uint8_t offset = MSB >> x;
+            const bool isOn = (line & offset) != 0;
+            if (isOn)
+            {
+                toDraw.push_back({ x + point.first, y + point.second });
+            }
+        }
+    }
+
+    assert(!toDraw.empty());
+    return toDraw;
+}
+/* End of DRW Stuff */
+
+// TODO Draw: fix render being bad
+// TODO SDL: fix it crashing if clicking on the window
+void Chip8::CPU::DRW(const std::uint8_t ls4b, const std::uint8_t x, const std::uint8_t y) const noexcept
+{
+    assert(ls4b <= 0xF);
+    std::vector<uint8_t> sprite(static_cast<std::size_t>(ls4b) + 1);
+    for (std::size_t i = 0; i <= ls4b; ++i)
+    {
+        sprite[i] = m_memory.memory[i + m_memory.I];
+    }
+    const Screen::Point point(m_memory.VX[x], m_memory.VX[y]);
+    const std::vector<Screen::Point> toDraw = PointsToDraw(sprite, point, 8);
+
+    bool collides = false;
+    std::vector<Screen::Point> wrappedPoints; // (toDraw.size());
+    for (const auto& pt : toDraw)
+    {
+        const uint8_t x2 = pt.first % base_width;
+        const uint8_t y2 = pt.second % base_height;
+        collides |= m_screen.Collides(x2, y2);
+        wrappedPoints.push_back({ x2, y2 });
+    }
+    m_memory.VX[0xF] = collides ? 1 : 0;
+    m_screen.DrawSprite(wrappedPoints);
+    m_screen.Refresh(false);
+}
+
 void Chip8::CPU::LD_XD(const std::uint8_t x) const noexcept
 {
     m_memory.VX[x] = m_memory.DT;

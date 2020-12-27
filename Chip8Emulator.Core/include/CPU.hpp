@@ -33,6 +33,7 @@ namespace Chip8
         void LD_I(std::uint16_t nnn) const noexcept;
         void JP_V0(std::uint16_t nnn) const noexcept;
         void RND(std::uint8_t x, std::uint8_t kk) const noexcept;
+        void DRW(std::uint8_t ls4b, std::uint8_t x, std::uint8_t y) const noexcept;
         void LD_XD(std::uint8_t x) const noexcept;
         void LD_DX(std::uint8_t x) const noexcept;
         void LD_SX(std::uint8_t x) const noexcept;

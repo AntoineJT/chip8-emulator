@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
     mem.LoadProgram(content);
     Chip8::Machine machine(screen, mem);
 
-    std::string lastHeapDump;
+    // std::string lastHeapDump;
     while(true)
     {
         const std::uint16_t opcode = mem.NextInstruction();

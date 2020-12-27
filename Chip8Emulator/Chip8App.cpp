@@ -14,6 +14,8 @@
 
 #include <SDL.h>
 
+#include "ScreenImpl.hpp"
+
 int main(int argc, char* argv[])
 {
     std::string filename;
@@ -42,10 +44,10 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    Chip8::Screen screen(sdl, 16);
+    Chip8::ScreenImpl screen(sdl, 16);
     Chip8::Memory memory;
     memory.LoadProgram(content);
-    Chip8::Machine machine(screen, memory);
+    const Chip8::Machine machine(screen, memory);
 
     while(true)
     {

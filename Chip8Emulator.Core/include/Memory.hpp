@@ -8,7 +8,7 @@ namespace Chip8
 {
     class Memory
     {
-        // TODO Support ETI 660
+        // TODO Support ETI 660 if some ROMs still exists on the Internet
         // See here: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#2.1
         // Begins at 0x200, because generally
         // from 0x000 to 0x1FF, the memory was

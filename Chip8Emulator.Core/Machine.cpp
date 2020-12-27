@@ -8,7 +8,6 @@
 // I think it suits to the use case
 using namespace Chip8::Utils::Instructions;
 
-// TODO Find the underlying problem: sometimes it returns empty vector
 std::vector<Chip8::Screen::Point> PointsToDraw(const std::vector<uint8_t>& sprite, const Chip8::Screen::Point point, const uint8_t width) noexcept
 {
     assert(width <= 8);
@@ -190,7 +189,9 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) noexcept
         m_cpu.RND(x, kk);
         break;
 
-    // TODO Fix this, move it to CPU
+    // TODO Move it to CPU
+    // TODO Draw: fix render being bad
+    // TODO SDL: fix it crashing if clicking on the window
     case DRW:
         {
             std::vector<uint8_t> sprite(static_cast<std::size_t>(lsb) + 1);

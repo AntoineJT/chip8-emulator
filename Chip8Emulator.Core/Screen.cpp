@@ -127,5 +127,3 @@ bool Chip8::Screen::Collides(const uint8_t x, const uint8_t y) const noexcept
     assert(y >= 0 && y <= base_height);
     return m_grid[x][y];
 }
-
-// TODO Implement the char rendering function

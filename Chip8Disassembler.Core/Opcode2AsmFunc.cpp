@@ -48,8 +48,8 @@ std::string GetOperands(const uint16_t opcode, const request req)
 
 std::string DrawOperands(const uint16_t opcode)
 {
-    const std::uint8_t lsb = opcode & 0x000F; // least significant bit
-    return GetOperands(opcode, XY) + ", 0x" + Chip8::Hex::Uint4HexValue(lsb);
+    const std::uint8_t ls4b = opcode & 0x000F; // least significant 4 bits
+    return GetOperands(opcode, XY) + ", 0x" + Chip8::Hex::Uint4HexValue(ls4b);
 }
 
 std::string UnknownOpcode(const uint16_t opcode) noexcept
@@ -91,8 +91,8 @@ std::string Chip8::Disasm::Opcode2Asm(const std::uint16_t opcode) noexcept
         return "ADD " + GetOperands(opcode, XKK) + " ; XKK";
     case 0x8000:
     {
-        const std::uint8_t lsb = opcode & 0x000F; // least significant bit
-        switch (lsb)
+        const std::uint8_t ls4b = opcode & 0x000F; // least significant 4 bits
+        switch (ls4b)
         {
         case LD_XY:
             return "LD " + GetOperands(opcode, XY) + " ; XY";

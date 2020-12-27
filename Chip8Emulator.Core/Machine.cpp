@@ -29,11 +29,10 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) const noexcept
 
     std::cout << "Info: Opcode '" << std::hex << opcode << std::dec << "' next!" << std::endl;
 
-    // TODO wtf? Here and in disasm, rename lsb to ls4b (least significant 4 bits)
     const std::uint8_t x = (opcode & 0x0F00) >> 8;
     const std::uint8_t y = (opcode & 0x00F0) >> 4;
     const std::uint8_t kk = opcode & 0x00FF;
-    const std::uint8_t lsb = opcode & 0x000F; // least significant bit
+    const std::uint8_t ls4b = opcode & 0x000F; // least significant 4 bits
     const std::uint16_t nnn = opcode & 0x0FFF;
 
     std::uint8_t incBy = 2;
@@ -99,7 +98,7 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) const noexcept
         break;
 
     case 0x8000:
-        switch(lsb)
+        switch(ls4b)
         {
         case LD_XY:
             m_cpu.LD_XY(x, y);
@@ -164,7 +163,7 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) const noexcept
         break;
 
     case DRW:
-        m_cpu.DRW(lsb, x, y);
+        m_cpu.DRW(ls4b, x, y);
         break;
 
     case 0xE000:

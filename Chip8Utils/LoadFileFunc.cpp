@@ -1,4 +1,4 @@
-#include "include/LoadFileFunc.hpp"
+#include "LoadFileFunc.hpp"
 
 #include <cstring>
 #include <fstream>

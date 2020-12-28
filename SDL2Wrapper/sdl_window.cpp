@@ -1,4 +1,4 @@
-#include "include/sdl_window.hpp"
+#include "sdl_window.hpp"
 #include <SDL.h>
 
 #include <cassert>

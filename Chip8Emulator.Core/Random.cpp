@@ -1,4 +1,4 @@
-#include "include/Random.hpp"
+#include "Random.hpp"
 
 Chip8::Random::Random(const int min, const int max)
     : min(min)

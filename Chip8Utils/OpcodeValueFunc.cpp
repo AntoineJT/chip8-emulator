@@ -1,4 +1,4 @@
-#include "include/OpcodeValueFunc.hpp"
+#include "OpcodeValueFunc.hpp"
 
 std::uint16_t Chip8::Utils::OpcodeValue(const std::uint8_t upper, const std::uint8_t lower) noexcept
 {

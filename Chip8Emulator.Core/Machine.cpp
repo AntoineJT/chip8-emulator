@@ -1,6 +1,5 @@
-#include "include/Machine.hpp"
+#include "Machine.hpp"
 
-#include <cassert>
 #include <iostream>
 
 #include "Instructions.hpp"

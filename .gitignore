@@ -8,7 +8,8 @@
 
 # Auto-generated projects
 /CMakeFiles/
-/vsxmake2019/
+/vsxmake*/
+/vs*/
 /*.sln
 /*.vcxproj
 /*.vcxproj.filters

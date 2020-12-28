@@ -1,4 +1,4 @@
-#include "include/Screen.hpp"
+#include "Screen.hpp"
 
 #include <algorithm>
 #include <array>

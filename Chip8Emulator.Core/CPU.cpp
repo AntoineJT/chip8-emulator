@@ -1,4 +1,4 @@
-#include "include/CPU.hpp"
+#include "CPU.hpp"
 
 #include <cassert>
 #include <random>

@@ -1,4 +1,4 @@
-#include "include/sdl.hpp"
+#include "sdl.hpp"
 
 #include <cassert>
 

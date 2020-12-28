@@ -1,4 +1,4 @@
-#include "include/sdl_renderer.hpp"
+#include "sdl_renderer.hpp"
 
 #include <cassert>
 #include <climits>
@@ -6,7 +6,7 @@
 #include <SDL.h>
 #include <vector>
 
-#include "include/sdl_window.hpp"
+#include "sdl_window.hpp"
 
 constexpr int SUCCESS = 0;
 

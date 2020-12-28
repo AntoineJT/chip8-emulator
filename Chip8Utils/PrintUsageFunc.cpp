@@ -1,4 +1,4 @@
-#include "include/PrintUsageFunc.hpp"
+#include "PrintUsageFunc.hpp"
 
 #include <iostream>
 

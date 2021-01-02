@@ -1,4 +1,7 @@
-set_xmakever("2.3.9")
+-- I'm using xmake 2.3.9 with
+-- dev branch scripts, so it is
+-- a pre-2.5.1 nightly version
+-- set_xmakever("2.5.1")
 
 set_project("chip8emu")
 set_version("wip") -- will follow semver later
@@ -15,7 +18,7 @@ end
 
 target("chip8emu")
     set_kind("binary")
-    -- set_group("Applications")
+    set_group("Applications")
 
     add_files("Chip8Emulator/*.cpp")
     add_headerfiles("Chip8Emulator/*.hpp")
@@ -25,7 +28,7 @@ target("chip8emu")
 
 target("sdl2wrapper")
     set_kind("static")
-    -- set_group("Static libs")
+    set_group("Static libs")
 
     add_files("sdl2wrapper/*.cpp")
     add_headerfiles("sdl2wrapper/include/*.hpp")
@@ -35,7 +38,7 @@ target("sdl2wrapper")
 
 target("chip8disasm")
     set_kind("binary")
-    -- set_group("Applications")
+    set_group("Applications")
 
     add_files("Chip8Disassembler/*.cpp")
     add_headerfiles("Chip8Disassembler/*.hpp")
@@ -44,7 +47,7 @@ target("chip8disasm")
 
 target("chip8utils")
     set_kind("static")
-    -- set_group("Static libs")
+    set_group("Static libs")
 
     add_files("Chip8Utils/*.cpp")
     add_headerfiles("Chip8Utils/include/*.hpp")
@@ -53,7 +56,7 @@ target("chip8utils")
 target("chip8emu.core")
     set_kind("static")
     set_basename("Chip8Emulator.Core")
-    -- set_group("Static libs")
+    set_group("Static libs")
 
     add_files("Chip8Emulator.Core/*.cpp")
     add_headerfiles("Chip8Emulator.Core/include/*.hpp")
@@ -65,7 +68,7 @@ target("chip8emu.core")
 target("chip8disasm.core")
     set_kind("static")
     set_basename("Chip8Disassembler.Core")
-    -- set_group("Static libs")
+    set_group("Static libs")
 
     add_files("Chip8Disassembler.Core/*.cpp")
     add_headerfiles("Chip8Disassembler.Core/include/*.hpp")
@@ -75,7 +78,7 @@ target("chip8disasm.core")
 
 target("chip8dump")
     set_kind("binary")
-    -- set_group("Applications")
+    set_group("Applications")
 
     add_files("chip8dump/*.cpp")
     add_headerfiles("chip8dump/*.hpp")

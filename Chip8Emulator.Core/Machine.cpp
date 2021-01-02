@@ -19,13 +19,15 @@ void Chip8::Machine::ExecuteNextInstruction() const noexcept
     // TODO S'occuper des timers
 }
 
+void PrintOpcodeStatus(const char* status, const std::uint16_t opcode) noexcept
+{
+    std::cerr << "Err: " << status << " instruction ("
+        << std::hex << opcode << std::dec << ")"
+        << std::endl;
+}
+
 void Chip8::Machine::Execute(const std::uint16_t opcode) const noexcept
 {
-#define PRINT_OPCODE_STATUS(case_) \
-    std::cerr << "Err: " << (case_) << " instruction (" \
-        << std::hex << opcode << std::dec << ")" \
-        << std::endl;
-
     std::cout << "Info: Opcode '" << std::hex << opcode << std::dec << "' next!" << std::endl;
 
     const std::uint8_t x = (opcode & 0x0F00) >> 8;
@@ -52,7 +54,7 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) const noexcept
         default:
             // SYS is 0NNN so all that remains after CLS and RET
             // this is ignored, only used on real machine
-            PRINT_OPCODE_STATUS("Ignored")
+            PrintOpcodeStatus("Ignored", opcode);
             break;
         }
         break;
@@ -136,7 +138,7 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) const noexcept
             break;
 
         default:
-            PRINT_OPCODE_STATUS("Unknown")
+            PrintOpcodeStatus("Unknown", opcode);
             break;
         }
         break;
@@ -170,18 +172,18 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) const noexcept
             if (kk == SKP)
             {
                 // TODO Implement it, needs to check keyboard status (SDL)
-                PRINT_OPCODE_STATUS("Unhandled")
+                PrintOpcodeStatus("Unhandled", opcode);
                 break;
             }
 
             if (kk == SKNP)
             {
                 // TODO Implement it, the opposite of SKP
-                PRINT_OPCODE_STATUS("Unhandled")
+                PrintOpcodeStatus("Unhandled", opcode);
                 break;
             }
 
-            PRINT_OPCODE_STATUS("Unknown")
+            PrintOpcodeStatus("Unknown", opcode);
             break;
         }
    
@@ -195,7 +197,7 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) const noexcept
         case LD_XK:
             // TODO Wait for a key press by pausing the program then
             // store the value of the key into Vx
-            PRINT_OPCODE_STATUS("Unhandled")
+            PrintOpcodeStatus("Unhandled", opcode);
             break;
 
         case LD_DX:
@@ -227,17 +229,15 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) const noexcept
             break;
 
         default:
-            PRINT_OPCODE_STATUS("Unknown")
+            PrintOpcodeStatus("Unknown", opcode);
             break;
         }
         break;
 
     default:
-        PRINT_OPCODE_STATUS("Unknown")
+        PrintOpcodeStatus("Unknown", opcode);
         break;
     }
 
     m_memory.pc += incBy;
-
-#undef PRINT_OPCODE_STATUS
 }

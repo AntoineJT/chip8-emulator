@@ -1,3 +1,5 @@
+add_repositories("test-repo xmake-repo")
+
 -- I'm using xmake 2.3.9 with
 -- dev branch scripts, so it is
 -- a pre-2.5.1 nightly version
@@ -10,7 +12,7 @@ add_rules("mode.debug", "mode.release")
 set_languages("cxx17")
 set_symbols("debug", "edit")
 
-add_requires("libsdl 2.0.12") -- latest version at the time
+add_requires("libsdl 2.0.14") -- latest version at the time
 
 if is_mode("release") then
     set_optimize("fastest")

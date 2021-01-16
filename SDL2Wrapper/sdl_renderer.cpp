@@ -44,7 +44,7 @@ static bool ColorEquals(SDL_Color a, SDL_Color b)
     return a.r == b.r && a.g == b.g && a.b == b.b && a.a == b.a;
 }
 
-void SDL2::Renderer::SetRenderDrawColor(const SDL_Color color) noexcept
+void SDL2::Renderer::SetDrawColor(const SDL_Color color) noexcept
 {
     if (!ColorEquals(color, m_drawColor))
     {
@@ -59,7 +59,7 @@ void SDL2::Renderer::RenderClear() const noexcept
     sdl_assert(SDL_RenderClear(m_pRenderer) == SUCCESS);
 }
 
-SDL_Color SDL2::Renderer::RenderDrawColor() const noexcept
+SDL_Color SDL2::Renderer::DrawColor() const noexcept
 {
     return m_drawColor;
 }
@@ -69,12 +69,12 @@ void SDL2::Renderer::RenderPresent() const noexcept
     SDL_RenderPresent(m_pRenderer);
 }
 
-void SDL2::Renderer::RenderFillRect(const std::unique_ptr<SDL_Rect> rect) const noexcept
+void SDL2::Renderer::FillRect(const std::unique_ptr<SDL_Rect> rect) const noexcept
 {
     sdl_assert(SDL_RenderFillRect(m_pRenderer, rect.get()) == SUCCESS);
 }
 
-void SDL2::Renderer::RenderFillRects(const std::vector<SDL_Rect>& rect) const noexcept
+void SDL2::Renderer::FillRects(const std::vector<SDL_Rect>& rect) const noexcept
 {
     const auto size = rect.size();
     assert(size <= INT_MAX);

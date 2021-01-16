@@ -1,6 +1,5 @@
 #include "Screen.hpp"
 
-#include <algorithm>
 #include <array>
 #include <cassert>
 #include <cstdint>
@@ -45,7 +44,7 @@ Chip8::Screen::Screen(const SDL2::SDL& sdl, const std::uint8_t ratio) noexcept
     , m_renderer(SDL2::Renderer(m_window, -1, SDL_RENDERER_ACCELERATED))
 {
     // set background to black
-    m_renderer.SetRenderDrawColor(SDL2::Colors::BLACK);
+    m_renderer.SetDrawColor(SDL2::Colors::BLACK);
     // a full refresh is required here to draw the black bg
     Refresh(true);
 }
@@ -78,8 +77,8 @@ void Chip8::Screen::Render(const PixelGrid& grid)
 
 void Chip8::Screen::DrawPoints(const SDL_Color color, const std::vector<SDL_Rect>& rects) noexcept
 {
-    m_renderer.SetRenderDrawColor(color);
-    m_renderer.RenderFillRects(rects);
+    m_renderer.SetDrawColor(color);
+    m_renderer.FillRects(rects);
 }
 
 void Chip8::Screen::DrawSprite(const std::vector<Point>& pixelsOn)
@@ -116,7 +115,7 @@ void Chip8::Screen::Refresh(const bool fullRefresh) noexcept
 
 void Chip8::Screen::ChangeBgColor(const SDL_Color color, const bool fullRefresh) noexcept
 {
-    m_renderer.SetRenderDrawColor(color);
+    m_renderer.SetDrawColor(color);
     Refresh(fullRefresh);
 }
 

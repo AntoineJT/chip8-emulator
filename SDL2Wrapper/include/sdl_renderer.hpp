@@ -22,11 +22,11 @@ namespace SDL2
         Renderer& operator=(Renderer&&) = default;
 
         SDL_Renderer* Data() const noexcept;
-        void SetRenderDrawColor(SDL_Color color) noexcept;
+        void SetDrawColor(SDL_Color color) noexcept;
         void RenderClear() const noexcept;
-        SDL_Color RenderDrawColor() const noexcept;
+        SDL_Color DrawColor() const noexcept;
         void RenderPresent() const noexcept;
-        void RenderFillRect(std::unique_ptr<SDL_Rect> rect) const noexcept;
-        void RenderFillRects(const std::vector<SDL_Rect>& rect) const noexcept;
+        void FillRect(std::unique_ptr<SDL_Rect> rect) const noexcept;
+        void FillRects(const std::vector<SDL_Rect>& rect) const noexcept;
     };
 };

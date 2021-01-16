@@ -1,7 +1,5 @@
 #include "DumpMemoryFunc.hpp"
 
-#include <cassert>
-#include <cmath>
 #include <string>
 #include <sstream>
 
@@ -46,7 +44,7 @@ std::ostringstream DumpMemoryWithoutHeap(const Chip8::Memory& mem)
     return stream;
 }
 
-void Chip8::Dump::DumpHeap(std::ostringstream& stream, const Chip8::Memory& mem)
+void Chip8::Dump::DumpHeap(std::ostringstream& stream, const Memory& mem)
 {
     static_assert(turns * turns == Memory::ram_size);
     for (std::size_t i = 0; i < turns; ++i)
@@ -59,7 +57,7 @@ void Chip8::Dump::DumpHeap(std::ostringstream& stream, const Chip8::Memory& mem)
     }
 }
 
-std::string Chip8::Dump::DumpHeap(const Chip8::Memory& mem)
+std::string Chip8::Dump::DumpHeap(const Memory& mem)
 {
     std::ostringstream stream;
     DumpHeap(stream, mem);
@@ -71,56 +69,5 @@ std::string Chip8::Dump::DumpMemory(const Memory& mem)
     auto stream = DumpMemoryWithoutHeap(mem);
     stream << "Memory: " << '\n';
     DumpHeap(stream, mem);
-    return stream.str();
-}
-
-// NOTE: I don't know if I need a vector or just one size_t + char
-using diff_t = std::pair<std::size_t, char>;
-using diffs = std::vector<diff_t>;
-
-diffs CompareHeapDumps(std::string& prevHeapDump, std::string& heapDump)
-{
-    static_assert(turns * turns == Chip8::Memory::ram_size);
-
-    constexpr std::size_t heap_size = Chip8::Memory::ram_size + turns; // this count the '\n' in the dumps
-    assert(prevHeapDump.size() == heap_size);
-    assert(heapDump.size() == heap_size);
-
-    diffs result;
-
-    for (std::size_t i = 0; i < turns; ++i)
-    {
-        for (std::size_t j = 0; j < turns; ++j)
-        {
-            const std::size_t index = i * turns + j;
-            const char& prev = prevHeapDump[index];
-            const char& cur = heapDump[index];
-
-            if (prev != cur)
-            {
-                result.push_back({index, prev});
-            }
-        }
-    }
-
-    return result;
-}
-
-// TODO Fix it, avoid mutation on head dumps
-std::string Chip8::Dump::DumpMemoryV2(const Memory& mem, std::string& prevHeapDump, std::string& heapDump)
-{
-    auto stream = DumpMemoryWithoutHeap(mem);
-    stream << "Memory: " << '\n';
-    if (prevHeapDump.empty())
-    {
-        stream << heapDump;
-        return stream.str();
-    }
-    auto diff = CompareHeapDumps(prevHeapDump, heapDump);
-    for (const diff_t& d : diff)
-    {
-        // TODO use trunc instead of floor
-        stream << "@" << d.first - static_cast<std::size_t>(std::floor(d.first / turns)) << ": " << d.second << " -> " << heapDump[d.first];
-    }
     return stream.str();
 }

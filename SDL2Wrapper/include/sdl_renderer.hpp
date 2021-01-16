@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <vector>
 
+#include "sdl_colors.hpp"
 #include "sdl_window.hpp"
 
 namespace SDL2
@@ -10,6 +11,7 @@ namespace SDL2
     class Renderer
     {
         SDL_Renderer* m_pRenderer;
+        SDL_Color m_drawColor = Colors::BLACK;
 
     public:
         Renderer(SDL_Window* window, int index, Uint32 flags) noexcept;
@@ -20,10 +22,11 @@ namespace SDL2
         Renderer& operator=(Renderer&&) = default;
 
         SDL_Renderer* Data() const noexcept;
-        bool SetRenderDrawColor(SDL_Color color) const noexcept;
-        bool RenderClear() const noexcept;
+        void SetRenderDrawColor(SDL_Color color) noexcept;
+        void RenderClear() const noexcept;
+        SDL_Color RenderDrawColor() const noexcept;
         void RenderPresent() const noexcept;
-        bool RenderFillRect(std::unique_ptr<SDL_Rect> rect) const noexcept;
-        bool RenderFillRects(const std::vector<SDL_Rect>& rect) const noexcept;
+        void RenderFillRect(std::unique_ptr<SDL_Rect> rect) const noexcept;
+        void RenderFillRects(const std::vector<SDL_Rect>& rect) const noexcept;
     };
 };

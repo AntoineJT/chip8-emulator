@@ -14,6 +14,8 @@
 
 #include <SDL.h>
 
+#include "sdl_colors.hpp"
+
 int main(int argc, char* argv[])
 {
     std::string filename;

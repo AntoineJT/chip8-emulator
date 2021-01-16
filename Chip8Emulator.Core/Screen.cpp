@@ -45,13 +45,13 @@ Chip8::Screen::Screen(const SDL2::SDL& sdl, const std::uint8_t ratio) noexcept
     , m_renderer(SDL2::Renderer(m_window, -1, SDL_RENDERER_ACCELERATED))
 {
     // set background to black
-    sdl_assert(m_renderer.SetRenderDrawColor(SDL2::Colors::BLACK));
+    m_renderer.SetRenderDrawColor(SDL2::Colors::BLACK);
     // a full refresh is required here to draw the black bg
     Refresh(true);
 }
 
 // this will be used for internal splashscreen for example
-void Chip8::Screen::Render(const PixelGrid& grid) const
+void Chip8::Screen::Render(const PixelGrid& grid)
 {
     std::vector<SDL_Rect> pixelsOff;
     std::vector<SDL_Rect> pixelsOn;
@@ -76,10 +76,10 @@ void Chip8::Screen::Render(const PixelGrid& grid) const
     DrawPoints(SDL2::Colors::WHITE, pixelsOn);
 }
 
-void Chip8::Screen::DrawPoints(const SDL_Color color, const std::vector<SDL_Rect>& rects) const noexcept
+void Chip8::Screen::DrawPoints(const SDL_Color color, const std::vector<SDL_Rect>& rects) noexcept
 {
-    sdl_assert(m_renderer.SetRenderDrawColor(color));
-    sdl_assert(m_renderer.RenderFillRects(rects));
+    m_renderer.SetRenderDrawColor(color);
+    m_renderer.RenderFillRects(rects);
 }
 
 void Chip8::Screen::DrawSprite(const std::vector<Point>& pixelsOn)
@@ -106,7 +106,7 @@ void Chip8::Screen::Refresh(const bool fullRefresh) noexcept
     if (fullRefresh)
     {
         // clears screen
-        sdl_assert(m_renderer.RenderClear());
+        m_renderer.RenderClear();
         // clears grid cache
         ResetGrid(m_grid);
     }
@@ -116,7 +116,7 @@ void Chip8::Screen::Refresh(const bool fullRefresh) noexcept
 
 void Chip8::Screen::ChangeBgColor(const SDL_Color color, const bool fullRefresh) noexcept
 {
-    sdl_assert(m_renderer.SetRenderDrawColor(color));
+    m_renderer.SetRenderDrawColor(color);
     Refresh(fullRefresh);
 }
 

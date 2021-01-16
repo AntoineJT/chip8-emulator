@@ -10,7 +10,7 @@ namespace Chip8
     {
         Screen& m_screen;
         Memory& m_memory;
-        Random random = Random(0, 255);
+        Random m_random = Random(0, 255);
 
     public:
         CPU(Screen& screen, Memory& memory) noexcept;

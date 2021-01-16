@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
 
     SDL2::SDL sdl(true);
     // should not be ALREADY_RUNNING, at least for now
-    assert(sdl.Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
+    sdl_assert(sdl.Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
 
     std::vector<char> content;
     if (!Chip8::Utils::LoadFile(content, filename))

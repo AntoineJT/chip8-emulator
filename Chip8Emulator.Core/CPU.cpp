@@ -119,7 +119,7 @@ void Chip8::CPU::JP_V0(const std::uint16_t nnn) const noexcept
 
 void Chip8::CPU::RND(const std::uint8_t x, const std::uint8_t kk) const noexcept
 {
-    m_memory.VX[x] = random.Pick() & kk;
+    m_memory.VX[x] = m_random.Pick() & kk;
 }
 
 /* DRW Stuff */

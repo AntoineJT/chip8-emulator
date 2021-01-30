@@ -42,6 +42,7 @@ int main(int argc, char* argv[])
     case 3:
         filename = argv[1];
         delay = std::atoi(argv[2]);
+        break;
     default:
         std::cerr << "Too much arguments." << std::endl;
         PrintUsage(argv[0]);

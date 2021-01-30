@@ -1,9 +1,4 @@
-add_repositories("test-repo xmake-repo")
-
--- I'm using xmake 2.3.9 with
--- dev branch scripts, so it is
--- a pre-2.5.1 nightly version
--- set_xmakever("2.5.1")
+set_xmakever("2.5.1")
 
 set_project("chip8emu")
 set_version("wip") -- will follow semver later

@@ -16,10 +16,10 @@ package("tclap")
 	end)
 	
 	on_test(function (package)
-        assert(package:check_cxxsnippets({test = [[
+		assert(package:check_cxxsnippets({test = [[
 			#include <tclap/CmdLine.h>
 			void test() {
-                TCLAP::CmdLine cmd("Test", ' ', "0.9");
-            }
-        ]]}, {configs = {languages = "c++98"}}))
-    end)
+				TCLAP::CmdLine cmd("Test", ' ', "0.9");
+			}
+		]]}, {configs = {languages = "c++98"}}))
+	end)

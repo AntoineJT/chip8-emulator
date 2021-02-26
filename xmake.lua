@@ -1,3 +1,5 @@
+add_repositories("custom-repo xmake-repo")
+
 set_xmakever("2.5.1")
 
 set_project("chip8emu")
@@ -7,7 +9,8 @@ add_rules("mode.debug", "mode.release")
 set_languages("cxx17")
 set_symbols("debug", "edit")
 
-add_requires("libsdl 2.0.14") -- latest version at the time
+add_requires("libsdl 2.0.14", -- latest version at the time
+	"tclap 1.4.0-rc1")
 
 if is_mode("release") then
     set_optimize("fastest")
@@ -81,6 +84,6 @@ target("chip8dump")
     add_headerfiles("chip8dump/*.hpp")
 
     add_deps("chip8emu.core", "chip8disasm.core", "chip8utils", "sdl2wrapper")
-    add_packages("libsdl")
+    add_packages("libsdl", "tclap")
 
 target_end()

@@ -20,9 +20,15 @@ void PrintUsage(const char* filename) noexcept
 {
     std::cerr << "Usage: " << filename << " inputfile [delay]" << std::endl
         << std::endl
-        << "Parameters " << std::endl
+        << "Parameters" << std::endl
         << "inputfile: Input file" << std::endl
         << "delay: Time in milliseconds between instructions" << std::endl;
+    // TODO make/use a real argument parser in order to make that
+/*
+        << std::endl
+        << "Flags" << std::endl
+        << "--no-heap: Don't dump heap memory" << std::endl;
+*/
 }
 
 int main(int argc, char* argv[])

@@ -15,6 +15,7 @@
 #include "sdl.hpp"
 
 #include <SDL.h>
+#include <tclap/CmdLine.h>
 
 void PrintUsage(const char* filename) noexcept
 {

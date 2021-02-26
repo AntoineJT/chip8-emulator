@@ -4,13 +4,7 @@ package("tclap")
 	set_license("MIT")
 	
 	set_urls("https://netcologne.dl.sourceforge.net/project/tclap/tclap-$(version).tar.bz2")
-	
 	add_versions("1.4.0-rc1", "33e18c7828f76a9e5f2a00afe575156520e383693059ca9bc34ff562927e20c6")
---[[
-	on_install(function (package)
-		os.cp("tclap-" .. package:version() .. "/include", package:installdir("include"))
-	end)
-]]--
 
 	add_deps("cmake")	
 

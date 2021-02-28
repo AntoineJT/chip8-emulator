@@ -6,12 +6,15 @@ package("tclap")
 	set_urls("https://netcologne.dl.sourceforge.net/project/tclap/tclap-$(version).tar.bz2")
 	add_versions("1.4.0-rc1", "33e18c7828f76a9e5f2a00afe575156520e383693059ca9bc34ff562927e20c6")
 
-	add_deps("cmake")	
+	-- NOTE it could be useful to patch CMakeLists.txt
+	-- in order to avoid building examples
+
+	-- python3 is required by the tests module
+	add_deps("cmake", "python 3.*")
 
 	on_install(function (package)
-		-- TODO deactivate doxygen build (-DBUILD_DOC=OFF)
-		-- if doxygen is not found on the system?
-		local configs = {}
+		-- We don't want to build the doc
+		local configs = {"-DBUILD_DOC=false"}
 		import("package.tools.cmake").install(package, configs)
 	end)
 	

@@ -17,44 +17,24 @@
 #include <SDL.h>
 #include <tclap/CmdLine.h>
 
-void PrintUsage(const char* filename) noexcept
-{
-    std::cerr << "Usage: " << filename << " inputfile [delay]" << std::endl
-        << std::endl
-        << "Parameters" << std::endl
-        << "inputfile: Input file" << std::endl
-        << "delay: Time in milliseconds between instructions" << std::endl;
-    // TODO make/use a real argument parser in order to make that
-/*
-        << std::endl
-        << "Flags" << std::endl
-        << "--no-heap: Don't dump heap memory" << std::endl;
-*/
-}
-
 int main(int argc, char* argv[])
 {
-    std::string filename;
-    int delay = 500;
+    TCLAP::CmdLine cmd("Chip8Emu Dump Tool");
+    TCLAP::UnlabeledValueArg<std::string> filenameArg("inputfile", "Chip8 game file.", true, "", "string");
+    TCLAP::ValueArg<int> delayArg("d", "delay", "Time in milliseconds between instructions. Default: 500.", false, 500, "time in ms");
+    TCLAP::SwitchArg noHeapSwitch("n", "no-heap", "Don't dump heap memory.", false);
+    cmd.add(filenameArg);
+    cmd.add(delayArg);
+    cmd.add(noHeapSwitch);
+    cmd.parse(argc, argv);
 
-    switch(argc)
+    const std::string filename = filenameArg.getValue();
+    int delay = delayArg.getValue();
+    if (delay < 0)
     {
-    case 1:
-        std::cerr << "Not enough arguments." << std::endl;
-        PrintUsage(argv[0]);
-        return EXIT_FAILURE;
-    case 2:
-        filename = argv[1];
-        break;
-    case 3:
-        filename = argv[1];
-        delay = std::atoi(argv[2]);
-        break;
-    default:
-        std::cerr << "Too much arguments." << std::endl;
-        PrintUsage(argv[0]);
-        return EXIT_FAILURE;
+        delay = 0;
     }
+    const bool noHeap = noHeapSwitch.getValue();
 
     const std::string ofname = filename + "_" + CurrentDate() + "_dump.txt";
     std::ofstream output(ofname);
@@ -77,14 +57,16 @@ int main(int argc, char* argv[])
     mem.LoadProgram(content);
     Chip8::Machine machine(screen, mem);
 
+    const auto& DumpMemoryFunc = noHeap ? Chip8::Dump::DumpMemoryWithoutHeap : Chip8::Dump::DumpMemory;
     while(true)
     {
         const std::uint16_t opcode = mem.NextInstruction();
 
         machine.Execute(opcode);
         output << Chip8::Disasm::Opcode2Asm(opcode) << '\n'
-            << Chip8::Dump::DumpMemory(mem) << '\n';
+            << DumpMemoryFunc(mem) << '\n';
 
         SDL_Delay(delay);
     }
 }
+    

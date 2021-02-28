@@ -57,13 +57,17 @@ int main(int argc, char* argv[])
     mem.LoadProgram(content);
     Chip8::Machine machine(screen, mem);
 
+    std::cout << "Press CTRL^C to quit" << std::endl;
+
     const auto& DumpMemoryFunc = noHeap ? Chip8::Dump::DumpMemoryWithoutHeap : Chip8::Dump::DumpMemory;
     while(true)
     {
         const std::uint16_t opcode = mem.NextInstruction();
+        const std::string instruction = Chip8::Disasm::Opcode2Asm(opcode);
 
         machine.Execute(opcode);
-        output << Chip8::Disasm::Opcode2Asm(opcode) << '\n'
+        std::cout << instruction << std::endl;
+        output << instruction << '\n'
             << DumpMemoryFunc(mem) << '\n';
 
         SDL_Delay(delay);

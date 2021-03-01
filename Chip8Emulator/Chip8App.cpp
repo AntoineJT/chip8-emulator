@@ -49,6 +49,8 @@ int main(int argc, char* argv[])
     memory.LoadProgram(content);
     Chip8::Machine machine(screen, memory);
 
+    std::cout << "Press CTRL^C to quit" << std::endl;
+
     while(true)
     {
         machine.ExecuteNextInstruction();

@@ -1,5 +1,3 @@
-add_repositories("custom-repo xmake-repo")
-
 set_xmakever("2.5.1")
 
 set_project("chip8emu")

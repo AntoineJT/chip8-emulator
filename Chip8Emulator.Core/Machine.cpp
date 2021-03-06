@@ -19,13 +19,14 @@ void Chip8::Machine::ExecuteNextInstruction() const noexcept
     // TODO S'occuper des timers
 }
 
-void Chip8::Machine::HandleEvents() const noexcept
+void Chip8::Machine::HandleEvents() noexcept
 {
-    SDL_Event event;
-    while (SDL_PollEvent(&event)) {
-        switch (event.type) {
+    while (SDL_PollEvent(&m_event)) {
+        switch (m_event.type) {
         case SDL_QUIT:
             exit(0);
+        default:
+            break;
         }
     }
 }

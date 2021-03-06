@@ -17,6 +17,17 @@
 #include <SDL.h>
 #include <tclap/CmdLine.h>
 
+int EventThread(void* params)
+{
+    Chip8::Machine& machine = *static_cast<Chip8::Machine*>(params);
+
+    while (true)
+    {
+        machine.HandleEvents();
+        SDL_Delay(10);
+    }
+}
+
 int main(int argc, char* argv[])
 {
     TCLAP::CmdLine cmd("Chip8Emu Dump Tool");
@@ -59,13 +70,14 @@ int main(int argc, char* argv[])
 
     std::cout << "Press CTRL^C to quit" << std::endl;
 
+    SDL_CreateThread(EventThread, "Event thread", nullptr);
+
     const auto& DumpMemoryFunc = noHeap ? Chip8::Dump::DumpMemoryWithoutHeap : Chip8::Dump::DumpMemory;
     while(true)
     {
         const std::uint16_t opcode = mem.NextInstruction();
         const std::string instruction = Chip8::Disasm::Opcode2Asm(opcode);
 
-        machine.HandleEvents();
         machine.Execute(opcode);
         std::cout << instruction << std::endl;
         output << instruction << '\n'

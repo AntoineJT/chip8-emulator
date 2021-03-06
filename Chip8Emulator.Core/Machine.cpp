@@ -19,6 +19,17 @@ void Chip8::Machine::ExecuteNextInstruction() const noexcept
     // TODO S'occuper des timers
 }
 
+void Chip8::Machine::HandleEvents() const noexcept
+{
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+        case SDL_QUIT:
+            exit(0);
+        }
+    }
+}
+
 void PrintOpcodeStatus(const char* status, const std::uint16_t opcode) noexcept
 {
     std::cerr << "Err: " << status << " instruction ("

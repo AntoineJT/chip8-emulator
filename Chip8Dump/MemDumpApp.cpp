@@ -65,6 +65,7 @@ int main(int argc, char* argv[])
         const std::uint16_t opcode = mem.NextInstruction();
         const std::string instruction = Chip8::Disasm::Opcode2Asm(opcode);
 
+        machine.HandleEvents();
         machine.Execute(opcode);
         std::cout << instruction << std::endl;
         output << instruction << '\n'

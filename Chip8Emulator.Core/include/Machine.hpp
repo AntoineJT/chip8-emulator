@@ -18,5 +18,6 @@ namespace Chip8
 
         void ExecuteNextInstruction() const noexcept;
         void Execute(std::uint16_t opcode) const noexcept;
+        void HandleEvents() const noexcept;
     };
 }

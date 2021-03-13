@@ -9,12 +9,11 @@ namespace Chip8
 {
     class Machine
     {
-        Screen& m_screen;
         Memory& m_memory;
         CPU m_cpu;
         // avoids to allocate/destroy this struct
         // a lot of time per second
-        SDL_Event m_event;
+        SDL_Event m_event {};
 
     public:
         Machine(Screen& screen, Memory& memory) noexcept;

@@ -8,8 +8,7 @@
 using namespace Chip8::Utils::Instructions;
 
 Chip8::Machine::Machine(Screen& screen, Memory& memory) noexcept
-    : m_screen(screen)
-    , m_memory(memory)
+    : m_memory(memory)
     , m_cpu(CPU(screen, memory))
 {}
 

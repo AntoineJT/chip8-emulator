@@ -1,6 +1,5 @@
 #include <cassert>
 #include <cstdlib>
-#include <cstring>
 #include <iostream>
 
 #define SDL_MAIN_HANDLED
@@ -13,8 +12,6 @@
 #include "sdl_assert.h"
 
 #include <SDL.h>
-
-#include "sdl_colors.hpp"
 
 int main(int argc, char* argv[])
 {

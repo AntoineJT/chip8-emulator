@@ -16,7 +16,7 @@ std::vector<char> Chip8::Utils::LoadFile(const std::string& filename)
 
     const auto end = file.tellg();
     file.seekg(0, std::ios::beg);
-    const auto size = std::size_t(end - file.tellg());
+    const auto size = static_cast<std::size_t>(end - file.tellg());
 
     if (size == 0)
     {

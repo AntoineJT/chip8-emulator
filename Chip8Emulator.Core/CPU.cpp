@@ -151,12 +151,10 @@ std::vector<Chip8::Screen::Point> PointsToDraw(const std::vector<uint8_t>& sprit
 }
 /* End of DRW Stuff */
 
-// TODO Draw: fix render being bad
-// TODO SDL: fix it crashing if clicking on the window
 void Chip8::CPU::DRW(const std::uint8_t ls4b, const std::uint8_t x, const std::uint8_t y) const noexcept
 {
     assert(ls4b <= 0xF);
-    std::vector<uint8_t> sprite(static_cast<std::size_t>(ls4b) + 1);
+    std::vector<uint8_t> sprite(static_cast<std::size_t>(ls4b));
     for (std::size_t i = 0; i <= ls4b; ++i)
     {
         sprite[i] = m_memory.memory[i + m_memory.I];

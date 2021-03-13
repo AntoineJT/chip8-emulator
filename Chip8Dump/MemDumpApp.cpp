@@ -2,6 +2,7 @@
 #include <cassert>
 #include <fstream>
 #include <iostream>
+#include <thread>
 
 #define SDL_MAIN_HANDLED
 
@@ -17,14 +18,37 @@
 #include <SDL.h>
 #include <tclap/CmdLine.h>
 
+static Chip8::Machine* sp_machine = nullptr;
+static Chip8::Memory* sp_memory = nullptr;
+static std::ofstream* sp_output = nullptr;
+static bool s_noHeap = false;
+static int s_delay = 0;
+
 int EventThread(void* params)
 {
-    Chip8::Machine& machine = *static_cast<Chip8::Machine*>(params);
-
     while (true)
     {
-        machine.HandleEvents();
-        SDL_Delay(10);
+        sp_machine->HandleEvents();
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+}
+
+int MainThread(void* params)
+{
+    assert(sp_machine != nullptr && sp_memory != nullptr && sp_output != nullptr);
+
+    const auto& DumpMemoryFunc = s_noHeap ? Chip8::Dump::DumpMemoryWithoutHeap : Chip8::Dump::DumpMemory;
+    while (true)
+    {
+        const std::uint16_t opcode = sp_memory->NextInstruction();
+        const std::string instruction = Chip8::Disasm::Opcode2Asm(opcode);
+
+        sp_machine->Execute(opcode);
+        std::cout << instruction << std::endl;
+        *sp_output << instruction << '\n'
+            << DumpMemoryFunc(static_cast<Chip8::Memory&>(*sp_memory)) << '\n';
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(s_delay));
     }
 }
 
@@ -40,12 +64,12 @@ int main(int argc, char* argv[])
     cmd.parse(argc, argv);
 
     const std::string filename = filenameArg.getValue();
-    int delay = delayArg.getValue();
-    if (delay < 0)
+    const int delay = delayArg.getValue();
+    if (delay > 0)
     {
-        delay = 0;
+        s_delay = delay;
     }
-    const bool noHeap = noHeapSwitch.getValue();
+    s_noHeap = noHeapSwitch.getValue();
 
     const std::string ofname = filename + "_" + CurrentDate() + "_dump.txt";
     std::ofstream output(ofname);
@@ -68,22 +92,15 @@ int main(int argc, char* argv[])
     mem.LoadProgram(content);
     Chip8::Machine machine(screen, mem);
 
+    sp_machine = &machine;
+    sp_memory = &mem;
+    sp_output = &output;
+
     std::cout << "Press CTRL^C to quit" << std::endl;
 
-    SDL_CreateThread(EventThread, "Event thread", nullptr);
+    std::thread eventThread(EventThread, nullptr);
+    std::thread mainThread(MainThread, nullptr);
 
-    const auto& DumpMemoryFunc = noHeap ? Chip8::Dump::DumpMemoryWithoutHeap : Chip8::Dump::DumpMemory;
-    while(true)
-    {
-        const std::uint16_t opcode = mem.NextInstruction();
-        const std::string instruction = Chip8::Disasm::Opcode2Asm(opcode);
-
-        machine.Execute(opcode);
-        std::cout << instruction << std::endl;
-        output << instruction << '\n'
-            << DumpMemoryFunc(mem) << '\n';
-
-        SDL_Delay(delay);
-    }
+    mainThread.join();
+    eventThread.join();
 }
-    

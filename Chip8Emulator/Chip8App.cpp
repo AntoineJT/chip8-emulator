@@ -12,6 +12,7 @@
 #include "sdl_assert.h"
 
 #include <SDL.h>
+#include <unordered_map>
 
 int main(int argc, char* argv[])
 {
@@ -44,7 +45,8 @@ int main(int argc, char* argv[])
     Chip8::Screen screen(sdl, 16);
     Chip8::Memory memory;
     memory.LoadProgram(content);
-    Chip8::Machine machine(screen, memory);
+    Chip8::Keyboard keyboard;
+    Chip8::Machine machine(screen, memory, keyboard);
 
     std::cout << "Press CTRL^C to quit" << std::endl;
 

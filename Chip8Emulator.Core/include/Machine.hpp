@@ -18,11 +18,10 @@ namespace Chip8
         Key m_key = Key::NONE;
 
     public:
-        Machine(Screen& screen, Memory& memory) noexcept;
+        Machine(Screen& screen, Memory& memory, Keyboard& keyboard) noexcept;
 
-        void ExecuteNextInstruction() const noexcept;
-        void Execute(std::uint16_t opcode) const noexcept;
+        void ExecuteNextInstruction() noexcept;
+        void Execute(std::uint16_t opcode) noexcept;
         void HandleEvents() noexcept;
-        void StoreKeyPress(SDL_Scancode scancode);
     };
 }

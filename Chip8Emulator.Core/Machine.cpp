@@ -1,90 +1,32 @@
 #include "Machine.hpp"
 
 #include <iostream>
+#include <sdl_assert.h>
 
 #include "Instructions.hpp"
+#include "Keyboard.hpp"
 
 // I think it suits to the use case
 using namespace Chip8::Utils::Instructions;
 
-Chip8::Machine::Machine(Screen& screen, Memory& memory) noexcept
+Chip8::Machine::Machine(Screen& screen, Memory& memory, Keyboard& keyboard) noexcept
     : m_memory(memory)
-    , m_cpu(CPU(screen, memory))
+    , m_cpu(CPU(screen, memory, keyboard))
 {}
 
-void Chip8::Machine::ExecuteNextInstruction() const noexcept
+void Chip8::Machine::ExecuteNextInstruction() noexcept
 {
     Execute(m_memory.NextInstruction());
     // TODO S'occuper des timers
 }
 
-void Chip8::Machine::StoreKeyPress(const SDL_Scancode scancode)
-{
-    switch (scancode)
-    {
-    case SDL_SCANCODE_2:
-        m_key = Key::KEY_1;
-        break;
-    case SDL_SCANCODE_W:
-        m_key = Key::KEY_4;
-        break;
-    case SDL_SCANCODE_S:
-        m_key = Key::KEY_7;
-        break;
-    case SDL_SCANCODE_X:
-        m_key = Key::KEY_A;
-        break;
-    case SDL_SCANCODE_3:
-        m_key = Key::KEY_2;
-        break;
-    case SDL_SCANCODE_E:
-        m_key = Key::KEY_5;
-        break;
-    case SDL_SCANCODE_D:
-        m_key = Key::KEY_8;
-        break;
-    case SDL_SCANCODE_C:
-        m_key = Key::KEY_0;
-        break;
-    case SDL_SCANCODE_4:
-        m_key = Key::KEY_3;
-        break;
-    case SDL_SCANCODE_R:
-        m_key = Key::KEY_6;
-        break;
-    case SDL_SCANCODE_F:
-        m_key = Key::KEY_9;
-        break;
-    case SDL_SCANCODE_V:
-        m_key = Key::KEY_B;
-        break;
-    case SDL_SCANCODE_5:
-        m_key = Key::KEY_C;
-        break;
-    case SDL_SCANCODE_T:
-        m_key = Key::KEY_D;
-        break;
-    case SDL_SCANCODE_G:
-        m_key = Key::KEY_E;
-        break;
-    case SDL_SCANCODE_B:
-        m_key = Key::KEY_F;
-        break;
-    default:
-        m_key = Key::NONE;
-        break;
-    }
-}
-
+// TODO Rename it to something like UnfreezeWindows
 void Chip8::Machine::HandleEvents() noexcept
 {
     while (SDL_PollEvent(&m_event)) {
         switch (m_event.type) {
         case SDL_QUIT:
             exit(0);
-        case SDL_KEYDOWN:
-            StoreKeyPress(m_event.key.keysym.scancode);
-            break;
         default:
             break;
         }
@@ -98,7 +40,7 @@ void PrintOpcodeStatus(const char* status, const std::uint16_t opcode) noexcept
         << std::endl;
 }
 
-void Chip8::Machine::Execute(const std::uint16_t opcode) const noexcept
+void Chip8::Machine::Execute(const std::uint16_t opcode) noexcept
 {
     std::cout << "Info: Opcode '" << std::hex << opcode << std::dec << "' next!" << std::endl;
 
@@ -244,8 +186,16 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) const noexcept
             if (kk == SKP)
             {
                 // TODO Implement it, needs to check keyboard status (SDL)
-
-                PrintOpcodeStatus("Unhandled", opcode);
+                while (true)
+                {
+                    sdl_assert(SDL_WaitEvent(&m_event));
+                    if (m_event.type == SDL_KEYDOWN)
+                    {
+                        // TODO Use the keyboard bimap
+                        m_key = m_event.key.keysym.scancode;
+                    }
+                }
+                // PrintOpcodeStatus("Unhandled", opcode);
                 break;
             }
 
@@ -271,11 +221,6 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) const noexcept
             // TODO Wait for a key press by pausing the program then
             // store the value of the key into Vx
             // PrintOpcodeStatus("Unhandled", opcode);
-            while (m_key === Key::NONE)
-            {
-
-                SDL_Delay
-            }
             break;
 
         case LD_DX:

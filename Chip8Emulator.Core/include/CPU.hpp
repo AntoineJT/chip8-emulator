@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Keyboard.hpp"
 #include "Memory.hpp"
 #include "Random.hpp"
 #include "Screen.hpp"
@@ -10,10 +11,11 @@ namespace Chip8
     {
         Screen& m_screen;
         Memory& m_memory;
+        Keyboard& m_keyboard;
         Random m_random = Random(0, 255);
 
     public:
-        CPU(Screen& screen, Memory& memory) noexcept;
+        CPU(Screen& screen, Memory& memory, Keyboard& keyboard) noexcept;
 
         void CLS() const noexcept;
         void RET() const noexcept;

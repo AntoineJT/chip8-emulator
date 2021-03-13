@@ -48,11 +48,12 @@ int main(int argc, char* argv[])
 
     std::cout << "Press CTRL^C to quit" << std::endl;
 
+    constexpr auto refreshRate = static_cast<Uint32>(1000 / 60);
     while(true)
     {
         machine.HandleEvents();
         machine.ExecuteNextInstruction();
-        SDL_Delay(1000 / 60);
+        SDL_Delay(refreshRate);
     }
 
     /*

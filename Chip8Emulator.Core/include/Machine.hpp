@@ -2,6 +2,7 @@
 #include <cstdint>
 
 #include "CPU.hpp"
+#include "Keys.hpp"
 #include "Memory.hpp"
 #include "Screen.hpp"
 
@@ -14,6 +15,7 @@ namespace Chip8
         // avoids to allocate/destroy this struct
         // a lot of time per second
         SDL_Event m_event {};
+        Key m_key = Key::NONE;
 
     public:
         Machine(Screen& screen, Memory& memory) noexcept;
@@ -21,5 +23,6 @@ namespace Chip8
         void ExecuteNextInstruction() const noexcept;
         void Execute(std::uint16_t opcode) const noexcept;
         void HandleEvents() noexcept;
+        void StoreKeyPress(SDL_Scancode scancode);
     };
 }

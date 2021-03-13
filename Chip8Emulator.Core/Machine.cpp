@@ -18,12 +18,73 @@ void Chip8::Machine::ExecuteNextInstruction() const noexcept
     // TODO S'occuper des timers
 }
 
+void Chip8::Machine::StoreKeyPress(const SDL_Scancode scancode)
+{
+    switch (scancode)
+    {
+    case SDL_SCANCODE_2:
+        m_key = Key::KEY_1;
+        break;
+    case SDL_SCANCODE_W:
+        m_key = Key::KEY_4;
+        break;
+    case SDL_SCANCODE_S:
+        m_key = Key::KEY_7;
+        break;
+    case SDL_SCANCODE_X:
+        m_key = Key::KEY_A;
+        break;
+    case SDL_SCANCODE_3:
+        m_key = Key::KEY_2;
+        break;
+    case SDL_SCANCODE_E:
+        m_key = Key::KEY_5;
+        break;
+    case SDL_SCANCODE_D:
+        m_key = Key::KEY_8;
+        break;
+    case SDL_SCANCODE_C:
+        m_key = Key::KEY_0;
+        break;
+    case SDL_SCANCODE_4:
+        m_key = Key::KEY_3;
+        break;
+    case SDL_SCANCODE_R:
+        m_key = Key::KEY_6;
+        break;
+    case SDL_SCANCODE_F:
+        m_key = Key::KEY_9;
+        break;
+    case SDL_SCANCODE_V:
+        m_key = Key::KEY_B;
+        break;
+    case SDL_SCANCODE_5:
+        m_key = Key::KEY_C;
+        break;
+    case SDL_SCANCODE_T:
+        m_key = Key::KEY_D;
+        break;
+    case SDL_SCANCODE_G:
+        m_key = Key::KEY_E;
+        break;
+    case SDL_SCANCODE_B:
+        m_key = Key::KEY_F;
+        break;
+    default:
+        m_key = Key::NONE;
+        break;
+    }
+}
+
 void Chip8::Machine::HandleEvents() noexcept
 {
     while (SDL_PollEvent(&m_event)) {
         switch (m_event.type) {
         case SDL_QUIT:
             exit(0);
+        case SDL_KEYDOWN:
+            StoreKeyPress(m_event.key.keysym.scancode);
+            break;
         default:
             break;
         }
@@ -183,6 +244,7 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) const noexcept
             if (kk == SKP)
             {
                 // TODO Implement it, needs to check keyboard status (SDL)
+
                 PrintOpcodeStatus("Unhandled", opcode);
                 break;
             }
@@ -208,7 +270,12 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) const noexcept
         case LD_XK:
             // TODO Wait for a key press by pausing the program then
             // store the value of the key into Vx
-            PrintOpcodeStatus("Unhandled", opcode);
+            // PrintOpcodeStatus("Unhandled", opcode);
+            while (m_key === Key::NONE)
+            {
+
+                SDL_Delay
+            }
             break;
 
         case LD_DX:

@@ -13,6 +13,10 @@ namespace Chip8
         Memory& m_memory;
         Keyboard& m_keyboard;
         Random m_random = Random(0, 255);
+        // avoids to allocate/destroy this struct
+        // a lot of time per second
+        SDL_Event m_event {};
+        Key m_key = Key::NONE;
 
     public:
         CPU(Screen& screen, Memory& memory, Keyboard& keyboard) noexcept;
@@ -36,6 +40,7 @@ namespace Chip8
         void JP_V0(std::uint16_t nnn) const noexcept;
         void RND(std::uint8_t x, std::uint8_t kk) const noexcept;
         void DRW(std::uint8_t ls4b, std::uint8_t x, std::uint8_t y) const noexcept;
+        void SKP(std::uint8_t x) noexcept;
         void LD_XD(std::uint8_t x) const noexcept;
         void LD_DX(std::uint8_t x) const noexcept;
         void LD_SX(std::uint8_t x) const noexcept;

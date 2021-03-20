@@ -26,9 +26,9 @@ namespace Chip8
             { Key::KEY_E, SDL_SCANCODE_G },
             { Key::KEY_F, SDL_SCANCODE_B }
         };
-        Utils::SimpleBiMap<Key, SDL_Scancode> m_keymap = defaultKeymap;
 
     public:
         static bool IsValid(Key key);
+        Utils::SimpleBiMap<Key, SDL_Scancode> m_keymap = defaultKeymap;
     };
 }

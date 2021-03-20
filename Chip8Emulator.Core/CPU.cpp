@@ -2,10 +2,12 @@
 
 #include <cassert>
 #include <random>
+#include <sdl_assert.h>
 
-Chip8::CPU::CPU(Screen& screen, Memory& memory) noexcept
+Chip8::CPU::CPU(Screen& screen, Memory& memory, Keyboard& keyboard) noexcept
     : m_screen(screen)
     , m_memory(memory)
+    , m_keyboard(keyboard)
 {}
 
 void Chip8::CPU::CLS() const noexcept
@@ -174,6 +176,29 @@ void Chip8::CPU::DRW(const std::uint8_t ls4b, const std::uint8_t x, const std::u
     m_memory.VX[0xF] = collides ? 1 : 0;
     m_screen.DrawSprite(wrappedPoints);
     m_screen.Refresh(false);
+}
+
+// TODO Test it
+void Chip8::CPU::SKP(const std::uint8_t x) noexcept
+{
+    while (true)
+    {
+        sdl_assert(SDL_WaitEvent(&m_event));
+        if (m_event.type == SDL_KEYDOWN)
+        {
+            const std::unordered_map<SDL_Scancode, Key>& map = m_keyboard.m_keymap.ReversedData();
+            const auto elem = map.find(m_event.key.keysym.scancode);
+            if (elem != map.end())
+            {
+                m_key = elem->second;
+                if (static_cast<int>(m_key) == static_cast<int>(x))
+                {
+                    m_memory.pc += 2;
+                }
+                break;
+            }
+        }
+    }
 }
 
 void Chip8::CPU::LD_XD(const std::uint8_t x) const noexcept

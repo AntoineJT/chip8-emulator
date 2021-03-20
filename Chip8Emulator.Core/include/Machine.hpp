@@ -15,7 +15,6 @@ namespace Chip8
         // avoids to allocate/destroy this struct
         // a lot of time per second
         SDL_Event m_event {};
-        Key m_key = Key::NONE;
 
     public:
         Machine(Screen& screen, Memory& memory, Keyboard& keyboard) noexcept;

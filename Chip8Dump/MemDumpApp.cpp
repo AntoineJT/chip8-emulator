@@ -55,7 +55,8 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
     mem.LoadProgram(content);
-    Chip8::Machine machine(screen, mem);
+    Chip8::Keyboard keyboard;
+    Chip8::Machine machine(screen, mem, keyboard);
 
     std::cout << "Press CTRL^C to quit" << std::endl;
 

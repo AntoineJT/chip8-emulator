@@ -186,15 +186,7 @@ void Chip8::Machine::Execute(const std::uint16_t opcode) noexcept
             if (kk == SKP)
             {
                 // TODO Implement it, needs to check keyboard status (SDL)
-                while (true)
-                {
-                    sdl_assert(SDL_WaitEvent(&m_event));
-                    if (m_event.type == SDL_KEYDOWN)
-                    {
-                        // TODO Use the keyboard bimap
-                        m_key = m_event.key.keysym.scancode;
-                    }
-                }
+                m_cpu.SKP(x);
                 // PrintOpcodeStatus("Unhandled", opcode);
                 break;
             }

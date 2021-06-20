@@ -18,7 +18,7 @@ namespace Chip8
         using PixelGrid = std::array<std::array<bool, base_width>, base_height>;
         using Point = std::pair<uint8_t, uint8_t>;
 
-        explicit Screen(const SDL2::SDL& sdl, std::uint8_t ratio) noexcept;
+        explicit Screen(std::shared_ptr<SDL2::SDL> sdl, std::uint8_t ratio) noexcept;
         void Render(const PixelGrid& grid);
         void DrawPoints(SDL_Color color, const std::vector<SDL_Rect>& rects) noexcept;
         void DrawSprite(const std::vector<Point>& pixelsOn);
@@ -31,6 +31,8 @@ namespace Chip8
         PixelGrid m_grid = InitGrid();
         SDL2::Window m_window;
         SDL2::Renderer m_renderer;
+        // this needs to be alive the whole life of this class
+        std::shared_ptr<SDL2::SDL> m_sdl;
 
         static void ResetGrid(PixelGrid& grid) noexcept;
         static PixelGrid InitGrid() noexcept;

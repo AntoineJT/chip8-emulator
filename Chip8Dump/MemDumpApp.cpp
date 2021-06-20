@@ -45,9 +45,10 @@ int main(int argc, char* argv[])
     }
 
     // sets up the emulator to be able to dump memory
-    SDL2::SDL sdl(true);
-    assert(sdl.Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
+    auto sdl = std::make_shared<SDL2::SDL>(true);
+    assert((*sdl.get()).Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
     Chip8::Screen screen(sdl, 4);
+    sdl.reset();
     Chip8::Memory mem;
     std::vector<char> content;
     if (!Chip8::Utils::LoadFile(content, filename))

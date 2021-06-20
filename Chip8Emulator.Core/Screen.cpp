@@ -10,9 +10,9 @@
 #include "sdl_renderer.hpp"
 #include "sdl_window.hpp"
 
-SDL2::Window CreateWindow(const SDL2::SDL& sdl, const std::uint8_t ratio) noexcept
+SDL2::Window CreateWindow(std::shared_ptr<SDL2::SDL> sdl, const std::uint8_t ratio) noexcept
 {
-    assert(sdl.Running());
+    assert((*sdl.get()).Running());
 
     const int width = static_cast<int>(Chip8::base_width) * ratio;
     const int height = static_cast<int>(Chip8::base_height) * ratio;
@@ -38,8 +38,9 @@ Chip8::Screen::PixelGrid Chip8::Screen::InitGrid() noexcept
     return grid;
 }
 
-Chip8::Screen::Screen(const SDL2::SDL& sdl, const std::uint8_t ratio) noexcept
-    : m_ratio(ratio)
+Chip8::Screen::Screen(std::shared_ptr<SDL2::SDL> sdl, const std::uint8_t ratio) noexcept
+    : m_sdl(sdl)
+    , m_ratio(ratio)
     , m_window(CreateWindow(sdl, ratio))
     , m_renderer(SDL2::Renderer(m_window, -1, SDL_RENDERER_ACCELERATED))
 {

@@ -32,9 +32,9 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    SDL2::SDL sdl(true);
+    auto sdl = std::make_shared<SDL2::SDL>(true);
     // should not be ALREADY_RUNNING, at least for now
-    sdl_assert(sdl.Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
+    sdl_assert((*sdl.get()).Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
 
     std::vector<char> content;
     if (!Chip8::Utils::LoadFile(content, filename))
@@ -43,6 +43,7 @@ int main(int argc, char* argv[])
     }
 
     Chip8::Screen screen(sdl, 16);
+    sdl.reset();
     Chip8::Memory memory;
     memory.LoadProgram(content);
     Chip8::Keyboard keyboard;

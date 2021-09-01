@@ -1,14 +1,17 @@
-set_xmakever("2.5.1")
+set_xmakever("2.5.6")
 
 set_project("chip8emu")
-set_version("wip") -- will follow semver later
+set_version("0.0.0") -- will follow semver later
+
+set_allowedplats("windows", "linux")
+set_allowedarchs("windows|x64", "linux|x86_64")
 
 add_rules("mode.debug", "mode.release")
 set_languages("cxx17")
 set_symbols("debug", "edit")
 
-add_requires("libsdl 2.0.14") -- latest version at the time
-add_requires("tclap 1.4.0-rc1")
+add_requires("libsdl 2.0.16") -- latest version at the time
+add_requires("tclap 1.4.0-rc1") -- latest version at the time
 
 if is_mode("release") then
     set_optimize("fastest")

@@ -1,0 +1,50 @@
+name: chip8emu for Windows
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      name: Checkout
+      
+    - uses: xmake-io/github-action-setup-xmake@v1
+      with:
+        xmake-version: latest
+      name: Install xmake
+
+    - name: Build debug
+      run: |
+        xmake f -m debug -y
+        xmake
+
+    - name: Build release
+      run: | 
+        xmake f -m release -y
+        xmake
+    
+    - name: Prepare artifacts
+      run: |
+        mkdir debug-artifact
+        move build/windows/x64/debug/chip8disasm.exe debug-artifact/
+        move build/windows/x64/debug/chip8dump.exe debug-artifact/
+        move build/windows/x64/debug/chip8emu.exe debug-artifact/
+        
+        mkdir release-artifact
+        move build/windows/x64/release/chip8disasm.exe release-artifact/
+        move build/windows/x64/release/chip8dump.exe release-artifact/
+        move build/windows/x64/release/chip8emu.exe release-artifact/
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: chip8emu-windows-debug-${{ github.run_id }}
+        path: debug-artifact/
+      name: Upload debug artifact
+      
+    - uses: actions/upload-artifact@v2
+      with:
+        name: chip8emu-windows-release-${{ github.run_id }}
+        path: release-artifact/
+      name: Upload release artifact

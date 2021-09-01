@@ -9,19 +9,19 @@
 // I think it suits to the use case
 using namespace Chip8::Utils::Instructions;
 
-Chip8::Machine::Machine(Screen& screen, Memory& memory, Keyboard& keyboard) noexcept
+Chip8::Machine::Machine(Screen& screen, Memory& memory, Keyboard& keyboard)
     : m_memory(memory)
     , m_cpu(CPU(screen, memory, keyboard))
 {}
 
-void Chip8::Machine::ExecuteNextInstruction() noexcept
+void Chip8::Machine::ExecuteNextInstruction()
 {
     Execute(m_memory.NextInstruction());
     // TODO S'occuper des timers
 }
 
 // TODO Rename it to something like UnfreezeWindows
-void Chip8::Machine::HandleEvents() noexcept
+void Chip8::Machine::HandleEvents()
 {
     while (SDL_PollEvent(&m_event)) {
         switch (m_event.type) {
@@ -33,14 +33,14 @@ void Chip8::Machine::HandleEvents() noexcept
     }
 }
 
-void PrintOpcodeStatus(const char* status, const std::uint16_t opcode) noexcept
+void PrintOpcodeStatus(const char* status, const std::uint16_t opcode)
 {
     std::cerr << "Err: " << status << " instruction ("
         << std::hex << opcode << std::dec << ")"
         << std::endl;
 }
 
-void Chip8::Machine::Execute(const std::uint16_t opcode) noexcept
+void Chip8::Machine::Execute(const std::uint16_t opcode)
 {
     std::cout << "Info: Opcode '" << std::hex << opcode << std::dec << "' next!" << std::endl;
 

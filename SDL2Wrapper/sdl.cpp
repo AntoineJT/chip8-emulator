@@ -5,7 +5,7 @@
 // Set mainHandled to true if you remove
 // the SDL_main entry point by defining
 // SDL_MAIN_HANDLED before to include SDL
-SDL2::SDL::SDL(const bool mainHandled) noexcept
+SDL2::SDL::SDL(const bool mainHandled)
 {
     if (mainHandled)
     {
@@ -13,21 +13,21 @@ SDL2::SDL::SDL(const bool mainHandled) noexcept
     }
 }
 
-SDL2::SDL::~SDL() noexcept
+SDL2::SDL::~SDL()
 {
     if (!m_isRunning)
         return;
     Quit();
 }
 
-void SDL2::SDL::Quit() noexcept
+void SDL2::SDL::Quit()
 {
     assert(m_isRunning);
     m_isRunning = false;
     SDL_Quit();
 }
 
-int SDL2::SDL::Init(const Uint32 flags) noexcept
+int SDL2::SDL::Init(const Uint32 flags)
 {
     if (m_isRunning)
         return ALREADY_RUNNING;
@@ -40,7 +40,7 @@ int SDL2::SDL::Init(const Uint32 flags) noexcept
     return INIT_SUCCESS;
 }
 
-bool SDL2::SDL::Running() const noexcept
+bool SDL2::SDL::Running() const
 {
     return m_isRunning;
 }

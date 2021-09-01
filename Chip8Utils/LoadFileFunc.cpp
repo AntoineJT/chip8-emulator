@@ -33,7 +33,7 @@ std::vector<char> Chip8::Utils::LoadFile(const std::string& filename)
     return content;
 }
 
-bool Chip8::Utils::LoadFile(std::vector<char>& content, const std::string& filename) noexcept
+bool Chip8::Utils::LoadFile(std::vector<char>& content, const std::string& filename)
 {
     try
     {

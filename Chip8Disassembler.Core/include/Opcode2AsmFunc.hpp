@@ -5,5 +5,5 @@
 
 namespace Chip8::Disasm
 {
-    std::string Opcode2Asm(std::uint16_t opcode) noexcept;
+    std::string Opcode2Asm(std::uint16_t opcode);
 }

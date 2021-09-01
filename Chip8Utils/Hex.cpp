@@ -3,7 +3,7 @@
 #include <cassert>
 #include <string>
 
-char Chip8::Hex::Uint4HexValue(const std::uint8_t hexInt) noexcept
+char Chip8::Hex::Uint4HexValue(const std::uint8_t hexInt)
 {
     assert(hexInt <= 0xF);
     switch (hexInt)

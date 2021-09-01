@@ -13,28 +13,28 @@ constexpr int SUCCESS = 0;
 
 // do not replace this raw pointer with a unique_ptr
 // this ctor exists to interop with C functions
-SDL2::Renderer::Renderer(SDL_Window* window, const int index, const Uint32 flags) noexcept
+SDL2::Renderer::Renderer(SDL_Window* window, const int index, const Uint32 flags)
 {
     m_pRenderer = SDL_CreateRenderer(window, index, flags);
     assert(m_pRenderer != nullptr);
 }
 
-SDL2::Renderer::Renderer(SDL_Renderer* renderer) noexcept
+SDL2::Renderer::Renderer(SDL_Renderer* renderer)
     : m_pRenderer(renderer)
 {
     assert(renderer != nullptr);
 }
 
-SDL2::Renderer::Renderer(const Window& window, const int index, const Uint32 flags) noexcept
+SDL2::Renderer::Renderer(const Window& window, const int index, const Uint32 flags)
     : Renderer(window.Data(), index, flags)
 {}
 
-SDL2::Renderer::~Renderer() noexcept
+SDL2::Renderer::~Renderer()
 {
     SDL_DestroyRenderer(m_pRenderer);
 }
 
-SDL_Renderer* SDL2::Renderer::Data() const noexcept
+SDL_Renderer* SDL2::Renderer::Data() const
 {
     return m_pRenderer;
 }
@@ -44,7 +44,7 @@ static bool ColorEquals(SDL_Color a, SDL_Color b)
     return a.r == b.r && a.g == b.g && a.b == b.b && a.a == b.a;
 }
 
-void SDL2::Renderer::SetDrawColor(const SDL_Color color) noexcept
+void SDL2::Renderer::SetDrawColor(const SDL_Color color)
 {
     if (!ColorEquals(color, m_drawColor))
     {
@@ -54,27 +54,27 @@ void SDL2::Renderer::SetDrawColor(const SDL_Color color) noexcept
     }
 }
 
-void SDL2::Renderer::RenderClear() const noexcept
+void SDL2::Renderer::RenderClear() const
 {
     sdl_assert(SDL_RenderClear(m_pRenderer) == SUCCESS);
 }
 
-SDL_Color SDL2::Renderer::DrawColor() const noexcept
+SDL_Color SDL2::Renderer::DrawColor() const
 {
     return m_drawColor;
 }
 
-void SDL2::Renderer::RenderPresent() const noexcept
+void SDL2::Renderer::RenderPresent() const
 {
     SDL_RenderPresent(m_pRenderer);
 }
 
-void SDL2::Renderer::FillRect(const std::unique_ptr<SDL_Rect> rect) const noexcept
+void SDL2::Renderer::FillRect(const std::unique_ptr<SDL_Rect> rect) const
 {
     sdl_assert(SDL_RenderFillRect(m_pRenderer, rect.get()) == SUCCESS);
 }
 
-void SDL2::Renderer::FillRects(const std::vector<SDL_Rect>& rect) const noexcept
+void SDL2::Renderer::FillRects(const std::vector<SDL_Rect>& rect) const
 {
     const auto size = rect.size();
     assert(size <= INT_MAX);

@@ -12,6 +12,6 @@ namespace Chip8
 
     public:
         Random(int min, int max);
-        int Pick() const noexcept;
+        int Pick() const;
     };
 }

@@ -7,8 +7,8 @@ add_rules("mode.debug", "mode.release")
 set_languages("cxx17")
 set_symbols("debug", "edit")
 
-add_requires("libsdl 2.0.14", -- latest version at the time
-	"tclap 1.4.0-rc1")
+add_requires("libsdl 2.0.14") -- latest version at the time
+add_requires("tclap 1.4.0-rc1")
 
 if is_mode("release") then
     set_optimize("fastest")

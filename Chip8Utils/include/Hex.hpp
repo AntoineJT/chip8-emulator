@@ -5,7 +5,7 @@
 
 namespace Chip8::Hex
 {
-    char Uint4HexValue(std::uint8_t hexInt) noexcept;
+    char Uint4HexValue(std::uint8_t hexInt);
     std::string AddrHexValue(std::uint16_t nnn);
 
     template<typename T>

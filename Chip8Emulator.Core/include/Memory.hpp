@@ -15,16 +15,16 @@ namespace Chip8
         // reserved for the interpreter
         static constexpr std::size_t entry_point = 0x200; // 512
 
-        void LoadFontSet() noexcept;
+        void LoadFontSet();
 
     public:
         static constexpr std::size_t ram_size = 4096;
         static constexpr std::size_t fontset_location = 0x0;
         using MemoryData = std::array<uint8_t, ram_size>;
 
-        Memory() noexcept;
-        void LoadProgram(const std::vector<char>& data) noexcept;
-        std::uint16_t NextInstruction() const noexcept;
+        Memory();
+        void LoadProgram(const std::vector<char>& data);
+        std::uint16_t NextInstruction() const;
 
         MemoryData memory = {0};
 

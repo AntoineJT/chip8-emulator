@@ -4,31 +4,31 @@
 #include <random>
 #include <sdl_assert.h>
 
-Chip8::CPU::CPU(Screen& screen, Memory& memory, Keyboard& keyboard) noexcept
+Chip8::CPU::CPU(Screen& screen, Memory& memory, Keyboard& keyboard)
     : m_screen(screen)
     , m_memory(memory)
     , m_keyboard(keyboard)
 {}
 
-void Chip8::CPU::CLS() const noexcept
+void Chip8::CPU::CLS() const
 {
     m_screen.Refresh(true);
 }
 
-void Chip8::CPU::RET() const noexcept
+void Chip8::CPU::RET() const
 {
     assert(m_memory.sp > 0);
     m_memory.pc = m_memory.stack[m_memory.sp];
     --m_memory.sp;
 }
 
-void Chip8::CPU::JP(const std::uint16_t nnn) const noexcept
+void Chip8::CPU::JP(const std::uint16_t nnn) const
 {
     assert(nnn <= 0xFFF);
     m_memory.pc = nnn;
 }
 
-void Chip8::CPU::CALL(const std::uint16_t nnn) const noexcept
+void Chip8::CPU::CALL(const std::uint16_t nnn) const
 {
     assert(nnn <= 0xFFF);
     ++m_memory.sp;
@@ -36,37 +36,37 @@ void Chip8::CPU::CALL(const std::uint16_t nnn) const noexcept
     m_memory.pc = nnn;
 }
 
-void Chip8::CPU::LD_XKK(const std::uint8_t x, const std::uint8_t kk) const noexcept
+void Chip8::CPU::LD_XKK(const std::uint8_t x, const std::uint8_t kk) const
 {
     m_memory.VX[x] = kk;
 }
 
-void Chip8::CPU::ADD_XKK(const std::uint8_t x, const std::uint8_t kk) const noexcept
+void Chip8::CPU::ADD_XKK(const std::uint8_t x, const std::uint8_t kk) const
 {
     m_memory.VX[x] += kk;
 }
 
-void Chip8::CPU::LD_XY(const std::uint8_t x, const std::uint8_t y) const noexcept
+void Chip8::CPU::LD_XY(const std::uint8_t x, const std::uint8_t y) const
 {
     m_memory.VX[x] = m_memory.VX[y];
 }
 
-void Chip8::CPU::OR(const std::uint8_t x, const std::uint8_t y) const noexcept
+void Chip8::CPU::OR(const std::uint8_t x, const std::uint8_t y) const
 {
     m_memory.VX[x] |= m_memory.VX[y];
 }
 
-void Chip8::CPU::AND_XY(const std::uint8_t x, const std::uint8_t y) const noexcept
+void Chip8::CPU::AND_XY(const std::uint8_t x, const std::uint8_t y) const
 {
     m_memory.VX[x] &= m_memory.VX[y];
 }
 
-void Chip8::CPU::XOR(const std::uint8_t x, const std::uint8_t y) const noexcept
+void Chip8::CPU::XOR(const std::uint8_t x, const std::uint8_t y) const
 {
     m_memory.VX[x] ^= m_memory.VX[y];
 }
 
-void Chip8::CPU::ADD_XY(const std::uint8_t x, const std::uint8_t y) const noexcept
+void Chip8::CPU::ADD_XY(const std::uint8_t x, const std::uint8_t y) const
 {
     const std::uint16_t sum = m_memory.VX[x] + m_memory.VX[y];
     if (sum > 0xFF)
@@ -81,51 +81,51 @@ void Chip8::CPU::ADD_XY(const std::uint8_t x, const std::uint8_t y) const noexce
     }
 }
 
-void Chip8::CPU::SUB(const std::uint8_t x, const std::uint8_t y) const noexcept
+void Chip8::CPU::SUB(const std::uint8_t x, const std::uint8_t y) const
 {
     const std::int16_t sub = m_memory.VX[x] - m_memory.VX[y];
     m_memory.VX[0xF] = sub > 0 ? 1 : 0;
     m_memory.VX[x] = static_cast<uint8_t>(sub % 256); // TODO wtf? need to check how to handle this properly
 }
 
-void Chip8::CPU::SHR(const std::uint8_t x) const noexcept
+void Chip8::CPU::SHR(const std::uint8_t x) const
 {
     m_memory.VX[0xF] = m_memory.VX[x] & 0x000F;
     m_memory.VX[x] <<= 1;
 }
 
-void Chip8::CPU::SUBN(const std::uint8_t x, const std::uint8_t y) const noexcept
+void Chip8::CPU::SUBN(const std::uint8_t x, const std::uint8_t y) const
 {
     const std::int16_t sub = m_memory.VX[y] - m_memory.VX[x];
     m_memory.VX[0xF] = (sub > 0) ? 1 : 0;
     m_memory.VX[x] = static_cast<uint8_t>(sub % 256); // TODO wtf? need to check how to handle this properly
 }
 
-void Chip8::CPU::SHL(const std::uint8_t x) const noexcept
+void Chip8::CPU::SHL(const std::uint8_t x) const
 {
     m_memory.VX[0xF] = m_memory.VX[x] & 0x000F;
     m_memory.VX[x] >>= 1;
 }
 
-void Chip8::CPU::LD_I(const std::uint16_t nnn) const noexcept
+void Chip8::CPU::LD_I(const std::uint16_t nnn) const
 {
     assert(nnn <= 0xFFF);
     m_memory.I = nnn;
 }
 
-void Chip8::CPU::JP_V0(const std::uint16_t nnn) const noexcept
+void Chip8::CPU::JP_V0(const std::uint16_t nnn) const
 {
     assert(nnn <= 0xFFF);
     m_memory.pc = nnn + m_memory.VX[0];
 }
 
-void Chip8::CPU::RND(const std::uint8_t x, const std::uint8_t kk) const noexcept
+void Chip8::CPU::RND(const std::uint8_t x, const std::uint8_t kk) const
 {
     m_memory.VX[x] = m_random.Pick() & kk;
 }
 
 /* DRW Stuff */
-std::vector<Chip8::Screen::Point> PointsToDraw(const std::vector<uint8_t>& sprite, const Chip8::Screen::Point point, const uint8_t width) noexcept
+std::vector<Chip8::Screen::Point> PointsToDraw(const std::vector<uint8_t>& sprite, const Chip8::Screen::Point point, const uint8_t width)
 {
     assert(width <= 8);
     const std::size_t size = sprite.size();
@@ -153,7 +153,7 @@ std::vector<Chip8::Screen::Point> PointsToDraw(const std::vector<uint8_t>& sprit
 }
 /* End of DRW Stuff */
 
-void Chip8::CPU::DRW(const std::uint8_t ls4b, const std::uint8_t x, const std::uint8_t y) const noexcept
+void Chip8::CPU::DRW(const std::uint8_t ls4b, const std::uint8_t x, const std::uint8_t y) const
 {
     assert(ls4b <= 0xF);
     std::vector<uint8_t> sprite(static_cast<std::size_t>(ls4b));
@@ -179,7 +179,7 @@ void Chip8::CPU::DRW(const std::uint8_t ls4b, const std::uint8_t x, const std::u
 }
 
 // TODO Test it
-void Chip8::CPU::SKP(const std::uint8_t x) noexcept
+void Chip8::CPU::SKP(const std::uint8_t x)
 {
     while (true)
     {
@@ -201,34 +201,34 @@ void Chip8::CPU::SKP(const std::uint8_t x) noexcept
     }
 }
 
-void Chip8::CPU::LD_XD(const std::uint8_t x) const noexcept
+void Chip8::CPU::LD_XD(const std::uint8_t x) const
 {
     m_memory.VX[x] = m_memory.DT;
 }
 
-void Chip8::CPU::LD_DX(const std::uint8_t x) const noexcept
+void Chip8::CPU::LD_DX(const std::uint8_t x) const
 {
     m_memory.DT = m_memory.VX[x];
 }
 
-void Chip8::CPU::LD_SX(std::uint8_t x) const noexcept
+void Chip8::CPU::LD_SX(std::uint8_t x) const
 {
     m_memory.ST = m_memory.VX[x];
 }
 
-void Chip8::CPU::ADD_IX(std::uint8_t x) const noexcept
+void Chip8::CPU::ADD_IX(std::uint8_t x) const
 {
     m_memory.I += m_memory.VX[x];
 }
 
-void Chip8::CPU::LD_FX(std::uint8_t x) const noexcept
+void Chip8::CPU::LD_FX(std::uint8_t x) const
 {
     constexpr std::size_t char_size = 5;
     const std::uint16_t index = Memory::fontset_location + x * char_size;
     m_memory.I = index;
 }
 
-void Chip8::CPU::LD_BX(std::uint8_t x) const noexcept
+void Chip8::CPU::LD_BX(std::uint8_t x) const
 {
     const std::uint8_t value = m_memory.VX[x];
     const std::size_t index = m_memory.I;
@@ -238,7 +238,7 @@ void Chip8::CPU::LD_BX(std::uint8_t x) const noexcept
     m_memory.memory[index + 2] = value % 10;
 }
 
-void Chip8::CPU::LD_IX(std::uint8_t x) const noexcept
+void Chip8::CPU::LD_IX(std::uint8_t x) const
 {
     for (std::size_t i = 0; i <= x; ++i)
     {
@@ -246,7 +246,7 @@ void Chip8::CPU::LD_IX(std::uint8_t x) const noexcept
     }
 }
 
-void Chip8::CPU::LD_XI(std::uint8_t x) const noexcept
+void Chip8::CPU::LD_XI(std::uint8_t x) const
 {
     for (std::size_t i = 0; i <= x; ++i)
     {

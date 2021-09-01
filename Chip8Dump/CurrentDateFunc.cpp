@@ -3,7 +3,7 @@
 #include <ctime>
 #include <string>
 
-std::string CurrentDate() noexcept
+std::string CurrentDate()
 {
     constexpr std::size_t buffer_size = 50;
     std::string date(buffer_size, ' ');

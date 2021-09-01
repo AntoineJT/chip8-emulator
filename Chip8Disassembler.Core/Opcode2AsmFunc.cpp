@@ -52,12 +52,12 @@ std::string DrawOperands(const uint16_t opcode)
     return GetOperands(opcode, XY) + ", 0x" + Chip8::Hex::Uint4HexValue(ls4b);
 }
 
-std::string UnknownOpcode(const uint16_t opcode) noexcept
+std::string UnknownOpcode(const uint16_t opcode)
 {
     return "; Unknown Opcode: " + Chip8::Hex::U16ToHex(opcode);
 }
 
-std::string Chip8::Disasm::Opcode2Asm(const std::uint16_t opcode) noexcept
+std::string Chip8::Disasm::Opcode2Asm(const std::uint16_t opcode)
 {
     switch (opcode & 0xF000)
     {

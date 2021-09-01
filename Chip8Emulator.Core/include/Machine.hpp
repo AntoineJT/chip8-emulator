@@ -17,10 +17,10 @@ namespace Chip8
         SDL_Event m_event {};
 
     public:
-        Machine(Screen& screen, Memory& memory, Keyboard& keyboard) noexcept;
+        Machine(Screen& screen, Memory& memory, Keyboard& keyboard);
 
-        void ExecuteNextInstruction() noexcept;
-        void Execute(std::uint16_t opcode) noexcept;
-        void HandleEvents() noexcept;
+        void ExecuteNextInstruction();
+        void Execute(std::uint16_t opcode);
+        void HandleEvents();
     };
 }

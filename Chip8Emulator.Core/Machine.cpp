@@ -9,8 +9,9 @@
 // I think it suits to the use case
 using namespace Chip8::Utils::Instructions;
 
-Chip8::Machine::Machine(Screen& screen, Memory& memory, Keyboard& keyboard)
-    : m_memory(memory)
+Chip8::Machine::Machine(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> memory, std::shared_ptr<Keyboard> keyboard)
+    : m_memoryPtr(memory)
+    , m_memory(*memory.get())
     , m_cpu(CPU(screen, memory, keyboard))
 {}
 

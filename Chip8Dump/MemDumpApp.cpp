@@ -45,33 +45,40 @@ int main(int argc, char* argv[])
     }
 
     // sets up the emulator to be able to dump memory
-    auto sdl = std::make_shared<SDL2::SDL>(true);
-    assert((*sdl.get()).Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
-    Chip8::Screen screen(sdl, 4);
-    sdl.reset();
-    Chip8::Memory mem;
+    auto sdlPtr = std::make_shared<SDL2::SDL>(true);
+    assert((*sdlPtr.get()).Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
+
+    auto screenPtr = std::make_shared<Chip8::Screen>(sdlPtr, 4);
+    sdlPtr.reset();
+
     std::vector<char> content;
     if (!Chip8::Utils::LoadFile(content, filename))
     {
         return EXIT_FAILURE;
     }
-    mem.LoadProgram(content);
-    Chip8::Keyboard keyboard;
-    Chip8::Machine machine(screen, mem, keyboard);
+    auto memoryPtr = std::make_shared<Chip8::Memory>();
+    auto& memory = *memoryPtr.get();
+    memory.LoadProgram(content);
+
+    auto keyboardPtr = std::make_shared<Chip8::Keyboard>();
+    Chip8::Machine machine(screenPtr, memoryPtr, keyboardPtr);
+
+    screenPtr.reset();
+    keyboardPtr.reset();
 
     std::cout << "Press CTRL^C to quit" << std::endl;
 
     const auto& DumpMemoryFunc = noHeap ? Chip8::Dump::DumpMemoryWithoutHeap : Chip8::Dump::DumpMemory;
     while(true)
     {
-        const std::uint16_t opcode = mem.NextInstruction();
+        const std::uint16_t opcode = memory.NextInstruction();
         const std::string instruction = Chip8::Disasm::Opcode2Asm(opcode);
 
         machine.HandleEvents();
         machine.Execute(opcode);
         std::cout << instruction << std::endl;
         output << instruction << '\n'
-            << DumpMemoryFunc(mem) << '\n';
+            << DumpMemoryFunc(memory) << '\n';
 
         SDL_Delay(delay);
     }

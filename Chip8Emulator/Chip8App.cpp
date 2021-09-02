@@ -43,12 +43,18 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    Chip8::Screen screen(sdlPtr, 16);
+    auto screenPtr = std::make_shared<Chip8::Screen>(sdlPtr, 16);
     sdlPtr.reset();
-    Chip8::Memory memory;
-    memory.LoadProgram(content);
-    Chip8::Keyboard keyboard;
-    Chip8::Machine machine(screen, memory, keyboard);
+
+    auto memoryPtr = std::make_shared<Chip8::Memory>();
+    (*memoryPtr.get()).LoadProgram(content);
+
+    auto keyboardPtr = std::make_shared<Chip8::Keyboard>();
+    Chip8::Machine machine(screenPtr, memoryPtr, keyboardPtr);
+
+    screenPtr.reset();
+    memoryPtr.reset();
+    keyboardPtr.reset();
 
     std::cout << "Press CTRL^C to quit" << std::endl;
 

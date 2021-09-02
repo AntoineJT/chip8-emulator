@@ -10,6 +10,7 @@ namespace Chip8
 {
     class Machine
     {
+        std::shared_ptr<Memory> m_memoryPtr;
         Memory& m_memory;
         CPU m_cpu;
         // avoids to allocate/destroy this struct
@@ -17,7 +18,7 @@ namespace Chip8
         SDL_Event m_event {};
 
     public:
-        Machine(Screen& screen, Memory& memory, Keyboard& keyboard);
+        Machine(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> memory, std::shared_ptr<Keyboard> keyboard);
 
         void ExecuteNextInstruction();
         void Execute(std::uint16_t opcode);

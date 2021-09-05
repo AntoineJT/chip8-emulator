@@ -2,7 +2,6 @@
 #include <cstdint>
 
 #include "CPU.hpp"
-#include "Keys.hpp"
 #include "Memory.hpp"
 #include "Screen.hpp"
 

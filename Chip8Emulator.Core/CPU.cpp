@@ -184,18 +184,24 @@ void Chip8::CPU::DRW(const std::uint8_t ls4b, const std::uint8_t x, const std::u
 // TODO Test it
 void Chip8::CPU::SKP(const std::uint8_t x)
 {
-    if (m_keyboard.m_state.hasPressedKey
-        && static_cast<int>(m_keyboard.m_state.keyPressed) == static_cast<int>(x))
+    if (m_keyboard.m_state.hasPressedKey)
     {
-        m_memory.pc += 2;
+        m_keyboard.m_state.hasPressedKey = false;
+        if (static_cast<int>(m_keyboard.m_state.keyPressed) == static_cast<int>(x))
+        {
+            m_memory.pc += 2;
+        }
     }
 }
 
 // TODO Test it
 void Chip8::CPU::SKNP(const std::uint8_t x)
 {
-    if (!m_keyboard.m_state.hasPressedKey
-        || static_cast<int>(m_keyboard.m_state.keyPressed) != static_cast<int>(x))
+    if (m_keyboard.m_state.hasPressedKey)
+    {
+        m_keyboard.m_state.hasPressedKey = false;
+    }
+    else if (static_cast<int>(m_keyboard.m_state.keyPressed) != static_cast<int>(x))
     {
         m_memory.pc += 2;
     }

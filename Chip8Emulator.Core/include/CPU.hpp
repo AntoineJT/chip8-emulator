@@ -23,7 +23,6 @@ namespace Chip8
         SDL_Event m_event {};
 
         Random m_random = Random(0, 255);
-        Key m_key = Key::NONE;
 
     public:
         CPU(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> memory, std::shared_ptr<Keyboard> keyboard);
@@ -48,6 +47,7 @@ namespace Chip8
         void RND(std::uint8_t x, std::uint8_t kk) const;
         void DRW(std::uint8_t ls4b, std::uint8_t x, std::uint8_t y) const;
         void SKP(std::uint8_t x);
+        void SKNP(std::uint8_t x);
         void LD_XD(std::uint8_t x) const;
         void LD_DX(std::uint8_t x) const;
         void LD_SX(std::uint8_t x) const;

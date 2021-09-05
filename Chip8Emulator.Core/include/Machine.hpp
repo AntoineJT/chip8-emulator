@@ -2,6 +2,7 @@
 #include <cstdint>
 
 #include "CPU.hpp"
+#include "Keyboard.hpp"
 #include "Memory.hpp"
 #include "Screen.hpp"
 
@@ -11,6 +12,7 @@ namespace Chip8
     {
         std::shared_ptr<Memory> m_memoryPtr;
         Memory& m_memory;
+        Keyboard& m_keyboard;
         CPU m_cpu;
         // avoids to allocate/destroy this struct
         // a lot of time per second

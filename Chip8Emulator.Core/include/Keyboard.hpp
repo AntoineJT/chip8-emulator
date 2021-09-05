@@ -25,6 +25,11 @@ namespace Chip8
         NONE = 0x10
     };
 
+    struct State {
+        bool hasPressedKey = false;
+        Key keyPressed = Key::NONE;
+    };
+
     class Keyboard
     {
         static inline std::unordered_map<Key, SDL_Scancode> defaultKeymap = {
@@ -48,6 +53,8 @@ namespace Chip8
 
     public:
         static bool IsValid(Key key);
+
         Utils::SimpleBiMap<Key, SDL_Scancode> m_keymap = defaultKeymap;
+        State m_state;
     };
 }

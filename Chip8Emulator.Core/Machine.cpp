@@ -12,6 +12,7 @@ using namespace Chip8::Utils::Instructions;
 Chip8::Machine::Machine(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> memory, std::shared_ptr<Keyboard> keyboard)
     : m_memoryPtr(memory)
     , m_memory(*memory.get())
+    , m_keyboard(*keyboard.get())
     , m_cpu(CPU(screen, memory, keyboard))
 {}
 
@@ -28,6 +29,17 @@ void Chip8::Machine::HandleEvents()
         switch (m_event.type) {
         case SDL_QUIT:
             exit(0);
+        case SDL_KEYDOWN:
+        {
+            const std::unordered_map<SDL_Scancode, Key>& map = m_keyboard.m_keymap.ReversedData();
+            const auto elem = map.find(m_event.key.keysym.scancode);
+            if (elem != map.end())
+            {
+                m_keyboard.m_state.hasPressedKey = true;
+                m_keyboard.m_state.keyPressed = elem->second;
+            }
+            break;
+        }
         default:
             break;
         }

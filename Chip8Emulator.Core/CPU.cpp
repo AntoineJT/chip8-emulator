@@ -184,23 +184,20 @@ void Chip8::CPU::DRW(const std::uint8_t ls4b, const std::uint8_t x, const std::u
 // TODO Test it
 void Chip8::CPU::SKP(const std::uint8_t x)
 {
-    while (true)
+    if (m_keyboard.m_state.hasPressedKey
+        && static_cast<int>(m_keyboard.m_state.keyPressed) == static_cast<int>(x))
     {
-        sdl_assert(SDL_WaitEvent(&m_event));
-        if (m_event.type == SDL_KEYDOWN)
-        {
-            const std::unordered_map<SDL_Scancode, Key>& map = m_keyboard.m_keymap.ReversedData();
-            const auto elem = map.find(m_event.key.keysym.scancode);
-            if (elem != map.end())
-            {
-                m_key = elem->second;
-                if (static_cast<int>(m_key) == static_cast<int>(x))
-                {
-                    m_memory.pc += 2;
-                }
-                break;
-            }
-        }
+        m_memory.pc += 2;
+    }
+}
+
+// TODO Test it
+void Chip8::CPU::SKNP(const std::uint8_t x)
+{
+    if (!m_keyboard.m_state.hasPressedKey
+        || static_cast<int>(m_keyboard.m_state.keyPressed) != static_cast<int>(x))
+    {
+        m_memory.pc += 2;
     }
 }
 

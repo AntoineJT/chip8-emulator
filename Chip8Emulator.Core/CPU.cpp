@@ -6,7 +6,6 @@
 
 Chip8::CPU::CPU(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> memory, std::shared_ptr<Keyboard> keyboard)
     : m_screenPtr(screen)
-    , m_screen(*screen.get())
     , m_memoryPtr(memory)
     , m_memory(*memory.get())
     , m_keyboardPtr(keyboard)
@@ -15,7 +14,7 @@ Chip8::CPU::CPU(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> memory, 
 
 void Chip8::CPU::CLS() const
 {
-    m_screen.Refresh(true);
+    m_screenPtr->Refresh(true);
 }
 
 void Chip8::CPU::RET() const
@@ -173,12 +172,12 @@ void Chip8::CPU::DRW(const std::uint8_t ls4b, const std::uint8_t x, const std::u
     {
         const uint8_t x2 = pt.first % base_width;
         const uint8_t y2 = pt.second % base_height;
-        collides |= m_screen.Collides(x2, y2);
+        collides |= m_screenPtr->Collides(x2, y2);
         wrappedPoints.push_back({ x2, y2 });
     }
     m_memory.VX[0xF] = collides ? 1 : 0;
-    m_screen.DrawSprite(wrappedPoints);
-    m_screen.Refresh(false);
+    m_screenPtr->DrawSprite(wrappedPoints);
+    m_screenPtr->Refresh(false);
 }
 
 // TODO Test it

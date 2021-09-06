@@ -11,8 +11,7 @@ namespace Chip8
     class Machine
     {
         std::shared_ptr<Memory> m_memoryPtr;
-        Memory& m_memory;
-        Keyboard& m_keyboard;
+        std::shared_ptr<Keyboard> m_keyboardPtr;
         CPU m_cpu;
         // avoids to allocate/destroy this struct
         // a lot of time per second

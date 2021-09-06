@@ -10,19 +10,17 @@ namespace Chip8
     class CPU
     {
         std::shared_ptr<Screen> m_screenPtr;
-        Screen& m_screen;
-
         std::shared_ptr<Memory> m_memoryPtr;
-        Memory& m_memory;
-
         std::shared_ptr<Keyboard> m_keyboardPtr;
+        // Memory and Keyboard references are
+        // kept for code readability purpose
+        Memory& m_memory;
         Keyboard& m_keyboard;
 
+        Random m_random = Random(0, 255);
         // avoids to allocate/destroy this struct
         // a lot of time per second
         SDL_Event m_event {};
-
-        Random m_random = Random(0, 255);
 
     public:
         CPU(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> memory, std::shared_ptr<Keyboard> keyboard);

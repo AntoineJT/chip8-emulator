@@ -11,14 +11,13 @@ using namespace Chip8::Utils::Instructions;
 
 Chip8::Machine::Machine(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> memory, std::shared_ptr<Keyboard> keyboard)
     : m_memoryPtr(memory)
-    , m_memory(*memory.get())
-    , m_keyboard(*keyboard.get())
+    , m_keyboardPtr(keyboard)
     , m_cpu(CPU(screen, memory, keyboard))
 {}
 
 void Chip8::Machine::ExecuteNextInstruction()
 {
-    Execute(m_memory.NextInstruction());
+    Execute(m_memoryPtr->NextInstruction());
     // TODO S'occuper des timers
 }
 
@@ -30,12 +29,12 @@ void Chip8::Machine::HandleEvents()
             exit(0);
         case SDL_KEYDOWN:
         {
-            const auto& keymap = m_keyboard.m_keymap;
+            const auto& keymap = m_keyboardPtr->m_keymap;
             const auto elem = keymap.find(m_event.key.keysym.scancode);
             if (elem != keymap.end())
             {
-                m_keyboard.m_state.hasPressedKey = true;
-                m_keyboard.m_state.keyPressed = elem->second;
+                m_keyboardPtr->m_state.hasPressedKey = true;
+                m_keyboardPtr->m_state.keyPressed = elem->second;
             }
             break;
         }
@@ -96,21 +95,21 @@ void Chip8::Machine::Execute(const std::uint16_t opcode)
         break;
 
     case SE_XKK:
-        if (m_memory.VX[x] == kk)
+        if (m_memoryPtr->VX[x] == kk)
         {
             incBy = 4;
         }
         break;
 
     case SNE_XKK:
-        if (m_memory.VX[x] != kk)
+        if (m_memoryPtr->VX[x] != kk)
         {
             incBy = 4;
         }
         break;
 
     case SE_XY:
-        if (m_memory.VX[x] == m_memory.VX[y])
+        if (m_memoryPtr->VX[x] == m_memoryPtr->VX[y])
         {
             incBy = 4;
         }
@@ -170,7 +169,7 @@ void Chip8::Machine::Execute(const std::uint16_t opcode)
         break;
 
     case SNE_XY:
-        if (m_memory.VX[x] != m_memory.VX[y])
+        if (m_memoryPtr->VX[x] != m_memoryPtr->VX[y])
         {
             incBy = 4;
         }
@@ -265,5 +264,5 @@ void Chip8::Machine::Execute(const std::uint16_t opcode)
         break;
     }
 
-    m_memory.pc += incBy;
+    m_memoryPtr->pc += incBy;
 }

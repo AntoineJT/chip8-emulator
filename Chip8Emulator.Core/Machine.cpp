@@ -22,7 +22,6 @@ void Chip8::Machine::ExecuteNextInstruction()
     // TODO S'occuper des timers
 }
 
-// TODO Rename it to something like UnfreezeWindows
 void Chip8::Machine::HandleEvents()
 {
     while (SDL_PollEvent(&m_event)) {
@@ -31,9 +30,9 @@ void Chip8::Machine::HandleEvents()
             exit(0);
         case SDL_KEYDOWN:
         {
-            const std::unordered_map<SDL_Scancode, Key>& map = m_keyboard.m_keymap.ReversedData();
-            const auto elem = map.find(m_event.key.keysym.scancode);
-            if (elem != map.end())
+            const auto& keymap = m_keyboard.m_keymap;
+            const auto elem = keymap.find(m_event.key.keysym.scancode);
+            if (elem != keymap.end())
             {
                 m_keyboard.m_state.hasPressedKey = true;
                 m_keyboard.m_state.keyPressed = elem->second;

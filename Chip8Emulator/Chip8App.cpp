@@ -62,29 +62,4 @@ int main(int argc, char* argv[])
         machine.ExecuteNextInstruction();
         SDL_Delay(refreshRate);
     }
-
-    /*
-    Chip8::Screen::PixelGrid grid = {};
-    for (std::size_t y = 0; y < Chip8::base_height; ++y)
-    {
-        grid.at(y) = {};
-        for (std::size_t x = 0; x < Chip8::base_width; ++x)
-        {
-            grid[y][x] = x % (y + 1) == 0;
-        }
-    }
-    assert(screen.Render(grid));
-    screen.Refresh(false);
-
-    SDL_Delay(3000);
-
-    // Blinking screen test
-    for (int i = 5; i > 0; --i)
-    {
-        screen.ChangeBgColor(SDL2::Colors::BLACK, true);
-        SDL_Delay(250);
-        screen.ChangeBgColor(SDL2::Colors::WHITE, true);
-        SDL_Delay(250);
-    }
-    */
 }

@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
 
     // sets up the emulator to be able to dump memory
     auto sdlPtr = std::make_shared<SDL2::SDL>(true);
-    assert((*sdlPtr.get()).Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
+    assert(sdlPtr->Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
 
     auto screenPtr = std::make_shared<Chip8::Screen>(sdlPtr, 4);
     sdlPtr.reset();
@@ -58,11 +58,8 @@ int main(int argc, char* argv[])
     auto& memory = *memoryPtr.get();
     memory.LoadProgram(content);
 
-    auto keyboardPtr = std::make_shared<Chip8::Keyboard>();
-    Chip8::Machine machine(screenPtr, memoryPtr, keyboardPtr);
-
+    Chip8::Machine machine(screenPtr, memoryPtr);
     screenPtr.reset();
-    keyboardPtr.reset();
 
     std::cout << "Press CTRL^C to quit" << std::endl;
 

@@ -1,11 +1,10 @@
-#include "Memory.hpp"
-
 #include <vector>
 
+#include "Memory.hpp"
 #include "OpcodeValueFunc.hpp"
 
 // from http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
-static constexpr std::array<std::uint8_t, 80> font_set =
+static constexpr std::array<std::uint8_t, 80> fontset =
 {
     0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
     0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -22,7 +21,7 @@ static constexpr std::array<std::uint8_t, 80> font_set =
     0xF0, 0x80, 0x80, 0x80, 0xF0, // C
     0xE0, 0x90, 0x90, 0x90, 0xE0, // D
     0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
-    0xF0, 0x80, 0xF0, 0x80, 0x80 // F
+    0xF0, 0x80, 0xF0, 0x80, 0x80, // F
 };
 
 Chip8::Memory::Memory()
@@ -34,17 +33,17 @@ Chip8::Memory::Memory()
 void Chip8::Memory::LoadFontSet()
 {
     // TODO take a look at std::copy later
-    constexpr size_t size = font_set.size();
+    constexpr size_t size = fontset.size();
     for (std::size_t i = 0; i < size; ++i)
     {
-        memory[i] = font_set[i];
+        memory[i] = fontset[i];
     }
 }
 
 void Chip8::Memory::LoadProgram(const std::vector<char>& data)
 {
     std::size_t index = pc;
-    for (const char& c : data)
+    for (const char c : data)
     {
         memory[index] = c;
         ++index;

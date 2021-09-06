@@ -5,6 +5,7 @@
 
 #include "Instructions.hpp"
 #include "Keyboard.hpp"
+#include "LoadFileFunc.hpp"
 
 // I think it suits to the use case
 using namespace Chip8::Utils::Instructions;
@@ -14,6 +15,20 @@ Chip8::Machine::Machine(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> 
     , m_keyboardPtr(keyboard)
     , m_cpu(CPU(screen, memory, keyboard))
 {}
+
+Chip8::Machine::Machine(std::shared_ptr<Screen> screen, std::string filepath)
+    : m_memoryPtr(std::make_shared<Memory>())
+    , m_keyboardPtr(std::make_shared<Keyboard>())
+    , m_cpu(CPU(screen, m_memoryPtr, m_keyboardPtr))
+{
+    std::vector<char> content;
+    if (!Chip8::Utils::LoadFile(content, filepath))
+    {
+        exit(EXIT_FAILURE);
+    }
+
+    m_memoryPtr->LoadProgram(content);
+}
 
 void Chip8::Machine::ExecuteNextInstruction()
 {

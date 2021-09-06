@@ -18,7 +18,8 @@ namespace Chip8
         SDL_Event m_event {};
 
     public:
-        Machine(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> memory, std::shared_ptr<Keyboard> keyboard);
+        Machine(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> memory, std::shared_ptr<Keyboard> keyboard = std::make_shared<Keyboard>());
+        Machine(std::shared_ptr<Screen> screen, std::string filepath);
 
         void ExecuteNextInstruction();
         void Execute(std::uint16_t opcode);

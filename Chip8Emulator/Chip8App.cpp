@@ -3,7 +3,6 @@
 #include <iostream>
 #include <unordered_map>
 
-#include "LoadFileFunc.hpp"
 #include "Machine.hpp"
 #include "PrintUsageFunc.hpp"
 #include "Screen.hpp"
@@ -34,24 +33,11 @@ int main(int argc, char* argv[])
     // should not be ALREADY_RUNNING, at least for now
     sdl_assert(sdlPtr->Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
 
-    std::vector<char> content;
-    if (!Chip8::Utils::LoadFile(content, filename))
-    {
-        return EXIT_FAILURE;
-    }
-
     auto screenPtr = std::make_shared<Chip8::Screen>(sdlPtr, 16);
     sdlPtr.reset();
 
-    auto memoryPtr = std::make_shared<Chip8::Memory>();
-    memoryPtr->LoadProgram(content);
-
-    auto keyboardPtr = std::make_shared<Chip8::Keyboard>();
-    Chip8::Machine machine(screenPtr, memoryPtr, keyboardPtr);
-
+    Chip8::Machine machine(screenPtr, filename);
     screenPtr.reset();
-    memoryPtr.reset();
-    keyboardPtr.reset();
 
     std::cout << "Press CTRL^C to quit" << std::endl;
 

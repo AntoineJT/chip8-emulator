@@ -48,6 +48,7 @@ namespace Chip8
         void DRW(std::uint8_t ls4b, std::uint8_t x, std::uint8_t y) const;
         void SKP(std::uint8_t x);
         void SKNP(std::uint8_t x);
+        void LD_XK(std::uint8_t x);
         void LD_XD(std::uint8_t x) const;
         void LD_DX(std::uint8_t x) const;
         void LD_SX(std::uint8_t x) const;

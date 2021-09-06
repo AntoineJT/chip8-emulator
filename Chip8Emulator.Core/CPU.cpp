@@ -207,6 +207,29 @@ void Chip8::CPU::SKNP(const std::uint8_t x)
     }
 }
 
+// TODO Test it, reduce code duplication
+void Chip8::CPU::LD_XK(std::uint8_t x)
+{
+    auto& kState = m_keyboard.m_state;
+    kState.hasPressedKey = false;
+    do
+    {
+        SDL_WaitEvent(&m_event);
+        if (m_event.type == SDL_KEYDOWN)
+        {
+            const auto& keymap = m_keyboard.m_keymap;
+            const auto elem = keymap.find(m_event.key.keysym.scancode);
+            if (elem != keymap.end())
+            {
+                m_keyboard.m_state.hasPressedKey = true;
+                m_keyboard.m_state.keyPressed = elem->second;
+                break;
+            }
+        }
+    } while (m_event.type != SDL_KEYDOWN);
+    m_memory.VX[x] = static_cast<int>(kState.keyPressed);
+}
+
 void Chip8::CPU::LD_XD(const std::uint8_t x) const
 {
     m_memory.VX[x] = m_memory.DT;

@@ -197,15 +197,13 @@ void Chip8::Machine::Execute(const std::uint16_t opcode)
         {
             if (kk == SKP)
             {
-                // TODO Implement it, needs to check keyboard status (SDL)
                 m_cpu.SKP(x);
-                // PrintOpcodeStatus("Unhandled", opcode);
                 break;
             }
 
             if (kk == SKNP)
             {
-                // TODO Implement it, the opposite of SKP
+                m_cpu.SKNP(x);
                 PrintOpcodeStatus("Unhandled", opcode);
                 break;
             }
@@ -225,6 +223,7 @@ void Chip8::Machine::Execute(const std::uint16_t opcode)
             // TODO Wait for a key press by pausing the program then
             // store the value of the key into Vx
             // PrintOpcodeStatus("Unhandled", opcode);
+            m_cpu.LD_XK(x);
             break;
 
         case LD_DX:

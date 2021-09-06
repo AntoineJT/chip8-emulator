@@ -31,11 +31,13 @@ jobs:
         move build/windows/x64/debug/chip8disasm.exe debug-artifact/
         move build/windows/x64/debug/chip8dump.exe debug-artifact/
         move build/windows/x64/debug/chip8emu.exe debug-artifact/
+        move build/windows/x64/debug/*.dll debug-artifact/
         
         mkdir release-artifact
         move build/windows/x64/release/chip8disasm.exe release-artifact/
         move build/windows/x64/release/chip8dump.exe release-artifact/
         move build/windows/x64/release/chip8emu.exe release-artifact/
+        move build/windows/x64/release/*.dll release-artifact/
 
     - uses: actions/upload-artifact@v2
       with:

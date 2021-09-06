@@ -6,16 +6,38 @@ set_version("0.0.0") -- will follow semver later
 set_allowedplats("windows", "linux")
 set_allowedarchs("windows|x64", "linux|x86_64")
 
-add_rules("mode.debug", "mode.release")
+add_rules("mode.debug", "mode.release", "copy_dlls")
 set_languages("cxx17")
 set_symbols("debug", "edit")
 
-add_requires("libsdl 2.0.16") -- latest version at the time
+add_requires("libsdl 2.0.16", {configs = {use_sdlmain = false}}) -- latest version at the time
 add_requires("tclap 1.4.0-rc1") -- latest version at the time
 
 if is_mode("release") then
     set_optimize("fastest")
 end
+
+local shared_pkgs = {libsdl = true}
+
+rule("copy_dlls")
+    on_build("windows", function (target)
+        for _, pkg in pairs(target:pkgs()) do
+            -- if shared_pkgs[pkg:name()] and pkg:has_shared() then
+            if shared_pkgs[pkg:name()] then
+                -- print("PKG: " .. pkg:name())
+
+                local libs = pkg._INFO.libfiles
+                for _, lib in pairs(libs) do
+                    if lib:sub(#lib - 3) == '.dll' then
+                        os.cp(lib, target:targetdir())
+                    end
+                end
+
+                -- Avoid to copy twice the dlls
+                shared_pkgs[pkg:name()] = false
+            end
+        end
+    end)
 
 target("chip8emu")
     set_kind("binary")

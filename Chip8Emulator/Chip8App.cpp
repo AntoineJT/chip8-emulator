@@ -1,8 +1,7 @@
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
-
-#define SDL_MAIN_HANDLED
+#include <unordered_map>
 
 #include "LoadFileFunc.hpp"
 #include "Machine.hpp"
@@ -12,7 +11,6 @@
 #include "sdl_assert.h"
 
 #include <SDL.h>
-#include <unordered_map>
 
 int main(int argc, char* argv[])
 {

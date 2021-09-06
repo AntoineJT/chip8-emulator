@@ -3,8 +3,6 @@
 #include <fstream>
 #include <iostream>
 
-#define SDL_MAIN_HANDLED
-
 #include "CurrentDateFunc.hpp"
 #include "DumpMemoryFunc.hpp"
 #include "LoadFileFunc.hpp"

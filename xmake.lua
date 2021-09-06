@@ -20,7 +20,7 @@ end
 local shared_pkgs = {libsdl = true}
 
 rule("copy_dlls")
-    on_build("windows", function (target)
+    after_build("windows", function (target)
         for _, pkg in pairs(target:pkgs()) do
             if shared_pkgs[pkg:name()] then
                 local libs = pkg._INFO.libfiles

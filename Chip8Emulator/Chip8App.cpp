@@ -41,11 +41,11 @@ int main(int argc, char* argv[])
 
     std::cout << "Press CTRL^C to quit" << std::endl;
 
-    constexpr auto refreshRate = static_cast<Uint32>(1000 / 60);
+    constexpr auto msBetweenFrame = static_cast<Uint32>(1000 / 300);
     while(true)
     {
         machine.HandleEvents();
         machine.ExecuteNextInstruction();
-        SDL_Delay(refreshRate);
+        SDL_Delay(msBetweenFrame);
     }
 }

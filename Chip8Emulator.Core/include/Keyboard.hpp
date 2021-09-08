@@ -38,23 +38,23 @@ namespace Chip8
         }
 
         State m_state;
-        static inline const std::unordered_map<SDL_Scancode, Key> m_keymap = {
-            { SDL_SCANCODE_2, Key::KEY_1 },
-            { SDL_SCANCODE_W, Key::KEY_4 },
-            { SDL_SCANCODE_S, Key::KEY_7 },
-            { SDL_SCANCODE_X, Key::KEY_A },
-            { SDL_SCANCODE_3, Key::KEY_2 },
-            { SDL_SCANCODE_E, Key::KEY_5 },
-            { SDL_SCANCODE_D, Key::KEY_8 },
-            { SDL_SCANCODE_C, Key::KEY_0 },
-            { SDL_SCANCODE_4, Key::KEY_3 },
-            { SDL_SCANCODE_R, Key::KEY_6 },
-            { SDL_SCANCODE_F, Key::KEY_9 },
-            { SDL_SCANCODE_V, Key::KEY_B },
-            { SDL_SCANCODE_5, Key::KEY_C },
-            { SDL_SCANCODE_T, Key::KEY_D },
-            { SDL_SCANCODE_G, Key::KEY_E },
-            { SDL_SCANCODE_B, Key::KEY_F }
+        const std::unordered_map<SDL_Scancode, Key> m_keymap = {
+            { SDL_SCANCODE_KP_1, Key::KEY_1 },
+            { SDL_SCANCODE_KP_2, Key::KEY_2 },
+            { SDL_SCANCODE_KP_3, Key::KEY_3 },
+            { SDL_SCANCODE_KP_4, Key::KEY_4 },
+            { SDL_SCANCODE_KP_5, Key::KEY_5 },
+            { SDL_SCANCODE_KP_6, Key::KEY_6 },
+            { SDL_SCANCODE_KP_7, Key::KEY_7 },
+            { SDL_SCANCODE_KP_8, Key::KEY_8 },
+            { SDL_SCANCODE_KP_9, Key::KEY_9 },
+            { SDL_SCANCODE_KP_0, Key::KEY_0 },
+            { SDL_SCANCODE_A, Key::KEY_A },
+            { SDL_SCANCODE_Z, Key::KEY_B },
+            { SDL_SCANCODE_E, Key::KEY_C },
+            { SDL_SCANCODE_Q, Key::KEY_D },
+            { SDL_SCANCODE_S, Key::KEY_E },
+            { SDL_SCANCODE_D, Key::KEY_F }
         };
     };
 }

@@ -84,7 +84,7 @@ target("chip8emu.core")
 
     add_files("Chip8Emulator.Core/**.cpp")
     add_headerfiles("Chip8Emulator.Core/include/*.hpp", "Chip8Emulator.Core/**.h")
-    add_includedirs("Chip8Emulator.Core/include/" {public = true})
+    add_includedirs("Chip8Emulator.Core/include/", {public = true})
 
     add_deps("chip8utils", "sdl2wrapper")
     add_packages("libsdl")

@@ -1,5 +1,4 @@
 set_xmakever("2.5.6")
-add_repositories("local xmake-repo") 
 
 set_project("chip8emu")
 set_version("0.0.0") -- will follow semver later
@@ -13,7 +12,6 @@ set_symbols("debug", "edit")
 
 add_requires("libsdl 2.0.16", {configs = {use_sdlmain = false}}) -- latest version at the time
 add_requires("tclap 1.4.0-rc1") -- latest version at the time
-add_requires("timercpp 150421") -- latest version at the time
 
 if is_mode("release") then
     set_optimize("fastest")
@@ -49,7 +47,6 @@ target("chip8emu")
 
     add_deps("chip8emu.core", "chip8utils", "sdl2wrapper")
     add_packages("libsdl")
-    add_packages("timercpp") -- TODO use pimpl to remove this dep
 
 target("sdl2wrapper")
     set_kind("static")
@@ -85,12 +82,12 @@ target("chip8emu.core")
     set_basename("Chip8Emulator.Core")
     set_group("Static libs")
 
-    add_files("Chip8Emulator.Core/*.cpp")
-    add_headerfiles("Chip8Emulator.Core/include/*.hpp")
-    add_includedirs("Chip8Emulator.Core/include/", {public = true})
+    add_files("Chip8Emulator.Core/**.cpp")
+    add_headerfiles("Chip8Emulator.Core/include/*.hpp", "Chip8Emulator.Core/**.h")
+    add_includedirs("Chip8Emulator.Core/include/" {public = true})
 
     add_deps("chip8utils", "sdl2wrapper")
-    add_packages("libsdl", "timercpp")
+    add_packages("libsdl")
 
 target("chip8disasm.core")
     set_kind("static")

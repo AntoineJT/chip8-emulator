@@ -5,9 +5,10 @@ package("timercpp")
     set_license("MIT")
 
     -- this header only lib is made using C++14
-    set_urls("https://github.com/99x/timercpp.git", "https://github.com/AntoineJT/timercpp-cpp17.git")
-    add_versions("15_04_2021", "fbf911046b46f4fa68e3a94d004acb3d9de41f10")
-    add_versions("cpp17", "cfb799d59b187bc82c2e3437dd20d40061c8390c")
+    set_urls("https://github.com/99x/timercpp.git")
+    add_versions("150421", "fbf911046b46f4fa68e3a94d004acb3d9de41f10")
+    -- Remove -fconcepts related warnings
+    add_patches("150421", path.join(os.scriptdir(), "patches", "150421", "concept.patch"), "5795c1400335119e237b0b9650580fae89ac188887b9cff513b075f6d99354e7")
 
     on_install(function (package)
         os.cp("timercpp.h", package:installdir("include"))

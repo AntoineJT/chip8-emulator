@@ -1,5 +1,7 @@
 #pragma once
+
 #include <array>
+#include <atomic>
 #include <cstddef>
 #include <cstdint>
 #include <vector>
@@ -8,7 +10,8 @@ namespace Chip8
 {
     class Memory
     {
-        // TODO Support ETI 660 if some ROMs still exists on the Internet
+        // TODO Support ETI 660?
+        // Maybe if some ROMs still exists on the Internet
         // See here: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#2.1
         // Begins at 0x200, because generally
         // from 0x000 to 0x1FF, the memory was
@@ -43,7 +46,7 @@ namespace Chip8
         std::uint16_t I = 0; // the I register, generally used to store memory addresses.
         std::array<uint16_t, 16> stack = {0};
 
-        std::uint8_t DT = 0; // delay timer
-        std::uint8_t ST = 0; // sound timer
+        std::atomic<std::uint8_t> DT = 0; // delay timer
+        std::atomic<std::uint8_t> ST = 0; // sound timer
     };
 }

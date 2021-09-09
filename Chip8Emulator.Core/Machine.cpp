@@ -1,11 +1,12 @@
 #include "Machine.hpp"
 
 #include <iostream>
-#include <sdl_assert.h>
 
 #include "Instructions.hpp"
 #include "Keyboard.hpp"
 #include "LoadFileFunc.hpp"
+
+#include <sdl_assert.h>
 
 // I think it suits to the use case
 using namespace Chip8::Utils::Instructions;
@@ -14,7 +15,9 @@ Chip8::Machine::Machine(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> 
     : m_memoryPtr(memory)
     , m_keyboardPtr(keyboard)
     , m_cpu(CPU(screen, memory, keyboard))
-{}
+{
+    InitTimers();
+}
 
 Chip8::Machine::Machine(std::shared_ptr<Screen> screen, std::string filepath)
     : m_memoryPtr(std::make_shared<Memory>())
@@ -28,6 +31,26 @@ Chip8::Machine::Machine(std::shared_ptr<Screen> screen, std::string filepath)
     }
 
     m_memoryPtr->LoadProgram(content);
+    InitTimers();
+}
+
+void Chip8::Machine::InitTimers()
+{
+    constexpr int delay = 1000 / 60; // ~60Hz
+    Memory& mem = *this->m_memoryPtr;
+    auto& dt = mem.DT;
+    auto& st = mem.ST;
+
+    m_soundTimer.setInterval([&st]() {
+        if (st.load(std::memory_order_acquire) > 0) {
+            --st;
+        }
+    }, delay);
+    m_delayTimer.setInterval([&dt]() {
+        if (dt.load(std::memory_order_acquire) > 0) {
+            --dt;
+        }
+    }, delay);
 }
 
 void Chip8::Machine::ExecuteNextInstruction()
@@ -40,8 +63,6 @@ void Chip8::Machine::HandleEvents()
 {
     while (SDL_PollEvent(&m_event)) {
         switch (m_event.type) {
-        case SDL_QUIT:
-            exit(0);
         case SDL_KEYDOWN:
         {
             const auto& keymap = m_keyboardPtr->m_keymap;
@@ -53,6 +74,8 @@ void Chip8::Machine::HandleEvents()
             }
             break;
         }
+        case SDL_QUIT:
+            exit(0);
         default:
             break;
         }

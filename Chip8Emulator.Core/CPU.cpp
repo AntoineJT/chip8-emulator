@@ -206,7 +206,7 @@ void Chip8::CPU::SKNP(const std::uint8_t x)
     }
 }
 
-// TODO Test it, reduce code duplication
+// Works as expected
 void Chip8::CPU::LD_XK(std::uint8_t x)
 {
     auto& kState = m_keyboard.m_state;

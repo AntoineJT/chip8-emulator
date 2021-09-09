@@ -13,7 +13,7 @@ set_symbols("debug", "edit")
 
 add_requires("libsdl 2.0.16", {configs = {use_sdlmain = false}}) -- latest version at the time
 add_requires("tclap 1.4.0-rc1") -- latest version at the time
-add_requires("timercpp cpp17") -- latest version at the time
+add_requires("timercpp 150421") -- latest version at the time
 
 if is_mode("release") then
     set_optimize("fastest")

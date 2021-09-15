@@ -1,6 +1,6 @@
 // Derived from the original
 // https://github.com/99x/timercpp
-#include "timercpp.h"
+#include "timercpp.hpp"
 
 void Timer::setTimeout(std::function<void()> function, int delay) {
     active = true;

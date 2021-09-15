@@ -31,10 +31,5 @@ namespace Chip8
         void ExecuteNextInstruction();
         void Execute(std::uint16_t opcode);
         void HandleEvents();
-
-        struct Thread {
-            std::atomic<bool> alive;
-            std::thread get;
-        };
     };
 }

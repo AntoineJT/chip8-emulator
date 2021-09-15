@@ -34,17 +34,20 @@ Chip8::Machine::Machine(std::shared_ptr<Screen> screen, std::string filepath)
     InitTimers();
 }
 
+// Timers are running at 60Hz
 void Chip8::Machine::InitTimers()
 {
     constexpr double delayMs = 1000.0 / 60;
     constexpr int delay = static_cast<int>(delayMs * 1,000,000);
-    Memory& mem = *this->m_memoryPtr;
+    Memory& mem = *m_memoryPtr;
     auto& dt = mem.DT;
     auto& st = mem.ST;
 
     m_soundTimer.setIntervalNs([&st]() {
         if (st.load(std::memory_order_acquire) > 0) {
             --st;
+            // TODO Replace that with actual sound
+            std::cout << "SOUND !!" << std::endl;
         }
     }, delay);
     m_delayTimer.setIntervalNs([&dt]() {
@@ -57,7 +60,6 @@ void Chip8::Machine::InitTimers()
 void Chip8::Machine::ExecuteNextInstruction()
 {
     Execute(m_memoryPtr->NextInstruction());
-    // TODO S'occuper des timers
 }
 
 void Chip8::Machine::HandleEvents()
@@ -242,7 +244,6 @@ void Chip8::Machine::Execute(const std::uint16_t opcode)
             if (kk == SKNP)
             {
                 m_cpu.SKNP(x);
-                PrintOpcodeStatus("Unhandled", opcode);
                 break;
             }
 

@@ -1,8 +1,10 @@
 // Derived from the original
 // https://github.com/99x/timercpp
 #include "timercpp.hpp"
+#include <type_traits>
 
-void Timer::setTimeout(std::function<void()> function, int delay) {
+void Timer::setTimeout(std::function<void()> function, int delay)
+{
     active = true;
     std::thread t([=]() {
         if(!active.load()) return;
@@ -13,30 +15,17 @@ void Timer::setTimeout(std::function<void()> function, int delay) {
     t.detach();
 }
 
-void Timer::setInterval(std::function<void()> function, int interval) {
-    active = true;
-    std::thread t([=]() {
-        while(active.load()) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(interval));
-            if(!active.load()) return;
-            function();
-        }
-    });
-    t.detach();
+void Timer::setInterval(std::function<void()> function, int interval)
+{
+    _setInterval<std::chrono::milliseconds>(function, interval);
 }
 
-void Timer::setIntervalNs(std::function<void()> function, int interval) {
-    active = true;
-    std::thread t([=]() {
-        while (active.load()) {
-            std::this_thread::sleep_for(std::chrono::nanoseconds(interval));
-            if (!active.load()) return;
-            function();
-        }
-        });
-    t.detach();
+void Timer::setIntervalNs(std::function<void()> function, int interval)
+{
+    _setInterval<std::chrono::nanoseconds>(function, interval);
 }
 
-void Timer::stop() {
+void Timer::stop()
+{
     active = false;
 }

@@ -25,6 +25,18 @@ void Timer::setInterval(std::function<void()> function, int interval) {
     t.detach();
 }
 
+void Timer::setIntervalNs(std::function<void()> function, int interval) {
+    active = true;
+    std::thread t([=]() {
+        while (active.load()) {
+            std::this_thread::sleep_for(std::chrono::nanoseconds(interval));
+            if (!active.load()) return;
+            function();
+        }
+        });
+    t.detach();
+}
+
 void Timer::stop() {
     active = false;
 }

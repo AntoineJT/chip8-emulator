@@ -36,17 +36,18 @@ Chip8::Machine::Machine(std::shared_ptr<Screen> screen, std::string filepath)
 
 void Chip8::Machine::InitTimers()
 {
-    constexpr int delay = 1000 / 60; // ~60Hz
+    constexpr double delayMs = 1000.0 / 60;
+    constexpr int delay = static_cast<int>(delayMs * 1,000,000);
     Memory& mem = *this->m_memoryPtr;
     auto& dt = mem.DT;
     auto& st = mem.ST;
 
-    m_soundTimer.setInterval([&st]() {
+    m_soundTimer.setIntervalNs([&st]() {
         if (st.load(std::memory_order_acquire) > 0) {
             --st;
         }
     }, delay);
-    m_delayTimer.setInterval([&dt]() {
+    m_delayTimer.setIntervalNs([&dt]() {
         if (dt.load(std::memory_order_acquire) > 0) {
             --dt;
         }

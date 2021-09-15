@@ -17,6 +17,9 @@ if is_mode("release") then
     set_optimize("fastest")
 end
 
+-----------
+-- RULES --
+-----------
 local shared_pkgs = {libsdl = true}
 
 rule("copy_dlls")
@@ -36,6 +39,9 @@ rule("copy_dlls")
         end
     end)
 
+-------------------
+-- TARGETS: APPS --
+-------------------
 target("chip8emu")
     set_kind("binary")
     set_group("Applications")
@@ -48,16 +54,6 @@ target("chip8emu")
     add_deps("chip8emu.core", "chip8utils", "sdl2wrapper")
     add_packages("libsdl")
 
-target("sdl2wrapper")
-    set_kind("static")
-    set_group("Static libs")
-
-    add_files("sdl2wrapper/*.cpp")
-    add_headerfiles("sdl2wrapper/include/*.hpp")
-    add_includedirs("sdl2wrapper/include/", {public = true})
-
-    add_packages("libsdl")
-
 target("chip8disasm")
     set_kind("binary")
     set_group("Applications")
@@ -68,6 +64,31 @@ target("chip8disasm")
     add_headerfiles("Chip8Disassembler/*.hpp")
 
     add_deps("chip8disasm.core", "chip8utils")
+
+target("chip8dump")
+    set_kind("binary")
+    set_group("Applications")
+
+    add_rules("copy_dlls")
+
+    add_files("chip8dump/*.cpp")
+    add_headerfiles("chip8dump/*.hpp")
+
+    add_deps("chip8emu.core", "chip8disasm.core", "chip8utils", "sdl2wrapper")
+    add_packages("libsdl", "tclap")
+
+----------------------------
+-- TARGETS: INTERNAL LIBS --
+----------------------------
+target("sdl2wrapper")
+    set_kind("static")
+    set_group("Static libs")
+
+    add_files("sdl2wrapper/*.cpp")
+    add_headerfiles("sdl2wrapper/include/*.hpp")
+    add_includedirs("sdl2wrapper/include/", {public = true})
+
+    add_packages("libsdl")
 
 target("chip8utils")
     set_kind("static")
@@ -99,17 +120,5 @@ target("chip8disasm.core")
     add_includedirs("Chip8Disassembler.Core/include/", {public = true})
 
     add_deps("chip8utils")
-
-target("chip8dump")
-    set_kind("binary")
-    set_group("Applications")
-
-    add_rules("copy_dlls")
-
-    add_files("chip8dump/*.cpp")
-    add_headerfiles("chip8dump/*.hpp")
-
-    add_deps("chip8emu.core", "chip8disasm.core", "chip8utils", "sdl2wrapper")
-    add_packages("libsdl", "tclap")
 
 target_end()

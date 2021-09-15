@@ -7,7 +7,7 @@
 #include "Memory.hpp"
 #include "Screen.hpp"
 
-#include "../vendor/timercpp/timercpp.h"
+#include "../vendor/timercpp/timercpp.hpp"
 
 namespace Chip8
 {

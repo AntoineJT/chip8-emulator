@@ -16,7 +16,7 @@
 #include <SDL.h>
 #include <tclap/CmdLine.h>
 
-std::string ExecNextInstruction(Chip8::Memory& memory, Chip8::Machine& machine)
+static std::string ExecNextInstruction(Chip8::Memory& memory, Chip8::Machine& machine)
 {
     const std::uint16_t opcode = memory.NextInstruction();
     machine.HandleEvents();
@@ -48,9 +48,9 @@ int main(int argc, char* argv[])
     const bool noHeap = noHeapSwitch.getValue();
     const bool noFile = noFileDumpSwitch.getValue();
 
-    const std::string ofname = filename + "_" + CurrentDate() + "_dump.txt";
     std::optional<std::ofstream> output = std::nullopt;
     if (!noFile) {
+        const std::string ofname = filename + "_" + CurrentDate() + "_dump.txt";
         output = std::ofstream(ofname);
         if (!output->is_open())
         {

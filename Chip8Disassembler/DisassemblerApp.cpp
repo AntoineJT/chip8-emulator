@@ -9,7 +9,8 @@
 static void PrintUsage(const char* programName)
 {
     std::cerr << "Usage: " << programName << " inputfile [--file]" << '\n'
-        << '\t' << "[--file]: Write to <inputfile>_DIS.ASM file instead of stdout" << std::endl;
+        << '\t' << "[--file]: Write to <inputfile>_DIS.ASM file instead of stdout" 
+        << std::endl;
 }
 
 int main(int argc, char* argv[])

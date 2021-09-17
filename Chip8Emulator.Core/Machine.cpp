@@ -89,7 +89,7 @@ void Chip8::Machine::HandleEvents()
 void PrintOpcodeStatus(const char* status, const std::uint16_t opcode)
 {
     std::cerr << "Err: " << status << " instruction ("
-        << std::hex << opcode << std::dec << ")"
+        << Chip8::Hex::U16ToHex(opcode) << ")"
         << std::endl;
 }
 

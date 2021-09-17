@@ -1,7 +1,7 @@
 // Derived from the original
 // https://github.com/99x/timercpp
+// commit: fbf911046b46f4fa68e3a94d004acb3d9de41f10
 #include "timercpp.hpp"
-#include <type_traits>
 
 void Timer::setTimeout(std::function<void()> function, int delay)
 {

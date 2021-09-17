@@ -1,5 +1,6 @@
 // Derived from the original
 // https://github.com/99x/timercpp
+// commit: fbf911046b46f4fa68e3a94d004acb3d9de41f10
 #pragma once
 
 #include <iostream>
@@ -7,6 +8,7 @@
 #include <chrono>
 #include <atomic>
 #include <functional>
+#include <type_traits>
 
 class Timer {
     std::atomic<bool> active = true;

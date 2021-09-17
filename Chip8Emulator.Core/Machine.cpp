@@ -5,6 +5,7 @@
 #include "Instructions.hpp"
 #include "Keyboard.hpp"
 #include "LoadFileFunc.hpp"
+#include "Hex.hpp"
 
 #include <sdl_assert.h>
 
@@ -94,7 +95,7 @@ void PrintOpcodeStatus(const char* status, const std::uint16_t opcode)
 
 void Chip8::Machine::Execute(const std::uint16_t opcode)
 {
-    std::cout << "Info: Opcode '" << std::hex << opcode << std::dec << "' next!" << std::endl;
+    std::cout << "Info: Opcode '" << Chip8::Hex::U16ToHex(opcode) << "' next!" << std::endl;
 
     const std::uint8_t x = (opcode & 0x0F00) >> 8;
     const std::uint8_t y = (opcode & 0x00F0) >> 4;

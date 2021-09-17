@@ -4,8 +4,13 @@
 #include "LoadFileFunc.hpp"
 #include "Opcode2AsmFunc.hpp"
 #include "OpcodeValueFunc.hpp"
-#include "PrintUsageFunc.hpp"
 #include "WriteTextFileFunc.hpp"
+
+static void PrintUsage(const char* programName)
+{
+    std::cerr << "Usage: " << programName << " inputfile [--file]" << '\n'
+        << '\t' << "[--file]: Write to <inputfile>_DIS.ASM file instead of stdout" << std::endl;
+}
 
 int main(int argc, char* argv[])
 {
@@ -14,7 +19,7 @@ int main(int argc, char* argv[])
     switch (argc) {
     case 1:
         std::cerr << "Not enough arguments." << std::endl;
-        Chip8::Utils::PrintUsage(argv[0]);
+        PrintUsage(argv[0]);
         return EXIT_FAILURE;
     case 2:
         // Nothing to do except
@@ -27,7 +32,7 @@ int main(int argc, char* argv[])
         break;
     default:
         std::cerr << "Too much arguments." << std::endl;
-        Chip8::Utils::PrintUsage(argv[0]);
+        PrintUsage(argv[0]);
         return EXIT_FAILURE;
     }
 

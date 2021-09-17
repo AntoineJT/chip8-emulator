@@ -4,12 +4,16 @@
 #include <unordered_map>
 
 #include "Machine.hpp"
-#include "PrintUsageFunc.hpp"
 #include "Screen.hpp"
 #include "sdl.hpp"
 #include "sdl_assert.h"
 
 #include <SDL.h>
+
+static void PrintUsage(const char* filename)
+{
+    std::cerr << "Usage: " << filename << " inputfile" << std::endl;
+}
 
 int main(int argc, char* argv[])
 {
@@ -17,7 +21,7 @@ int main(int argc, char* argv[])
 
     if (argc == 1) {
         std::cerr << "Not enough arguments." << std::endl;
-        Chip8::Utils::PrintUsage(argv[0]);
+        PrintUsage(argv[0]);
         return EXIT_FAILURE;
     }
     if (argc == 2) {
@@ -25,7 +29,7 @@ int main(int argc, char* argv[])
     }
     else {
         std::cerr << "Too much arguments." << std::endl;
-        Chip8::Utils::PrintUsage(argv[0]);
+        PrintUsage(argv[0]);
         return EXIT_FAILURE;
     }
 

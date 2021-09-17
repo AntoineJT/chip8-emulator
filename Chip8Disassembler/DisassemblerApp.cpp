@@ -9,22 +9,29 @@
 
 int main(int argc, char* argv[])
 {
-    std::string filename;
+    bool writeFile = false;
 
-    if (argc == 1) {
+    switch (argc) {
+    case 1:
         std::cerr << "Not enough arguments." << std::endl;
         Chip8::Utils::PrintUsage(argv[0]);
         return EXIT_FAILURE;
-    }
-    if (argc == 2) {
-        filename = argv[1];
-    }
-    else {
+    case 2:
+        // Nothing to do except
+        // set filename value
+        break;
+    case 3:
+        if (strcmp(argv[2], "--file") == 0) {
+            writeFile = true;
+        }
+        break;
+    default:
         std::cerr << "Too much arguments." << std::endl;
         Chip8::Utils::PrintUsage(argv[0]);
         return EXIT_FAILURE;
     }
 
+    std::string filename = argv[1];
     std::vector<char> content;
     if (!Chip8::Utils::LoadFile(content, filename))
     {
@@ -40,5 +47,10 @@ int main(int argc, char* argv[])
         output.push_back('\n');
     }
 
-    Chip8::Disasm::WriteTextFile(filename + "_DIS.ASM", output);
+    if (!writeFile) {
+        std::cout << output << std::endl;
+    }
+    else {
+        Chip8::Disasm::WriteTextFile(filename + "_DIS.ASM", output);
+    }
 }

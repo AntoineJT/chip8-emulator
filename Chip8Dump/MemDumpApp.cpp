@@ -26,6 +26,13 @@ static std::string ExecNextInstruction(Chip8::Memory& memory, Chip8::Machine& ma
     return Chip8::Disasm::Opcode2Asm(opcode);
 }
 
+static inline int FloorAtZero(int val)
+{
+    if (val < 0)
+        return 0;
+    return val;
+}
+
 int main(int argc, char* argv[])
 {
     TCLAP::CmdLine cmd("Chip8Emu Dump Tool");
@@ -33,20 +40,19 @@ int main(int argc, char* argv[])
     TCLAP::ValueArg<int> delayArg("d", "delay", "Time in milliseconds between instructions. Default: 500.", false, 500, "time in ms");
     TCLAP::SwitchArg noHeapSwitch("n", "no-heap", "Don't dump heap memory.", false);
     TCLAP::SwitchArg noFileDumpSwitch("f", "no-file", "Only output basic infos on stdout.", false);
+    TCLAP::ValueArg<int> windowRatioArg("r", "ratio", "Set window size. Default: 6", false, 6, "times the base resolution");
     cmd.add(filenameArg);
     cmd.add(delayArg);
     cmd.add(noHeapSwitch);
     cmd.add(noFileDumpSwitch);
+    cmd.add(windowRatioArg);
     cmd.parse(argc, argv);
 
     const std::string filename = filenameArg.getValue();
-    int delay = delayArg.getValue();
-    if (delay < 0)
-    {
-        delay = 0;
-    }
+    const int delay = FloorAtZero(delayArg.getValue());
     const bool noHeap = noHeapSwitch.getValue();
     const bool noFile = noFileDumpSwitch.getValue();
+    const int ratio = FloorAtZero(windowRatioArg.getValue());
 
     std::optional<std::ofstream> output = std::nullopt;
     if (!noFile) {
@@ -63,7 +69,7 @@ int main(int argc, char* argv[])
     auto sdlPtr = std::make_shared<SDL2::SDL>(true);
     assert(sdlPtr->Init(SDL_INIT_VIDEO) == SDL2::SDL::INIT_SUCCESS);
 
-    auto screenPtr = std::make_shared<Chip8::Screen>(sdlPtr, 4);
+    auto screenPtr = std::make_shared<Chip8::Screen>(sdlPtr, ratio, "Chip8Emu - Dump tool");
     sdlPtr.reset();
 
     std::vector<char> content;

@@ -9,7 +9,7 @@
 #include <functional>
 
 class Timer {
-	std::atomic<bool> active{true};
+    std::atomic<bool> active = true;
 
     template <typename Duration>
     void _setInterval(std::function<void()> function, int interval)
@@ -21,10 +21,10 @@ class Timer {
                 if (!active.load()) return;
                 function();
             }
-            });
+        });
         t.detach();
     }
-	
+
     public:
         void setTimeout(std::function<void()> function, int delay);
         void setInterval(std::function<void()> function, int interval);

@@ -51,7 +51,7 @@ target("chip8emu")
     add_files("Chip8Emulator/**.cpp")
     add_headerfiles("Chip8Emulator/**.hpp")
 
-    add_deps("chip8emu.core", "sdl2wrapper")
+    add_deps("chip8emu.core", "sdl2wrapper", "chip8utils")
     add_packages("libsdl")
 
 target("chip8disasm")

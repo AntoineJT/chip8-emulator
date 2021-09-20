@@ -7,6 +7,7 @@
 #include "LoadFileFunc.hpp"
 #include "Hex.hpp"
 
+#include <Delay.hpp>
 #include <sdl_assert.h>
 
 // I think it suits to the use case
@@ -38,8 +39,7 @@ Chip8::Machine::Machine(std::shared_ptr<Screen> screen, const std::string& filep
 // Timers are running at 60Hz
 void Chip8::Machine::InitTimers()
 {
-    constexpr double delayMs = 1000.0 / 60;
-    constexpr auto delay = static_cast<int>(delayMs * 1,000,000);
+    constexpr auto delay = Chip8::Utils::FpsDelayNs(60);
     Memory& mem = *m_memoryPtr;
     auto& dt = mem.DT;
     auto& st = mem.ST;

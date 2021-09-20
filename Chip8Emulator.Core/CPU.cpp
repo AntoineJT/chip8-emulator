@@ -168,10 +168,10 @@ void Chip8::CPU::DRW(const std::uint8_t ls4b, const std::uint8_t x, const std::u
 
     bool collides = false;
     std::vector<Screen::Pixel> wrappedPoints; // (toDraw.size());
-    for (const auto& pt : toDraw)
+    for (const auto& [pX, pY] : toDraw)
     {
-        const uint8_t x2 = pt.first % base_width;
-        const uint8_t y2 = pt.second % base_height;
+        const uint8_t x2 = pX % base_width;
+        const uint8_t y2 = pY % base_height;
         const bool ptCollides = m_screenPtr->Collides(x2, y2);
         collides |= ptCollides;
         wrappedPoints.emplace_back(x2, y2, ptCollides ? SDL2::Colors::BLACK : SDL2::Colors::WHITE);

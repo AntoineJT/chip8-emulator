@@ -92,12 +92,12 @@ void Chip8::Screen::DrawSprite(const std::vector<Pixel>& pixels)
 {
     assert(!pixels.empty());
 
-    for (const auto& pt : pixels)
+    for (const auto& [x, y, color] : pixels)
     {
-        const auto x = std::get<0>(pt);
-        const auto y = std::get<1>(pt);
-        const auto color = std::get<2>(pt);
-        m_grid[x][y] ^= true;
+        {
+            auto& pixel = m_grid[x][y];
+            pixel = !pixel;
+        }
         const SDL_Rect rect = {
             static_cast<int>(x) * m_ratio,
             static_cast<int>(y) * m_ratio,

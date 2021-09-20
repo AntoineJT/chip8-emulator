@@ -20,7 +20,7 @@ Chip8::Machine::Machine(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> 
     InitTimers();
 }
 
-Chip8::Machine::Machine(std::shared_ptr<Screen> screen, std::string filepath)
+Chip8::Machine::Machine(std::shared_ptr<Screen> screen, const std::string& filepath)
     : m_memoryPtr(std::make_shared<Memory>())
     , m_keyboardPtr(std::make_shared<Keyboard>())
     , m_cpu(CPU(screen, m_memoryPtr, m_keyboardPtr))
@@ -39,7 +39,7 @@ Chip8::Machine::Machine(std::shared_ptr<Screen> screen, std::string filepath)
 void Chip8::Machine::InitTimers()
 {
     constexpr double delayMs = 1000.0 / 60;
-    constexpr int delay = static_cast<int>(delayMs * 1,000,000);
+    constexpr auto delay = static_cast<int>(delayMs * 1,000,000);
     Memory& mem = *m_memoryPtr;
     auto& dt = mem.DT;
     auto& st = mem.ST;

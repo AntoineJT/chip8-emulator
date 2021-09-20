@@ -4,9 +4,9 @@
 #include <climits>
 #include <memory>
 #include <SDL.h>
-#include <sdl_assert.h>
 #include <vector>
 
+#include "sdl_assert.h"
 #include "sdl_window.hpp"
 
 constexpr int SUCCESS = 0;

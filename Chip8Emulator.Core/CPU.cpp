@@ -7,8 +7,8 @@
 Chip8::CPU::CPU(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> memory, std::shared_ptr<Keyboard> keyboard)
     : m_screenPtr(screen)
     , m_memoryPtr(memory)
-    , m_memory(*memory.get())
     , m_keyboardPtr(keyboard)
+    , m_memory(*memory.get())
     , m_keyboard(*keyboard.get())
 {}
 
@@ -227,7 +227,7 @@ void Chip8::CPU::LD_XK(std::uint8_t x)
             }
         }
     } while (m_event.type != SDL_KEYDOWN);
-    m_memory.VX[x] = static_cast<int>(kState.keyPressed);
+    m_memory.VX[x] = static_cast<int>(kState.keyPressed); // no precision loss here
 }
 
 void Chip8::CPU::LD_XD(const std::uint8_t x) const

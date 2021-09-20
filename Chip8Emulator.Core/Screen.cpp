@@ -39,10 +39,10 @@ Chip8::Screen::PixelGrid Chip8::Screen::InitGrid()
 }
 
 Chip8::Screen::Screen(const std::shared_ptr<SDL2::SDL> sdl, const std::uint8_t ratio, const char* title)
-    : m_sdl(sdl)
-    , m_ratio(ratio)
+    : m_ratio(ratio)
     , m_window(CreateWindow(sdl, ratio, title))
     , m_renderer(SDL2::Renderer(m_window, -1, SDL_RENDERER_ACCELERATED))
+    , m_sdl(sdl)
 {
     // set background to black
     m_renderer.SetDrawColor(SDL2::Colors::BLACK);

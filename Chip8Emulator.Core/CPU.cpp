@@ -131,6 +131,7 @@ std::vector<Chip8::Screen::Point> PointsToDraw(const std::vector<uint8_t>& sprit
 {
     assert(width <= 8);
     const std::size_t size = sprite.size();
+    const auto [pX, pY] = point;
 
     std::vector<Chip8::Screen::Point> toDraw;
 
@@ -145,7 +146,7 @@ std::vector<Chip8::Screen::Point> PointsToDraw(const std::vector<uint8_t>& sprit
             const bool isOn = (line & offset) != 0;
             if (isOn)
             {
-                toDraw.push_back({ x + point.first, y + point.second });
+                toDraw.emplace_back(x + pX, y + pY);
             }
         }
     }

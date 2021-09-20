@@ -5,6 +5,7 @@ set_version("0.0.0") -- will follow semver later
 
 set_allowedplats("windows", "linux")
 set_allowedarchs("windows|x64", "linux|x86_64")
+set_defaultmode("debug")
 
 add_rules("mode.debug", "mode.release")
 set_languages("cxx17")

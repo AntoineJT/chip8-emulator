@@ -9,7 +9,7 @@ namespace Chip8
         static inline std::mt19937 gen{ rd() };
         const int min;
         const int max;
-        std::uniform_int_distribution<int> dist;
+        std::uniform_int_distribution<> dist;
 
     public:
         Random(int min, int max);

@@ -167,13 +167,14 @@ void Chip8::CPU::DRW(const std::uint8_t ls4b, const std::uint8_t x, const std::u
     const std::vector<Screen::Point> toDraw = PointsToDraw(sprite, point, 8);
 
     bool collides = false;
-    std::vector<Screen::Point> wrappedPoints; // (toDraw.size());
+    std::vector<Screen::Pixel> wrappedPoints; // (toDraw.size());
     for (const auto& pt : toDraw)
     {
         const uint8_t x2 = pt.first % base_width;
         const uint8_t y2 = pt.second % base_height;
-        collides |= m_screenPtr->Collides(x2, y2);
-        wrappedPoints.push_back({ x2, y2 });
+        const bool ptCollides = m_screenPtr->Collides(x2, y2);
+        collides |= ptCollides;
+        wrappedPoints.emplace_back(x2, y2, ptCollides ? SDL2::Colors::BLACK : SDL2::Colors::WHITE);
     }
     m_memory.VX[0xF] = collides ? 1 : 0;
     m_screenPtr->DrawSprite(wrappedPoints);

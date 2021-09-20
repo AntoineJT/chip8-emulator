@@ -26,7 +26,7 @@ namespace SDL2
         void RenderClear() const;
         SDL_Color DrawColor() const;
         void RenderPresent() const;
-        void FillRect(std::unique_ptr<SDL_Rect> rect) const;
+        void FillRect(const SDL_Rect* rect) const;
         void FillRects(const std::vector<SDL_Rect>& rect) const;
     };
 };

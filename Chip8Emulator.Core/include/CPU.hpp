@@ -10,8 +10,8 @@ namespace Chip8
     class CPU
     {
         std::shared_ptr<Screen> m_screenPtr;
-        std::shared_ptr<Memory> m_memoryPtr;
-        std::shared_ptr<Keyboard> m_keyboardPtr;
+        Memory* m_pMemory;
+        Keyboard* m_pKeyboard;
         // Memory and Keyboard references are
         // kept for code readability purpose
         Memory& m_memory;
@@ -23,7 +23,7 @@ namespace Chip8
         SDL_Event m_event {};
 
     public:
-        CPU(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> memory, std::shared_ptr<Keyboard> keyboard);
+        CPU(std::shared_ptr<Screen> screen, Memory* pMemory, Keyboard* pKeyboard);
 
         void CLS() const;
         void RET() const;

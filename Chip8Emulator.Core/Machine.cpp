@@ -12,18 +12,18 @@
 // I think it suits to the use case
 using namespace Chip8::Utils::Instructions;
 
-Chip8::Machine::Machine(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> memory, std::shared_ptr<Keyboard> keyboard)
-    : m_memoryPtr(memory)
-    , m_keyboardPtr(keyboard)
-    , m_cpu(CPU(screen, memory, keyboard))
+Chip8::Machine::Machine(std::shared_ptr<Screen> screen, std::unique_ptr<Memory> memory, std::unique_ptr<Keyboard> keyboard)
+    : m_memoryPtr(std::move(memory))
+    , m_keyboardPtr(std::move(keyboard))
+    , m_cpu(CPU(screen, memory.get(), keyboard.get()))
 {
     InitTimers();
 }
 
 Chip8::Machine::Machine(std::shared_ptr<Screen> screen, const std::string& filepath)
-    : m_memoryPtr(std::make_shared<Memory>())
-    , m_keyboardPtr(std::make_shared<Keyboard>())
-    , m_cpu(CPU(screen, m_memoryPtr, m_keyboardPtr))
+    : m_memoryPtr(std::make_unique<Memory>())
+    , m_keyboardPtr(std::make_unique<Keyboard>())
+    , m_cpu(CPU(screen, m_memoryPtr.get(), m_keyboardPtr.get()))
 {
     std::vector<char> content;
     if (!Chip8::Utils::LoadFile(content, filepath))
@@ -84,6 +84,11 @@ void Chip8::Machine::HandleEvents()
             break;
         }
     }
+}
+
+Chip8::Memory* Chip8::Machine::GetMemory()
+{
+    return m_memoryPtr.get();
 }
 
 void PrintOpcodeStatus(const char* status, const std::uint16_t opcode)

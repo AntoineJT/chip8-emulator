@@ -4,12 +4,12 @@
 #include <random>
 #include <sdl_assert.h>
 
-Chip8::CPU::CPU(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> memory, std::shared_ptr<Keyboard> keyboard)
+Chip8::CPU::CPU(std::shared_ptr<Screen> screen, Memory* pMemory, Keyboard* pKeyboard)
     : m_screenPtr(screen)
-    , m_memoryPtr(memory)
-    , m_keyboardPtr(keyboard)
-    , m_memory(*memory.get())
-    , m_keyboard(*keyboard.get())
+    , m_pMemory(pMemory)
+    , m_pKeyboard(pKeyboard)
+    , m_memory(*m_pMemory)
+    , m_keyboard(*m_pKeyboard)
 {}
 
 void Chip8::CPU::CLS() const

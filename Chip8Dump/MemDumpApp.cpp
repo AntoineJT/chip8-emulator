@@ -77,16 +77,16 @@ int main(int argc, char* argv[])
     {
         return EXIT_FAILURE;
     }
-    auto memoryPtr = std::make_shared<Chip8::Memory>();
-    auto& memory = *memoryPtr.get();
-    memory.LoadProgram(content);
+    auto memoryPtr = std::make_unique<Chip8::Memory>();
+    memoryPtr->LoadProgram(content);
 
-    Chip8::Machine machine(screenPtr, memoryPtr);
+    Chip8::Machine machine(screenPtr, std::move(memoryPtr));
     screenPtr.reset();
 
     std::cout << "Press CTRL^C to quit" << std::endl;
 
     const auto DumpMemoryFunc = noHeap ? Chip8::Dump::DumpMemoryWithoutHeap : Chip8::Dump::DumpMemory;
+    const auto& memory = *machine.GetMemory();
     if (noFile) {
         while (true)
         {

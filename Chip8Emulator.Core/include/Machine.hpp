@@ -13,8 +13,8 @@ namespace Chip8
 {
     class Machine
     {
-        std::shared_ptr<Memory> m_memoryPtr;
-        std::shared_ptr<Keyboard> m_keyboardPtr;
+        std::unique_ptr<Memory> m_memoryPtr;
+        std::unique_ptr<Keyboard> m_keyboardPtr;
         CPU m_cpu;
         // avoids to allocate/destroy this struct
         // a lot of time per second
@@ -25,11 +25,13 @@ namespace Chip8
         void InitTimers();
 
     public:
-        Machine(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> memory, std::shared_ptr<Keyboard> keyboard = std::make_shared<Keyboard>());
+        Machine(std::shared_ptr<Screen> screen, std::unique_ptr<Memory> memory, std::unique_ptr<Keyboard> keyboard = std::make_unique<Keyboard>());
         Machine(std::shared_ptr<Screen> screen, const std::string& filepath);
 
         void ExecuteNextInstruction();
         void Execute(std::uint16_t opcode);
         void HandleEvents();
+
+        Memory* GetMemory();
     };
 }

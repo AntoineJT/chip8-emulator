@@ -76,29 +76,36 @@ void Chip8::Screen::Render(const PixelGrid& grid)
     DrawPoints(SDL2::Colors::WHITE, pixelsOn);
 }
 
+void Chip8::Screen::DrawPoint(const SDL_Color color, const SDL_Rect* pRect)
+{
+    m_renderer.SetDrawColor(color);
+    m_renderer.FillRect(pRect);
+}
+
 void Chip8::Screen::DrawPoints(const SDL_Color color, const std::vector<SDL_Rect>& rects)
 {
     m_renderer.SetDrawColor(color);
     m_renderer.FillRects(rects);
 }
 
-void Chip8::Screen::DrawSprite(const std::vector<Point>& pixelsOn)
+void Chip8::Screen::DrawSprite(const std::vector<Pixel>& pixels)
 {
-    assert(!pixelsOn.empty());
+    assert(!pixels.empty());
 
-    std::vector<SDL_Rect> rects; // (pixelsOn.size());
-    for (const auto& pt : pixelsOn)
+    for (const auto& pt : pixels)
     {
-        m_grid[pt.second][pt.first] ^= true;
+        const auto x = std::get<0>(pt);
+        const auto y = std::get<1>(pt);
+        const auto color = std::get<2>(pt);
+        m_grid[x][y] ^= true;
         const SDL_Rect rect = {
-            static_cast<int>(pt.first) * m_ratio,
-            static_cast<int>(pt.second) * m_ratio,
+            static_cast<int>(x) * m_ratio,
+            static_cast<int>(y) * m_ratio,
             m_ratio,
             m_ratio
         };
-        rects.push_back(rect);
+        DrawPoint(color, &rect);
     }
-    DrawPoints(SDL2::Colors::WHITE, rects);
 }
 
 void Chip8::Screen::Refresh(const bool fullRefresh)

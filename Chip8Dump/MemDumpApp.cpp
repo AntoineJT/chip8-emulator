@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
     const bool noFile = noFileDumpSwitch.getValue();
     const int ratio = FloorAtZero(windowRatioArg.getValue());
 
-    std::optional<std::ofstream> output = std::nullopt;
+    std::optional<std::ofstream> output;
     if (!noFile) {
         const std::string ofname = filename + "_" + CurrentDate() + "_dump.txt";
         output = std::ofstream(ofname);
@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
     auto memoryPtr = std::make_shared<Chip8::Memory>();
-    auto& memory = *memoryPtr.get();
+    auto& memory = *memoryPtr;
     memory.LoadProgram(content);
 
     Chip8::Machine machine(screenPtr, memoryPtr);

@@ -2,14 +2,15 @@
 
 #include <cassert>
 #include <random>
+#include <utility>
 #include <sdl_assert.h>
 
-Chip8::CPU::CPU(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> memory, std::shared_ptr<Keyboard> keyboard)
-    : m_screenPtr(screen)
+Chip8::CPU::CPU(std::shared_ptr<Screen> screen, const std::shared_ptr<Memory>& memory, const std::shared_ptr<Keyboard>& keyboard)
+    : m_screenPtr(std::move(screen))
     , m_memoryPtr(memory)
-    , m_memory(*memory.get())
+    , m_memory(*memory)
     , m_keyboardPtr(keyboard)
-    , m_keyboard(*keyboard.get())
+    , m_keyboard(*keyboard)
 {}
 
 void Chip8::CPU::CLS() const
@@ -145,7 +146,7 @@ std::vector<Chip8::Screen::Point> PointsToDraw(const std::vector<uint8_t>& sprit
             const bool isOn = (line & offset) != 0;
             if (isOn)
             {
-                toDraw.push_back({ x + point.first, y + point.second });
+                toDraw.emplace_back( x + point.first, y + point.second );
             }
         }
     }
@@ -173,7 +174,7 @@ void Chip8::CPU::DRW(const std::uint8_t ls4b, const std::uint8_t x, const std::u
         const uint8_t x2 = pt.first % base_width;
         const uint8_t y2 = pt.second % base_height;
         collides |= m_screenPtr->Collides(x2, y2);
-        wrappedPoints.push_back({ x2, y2 });
+        wrappedPoints.emplace_back( x2, y2 );
     }
     m_memory.VX[0xF] = collides ? 1 : 0;
     m_screenPtr->DrawSprite(wrappedPoints);

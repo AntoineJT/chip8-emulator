@@ -10,17 +10,17 @@
 #include "sdl_renderer.hpp"
 #include "sdl_window.hpp"
 
-SDL2::Window CreateWindow(std::shared_ptr<SDL2::SDL> sdl, const std::uint8_t ratio, const char* title)
+SDL2::Window CreateWindow(const std::shared_ptr<SDL2::SDL>& sdl, const std::uint8_t ratio, const char* title)
 {
     assert((*sdl.get()).Running());
 
     const int width = static_cast<int>(Chip8::base_width) * ratio;
     const int height = static_cast<int>(Chip8::base_height) * ratio;
 
-    return SDL2::Window(title,
+    return {title,
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        width, height, 0);
+        width, height, 0};
 }
 
 void Chip8::Screen::ResetGrid(PixelGrid& grid)
@@ -38,7 +38,7 @@ Chip8::Screen::PixelGrid Chip8::Screen::InitGrid()
     return grid;
 }
 
-Chip8::Screen::Screen(const std::shared_ptr<SDL2::SDL> sdl, const std::uint8_t ratio, const char* title)
+Chip8::Screen::Screen(const std::shared_ptr<SDL2::SDL>& sdl, const std::uint8_t ratio, const char* title)
     : m_sdl(sdl)
     , m_ratio(ratio)
     , m_window(CreateWindow(sdl, ratio, title))

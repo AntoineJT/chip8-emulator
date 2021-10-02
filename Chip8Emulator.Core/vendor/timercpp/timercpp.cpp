@@ -3,7 +3,9 @@
 // commit: fbf911046b46f4fa68e3a94d004acb3d9de41f10
 #include "timercpp.hpp"
 
-void Timer::setTimeout(std::function<void()> function, int delay)
+#include <utility>
+
+void Timer::setTimeout(const std::function<void()>& function, int delay)
 {
     active = true;
     std::thread t([=]() {
@@ -15,12 +17,12 @@ void Timer::setTimeout(std::function<void()> function, int delay)
     t.detach();
 }
 
-void Timer::setInterval(std::function<void()> function, int interval)
+void Timer::setInterval(const std::function<void()>& function, int interval)
 {
     _setInterval<std::chrono::milliseconds>(function, interval);
 }
 
-void Timer::setIntervalNs(std::function<void()> function, int interval)
+void Timer::setIntervalNs(const std::function<void()>& function, int interval)
 {
     _setInterval<std::chrono::nanoseconds>(function, interval);
 }

@@ -25,11 +25,11 @@ namespace Chip8
         void InitTimers();
 
     public:
-        Machine(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> memory, std::shared_ptr<Keyboard> keyboard = std::make_shared<Keyboard>());
-        Machine(std::shared_ptr<Screen> screen, std::string filepath);
+        Machine(std::shared_ptr<Screen> screen, const std::shared_ptr<Memory>& memory, const std::shared_ptr<Keyboard>& keyboard = std::make_shared<Keyboard>());
+        Machine(std::shared_ptr<Screen> screen, const std::string& filepath);
 
         void ExecuteNextInstruction();
         void Execute(std::uint16_t opcode);
-        void HandleEvents();
+        [[noreturn]] void HandleEvents();
     };
 }

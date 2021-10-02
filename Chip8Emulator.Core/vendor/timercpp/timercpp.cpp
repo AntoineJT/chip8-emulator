@@ -17,14 +17,14 @@ void Timer::setTimeout(const std::function<void()>& function, int delay)
     t.detach();
 }
 
-void Timer::setInterval(std::function<void()> function, int interval)
+void Timer::setInterval(const std::function<void()>& function, int interval)
 {
-    _setInterval<std::chrono::milliseconds>(std::move(function), interval);
+    _setInterval<std::chrono::milliseconds>(function, interval);
 }
 
-void Timer::setIntervalNs(std::function<void()> function, int interval)
+void Timer::setIntervalNs(const std::function<void()>& function, int interval)
 {
-    _setInterval<std::chrono::nanoseconds>(std::move(function), interval);
+    _setInterval<std::chrono::nanoseconds>(function, interval);
 }
 
 void Timer::stop()

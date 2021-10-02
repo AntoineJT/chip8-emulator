@@ -30,6 +30,6 @@ namespace Chip8
 
         void ExecuteNextInstruction();
         void Execute(std::uint16_t opcode);
-        void HandleEvents();
+        [[noreturn]]void HandleEvents();
     };
 }

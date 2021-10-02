@@ -16,7 +16,7 @@
 #include <SDL.h>
 #include <tclap/CmdLine.h>
 
-static std::string ExecNextInstruction(Chip8::Memory& memory, Chip8::Machine& machine)
+[[noreturn]]static std::string ExecNextInstruction(Chip8::Memory& memory, Chip8::Machine& machine)
 {
     const std::uint16_t opcode = memory.NextInstruction();
     machine.HandleEvents();

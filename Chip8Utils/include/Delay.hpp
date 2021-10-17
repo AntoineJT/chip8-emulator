@@ -12,7 +12,7 @@ namespace Chip8::Utils
             throw std::logic_error("fps can't be zero or negative!");
         }
         const double delayMs = 1000.0 / fps;
-        const int ns = static_cast<int>(delayMs) * 1000000;
+        const int ns = static_cast<int>(delayMs) * 1'000'000;
         return ns;
     }
 

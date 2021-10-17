@@ -10,7 +10,7 @@
 #include "sdl_renderer.hpp"
 #include "sdl_window.hpp"
 
-SDL2::Window CreateWindow(std::shared_ptr<SDL2::SDL> sdl, const std::uint8_t ratio, const char* title)
+auto CreateWindow(std::shared_ptr<SDL2::SDL> sdl, const std::uint8_t ratio, const char* title)
 {
     assert((*sdl.get()).Running());
 

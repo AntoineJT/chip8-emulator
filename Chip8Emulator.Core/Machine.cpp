@@ -1,6 +1,7 @@
 #include "Machine.hpp"
 
 #include <iostream>
+#include <utility>
 
 #include "Instructions.hpp"
 #include "Keyboard.hpp"
@@ -63,7 +64,7 @@ void Chip8::Machine::ExecuteNextInstruction()
     Execute(m_memoryPtr->NextInstruction());
 }
 
-void Chip8::Machine::HandleEvents()
+[[noreturn]] void Chip8::Machine::HandleEvents()
 {
     while (SDL_PollEvent(&m_event)) {
         switch (m_event.type) {

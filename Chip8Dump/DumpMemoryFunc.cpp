@@ -9,7 +9,7 @@
 constexpr std::size_t turns = 64;
 
 namespace Internals {
-    std::ostringstream DumpMemoryWithoutHeap(const Chip8::Memory& mem)
+    static std::ostringstream DumpMemoryWithoutHeap(const Chip8::Memory& mem)
     {
         std::ostringstream stream;
 

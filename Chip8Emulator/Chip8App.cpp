@@ -3,6 +3,7 @@
 #include <iostream>
 #include <unordered_map>
 
+#include "Delay.hpp"
 #include "Machine.hpp"
 #include "Screen.hpp"
 #include "sdl.hpp"
@@ -45,11 +46,12 @@ int main(int argc, char* argv[])
 
     std::cout << "Press CTRL^C to quit" << std::endl;
 
-    constexpr auto msBetweenFrame = static_cast<Uint32>(1000 / 300);
+    // see: https://www.reddit.com/r/EmuDev/comments/a6m2z1/question_about_chip8_op_execution_per_tick/
+    constexpr int nsBetweenFrame = Chip8::Utils::FpsDelayNs(400);
     while(true)
     {
         machine.HandleEvents();
         machine.ExecuteNextInstruction();
-        SDL_Delay(msBetweenFrame);
+        Chip8::Utils::WaitNs(nsBetweenFrame);
     }
 }

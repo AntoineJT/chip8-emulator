@@ -39,10 +39,10 @@ Chip8::Screen::PixelGrid Chip8::Screen::InitGrid()
 }
 
 Chip8::Screen::Screen(const std::shared_ptr<SDL2::SDL> sdl, const std::uint8_t ratio, const char* title)
-    : m_sdl(sdl)
-    , m_ratio(ratio)
+    : m_ratio(ratio)
     , m_window(CreateWindow(sdl, ratio, title))
     , m_renderer(SDL2::Renderer(m_window, -1, SDL_RENDERER_ACCELERATED))
+    , m_sdl(sdl)
 {
     // set background to black
     m_renderer.SetDrawColor(SDL2::Colors::BLACK);
@@ -76,29 +76,36 @@ void Chip8::Screen::Render(const PixelGrid& grid)
     DrawPoints(SDL2::Colors::WHITE, pixelsOn);
 }
 
+void Chip8::Screen::DrawPoint(const SDL_Color color, const SDL_Rect* pRect)
+{
+    m_renderer.SetDrawColor(color);
+    m_renderer.FillRect(pRect);
+}
+
 void Chip8::Screen::DrawPoints(const SDL_Color color, const std::vector<SDL_Rect>& rects)
 {
     m_renderer.SetDrawColor(color);
     m_renderer.FillRects(rects);
 }
 
-void Chip8::Screen::DrawSprite(const std::vector<Point>& pixelsOn)
+void Chip8::Screen::DrawSprite(const std::vector<Pixel>& pixels)
 {
-    assert(!pixelsOn.empty());
+    assert(!pixels.empty());
 
-    std::vector<SDL_Rect> rects; // (pixelsOn.size());
-    for (const auto& pt : pixelsOn)
+    for (const auto& [x, y, color] : pixels)
     {
-        m_grid[pt.second][pt.first] ^= true;
+        {
+            auto& pixel = m_grid[x][y];
+            pixel = !pixel;
+        }
         const SDL_Rect rect = {
-            static_cast<int>(pt.first) * m_ratio,
-            static_cast<int>(pt.second) * m_ratio,
+            static_cast<int>(x) * m_ratio,
+            static_cast<int>(y) * m_ratio,
             m_ratio,
             m_ratio
         };
-        rects.push_back(rect);
+        DrawPoint(color, &rect);
     }
-    DrawPoints(SDL2::Colors::WHITE, rects);
 }
 
 void Chip8::Screen::Refresh(const bool fullRefresh)

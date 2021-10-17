@@ -4,9 +4,9 @@
 #include <climits>
 #include <memory>
 #include <SDL.h>
-#include <sdl_assert.h>
 #include <vector>
 
+#include "sdl_assert.h"
 #include "sdl_window.hpp"
 
 constexpr int SUCCESS = 0;
@@ -69,9 +69,9 @@ void SDL2::Renderer::RenderPresent() const
     SDL_RenderPresent(m_pRenderer);
 }
 
-void SDL2::Renderer::FillRect(const std::unique_ptr<SDL_Rect> rect) const
+void SDL2::Renderer::FillRect(const SDL_Rect* pRect) const
 {
-    sdl_assert(SDL_RenderFillRect(m_pRenderer, rect.get()) == SUCCESS);
+    sdl_assert(SDL_RenderFillRect(m_pRenderer, pRect) == SUCCESS);
 }
 
 void SDL2::Renderer::FillRects(const std::vector<SDL_Rect>& rect) const

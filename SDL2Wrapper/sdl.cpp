@@ -33,9 +33,8 @@ int SDL2::SDL::Init(const Uint32 flags)
         return ALREADY_RUNNING;
 
     m_isRunning = true;
-    const int ret = SDL_Init(flags);
 
-    if (ret < INIT_SUCCESS)
+    if (SDL_Init(flags) < INIT_SUCCESS)
         return INIT_FAILURE;
     return INIT_SUCCESS;
 }

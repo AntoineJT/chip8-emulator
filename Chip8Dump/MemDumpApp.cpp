@@ -16,7 +16,7 @@
 #include <SDL.h>
 #include <tclap/CmdLine.h>
 
-static std::string ExecNextInstruction(Chip8::Memory& memory, Chip8::Machine& machine)
+static std::string ExecNextInstruction(const Chip8::Memory& memory, Chip8::Machine& machine)
 {
     const std::uint16_t opcode = memory.NextInstruction();
     machine.HandleEvents();
@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
 {
     TCLAP::CmdLine cmd("Chip8Emu Dump Tool");
     TCLAP::UnlabeledValueArg<std::string> filenameArg("inputfile", "Chip8 game file.", true, "", "string");
-    TCLAP::ValueArg<int> delayArg("d", "delay", "Time in milliseconds between instructions. Default: 500.", false, 500, "time in ms");
+    TCLAP::ValueArg<int> delayArg("d", "delay", "Time between instructions. Default: 500.", false, 500, "time in ms");
     TCLAP::SwitchArg noHeapSwitch("n", "no-heap", "Don't dump heap memory.", false);
     TCLAP::SwitchArg noFileDumpSwitch("f", "no-file", "Only output basic infos on stdout.", false);
     TCLAP::ValueArg<int> windowRatioArg("r", "ratio", "Set window size. Default: 6", false, 6, "times the base resolution");
@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
 
     std::cout << "Press CTRL^C to quit" << std::endl;
 
-    const auto& DumpMemoryFunc = noHeap ? Chip8::Dump::DumpMemoryWithoutHeap : Chip8::Dump::DumpMemory;
+    const auto DumpMemoryFunc = noHeap ? Chip8::Dump::DumpMemoryWithoutHeap : Chip8::Dump::DumpMemory;
     if (noFile) {
         while (true)
         {

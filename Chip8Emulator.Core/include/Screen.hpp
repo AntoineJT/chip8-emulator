@@ -18,11 +18,13 @@ namespace Chip8
     {
         using PixelGrid = std::array<std::array<bool, base_width>, base_height>;
         using Point = std::pair<uint8_t, uint8_t>;
+        using Pixel = std::tuple<uint8_t, uint8_t, SDL_Color>;
 
         explicit Screen(std::shared_ptr<SDL2::SDL> sdl, std::uint8_t ratio, const char* title = "Chip8Emu");
         void Render(const PixelGrid& grid);
+        void DrawPoint(SDL_Color color, const SDL_Rect* pRect);
         void DrawPoints(SDL_Color color, const std::vector<SDL_Rect>& rects);
-        void DrawSprite(const std::vector<Point>& pixelsOn);
+        void DrawSprite(const std::vector<Pixel>& pixels);
         void Refresh(bool fullRefresh);
         void ChangeBgColor(SDL_Color color, bool fullRefresh);
         bool Collides(uint8_t x, uint8_t y) const;

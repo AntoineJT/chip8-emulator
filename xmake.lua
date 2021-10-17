@@ -5,6 +5,7 @@ set_version("0.0.0") -- will follow semver later
 
 set_allowedplats("windows", "linux")
 set_allowedarchs("windows|x64", "linux|x86_64")
+set_defaultmode("debug")
 
 add_rules("mode.debug", "mode.release")
 set_languages("cxx17")
@@ -51,7 +52,7 @@ target("chip8emu")
     add_files("Chip8Emulator/**.cpp")
     add_headerfiles("Chip8Emulator/**.hpp")
 
-    add_deps("chip8emu.core", "sdl2wrapper")
+    add_deps("chip8emu.core", "sdl2wrapper", "chip8utils")
     add_packages("libsdl")
 
 target("chip8disasm")

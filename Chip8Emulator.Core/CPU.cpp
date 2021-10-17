@@ -7,8 +7,8 @@
 Chip8::CPU::CPU(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> memory, std::shared_ptr<Keyboard> keyboard)
     : m_screenPtr(screen)
     , m_memoryPtr(memory)
-    , m_memory(*memory.get())
     , m_keyboardPtr(keyboard)
+    , m_memory(*memory.get())
     , m_keyboard(*keyboard.get())
 {}
 
@@ -131,6 +131,7 @@ std::vector<Chip8::Screen::Point> PointsToDraw(const std::vector<uint8_t>& sprit
 {
     assert(width <= 8);
     const std::size_t size = sprite.size();
+    const auto [pX, pY] = point;
 
     std::vector<Chip8::Screen::Point> toDraw;
 
@@ -145,7 +146,7 @@ std::vector<Chip8::Screen::Point> PointsToDraw(const std::vector<uint8_t>& sprit
             const bool isOn = (line & offset) != 0;
             if (isOn)
             {
-                toDraw.push_back({ x + point.first, y + point.second });
+                toDraw.emplace_back(x + pX, y + pY);
             }
         }
     }
@@ -167,13 +168,14 @@ void Chip8::CPU::DRW(const std::uint8_t ls4b, const std::uint8_t x, const std::u
     const std::vector<Screen::Point> toDraw = PointsToDraw(sprite, point, 8);
 
     bool collides = false;
-    std::vector<Screen::Point> wrappedPoints; // (toDraw.size());
-    for (const auto& pt : toDraw)
+    std::vector<Screen::Pixel> wrappedPoints; // (toDraw.size());
+    for (const auto& [pX, pY] : toDraw)
     {
-        const uint8_t x2 = pt.first % base_width;
-        const uint8_t y2 = pt.second % base_height;
-        collides |= m_screenPtr->Collides(x2, y2);
-        wrappedPoints.push_back({ x2, y2 });
+        const uint8_t x2 = pX % base_width;
+        const uint8_t y2 = pY % base_height;
+        const bool ptCollides = m_screenPtr->Collides(x2, y2);
+        collides |= ptCollides;
+        wrappedPoints.emplace_back(x2, y2, ptCollides ? SDL2::Colors::BLACK : SDL2::Colors::WHITE);
     }
     m_memory.VX[0xF] = collides ? 1 : 0;
     m_screenPtr->DrawSprite(wrappedPoints);
@@ -226,7 +228,7 @@ void Chip8::CPU::LD_XK(std::uint8_t x)
             }
         }
     } while (m_event.type != SDL_KEYDOWN);
-    m_memory.VX[x] = static_cast<int>(kState.keyPressed);
+    m_memory.VX[x] = static_cast<int>(kState.keyPressed); // no precision loss here
 }
 
 void Chip8::CPU::LD_XD(const std::uint8_t x) const

@@ -23,7 +23,7 @@ namespace Chip8
         SDL_Event m_event {};
 
     public:
-        CPU(std::shared_ptr<Screen> screen, const std::shared_ptr<Memory>& memory, const std::shared_ptr<Keyboard>& keyboard);
+        CPU(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> memory, std::shared_ptr<Keyboard> keyboard);
 
         void CLS() const;
         void RET() const;

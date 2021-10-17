@@ -14,7 +14,7 @@ class Timer {
     std::atomic<bool> active = true;
 
     template <typename Duration>
-    void _setInterval(const std::function<void()>& function, int interval)
+    void _setInterval(std::function<void()> function, int interval)
     {
         active = true;
         std::thread t([=]() {
@@ -28,8 +28,8 @@ class Timer {
     }
 
     public:
-        void setTimeout(const std::function<void()>& function, int delay);
-        void setInterval(const std::function<void()>& function, int interval);
-        void setIntervalNs(const std::function<void()>& function, int interval);
+        void setTimeout(std::function<void()> function, int delay);
+        void setInterval(std::function<void()> function, int interval);
+        void setIntervalNs(std::function<void()> function, int interval);
         void stop();
 };

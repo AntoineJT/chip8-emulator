@@ -1,7 +1,6 @@
 #include "Machine.hpp"
 
 #include <iostream>
-#include <utility>
 
 #include "Instructions.hpp"
 #include "Keyboard.hpp"

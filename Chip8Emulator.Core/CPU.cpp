@@ -8,8 +8,8 @@ Chip8::CPU::CPU(std::shared_ptr<Screen> screen, std::shared_ptr<Memory> memory, 
     : m_screenPtr(screen)
     , m_memoryPtr(memory)
     , m_keyboardPtr(keyboard)
-    , m_memory(*memory.get())
-    , m_keyboard(*keyboard.get())
+    , m_memory(*memory)
+    , m_keyboard(*keyboard)
 {}
 
 void Chip8::CPU::CLS() const

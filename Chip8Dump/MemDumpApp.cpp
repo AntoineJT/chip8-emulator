@@ -37,20 +37,16 @@ int main(int argc, char* argv[])
 {
     TCLAP::CmdLine cmd("Chip8Emu Dump Tool");
     TCLAP::UnlabeledValueArg<std::string> filenameArg("inputfile", "Chip8 game file.", true, "", "string");
-    TCLAP::ValueArg<int> delayArg("d", "delay", "Time between instructions. Default: 500.", false, 500, "time in ms");
-    TCLAP::SwitchArg noHeapSwitch("n", "no-heap", "Don't dump heap memory.", false);
-    TCLAP::SwitchArg noFileDumpSwitch("f", "no-file", "Only output basic infos on stdout.", false);
-    TCLAP::ValueArg<int> windowRatioArg("r", "ratio", "Set window size. Default: 6", false, 6, "times the base resolution");
-    cmd.add(filenameArg);
-    cmd.add(delayArg);
-    cmd.add(noHeapSwitch);
-    cmd.add(noFileDumpSwitch);
-    cmd.add(windowRatioArg);
+    TCLAP::ValueArg<int> delayArg("", "delay", "Time between instructions. Default: 500.", false, 500, "time in ms");
+    TCLAP::SwitchArg noHeapSwitch("", "no-heap", "Don't dump heap memory.", false);
+    TCLAP::SwitchArg noFileDumpSwitch("", "no-file", "Only output basic infos on stdout.", false);
+    TCLAP::ValueArg<int> windowRatioArg("", "ratio", "Set window size. Default: 6", false, 6, "times the base resolution");
+    cmd.add(filenameArg).add(delayArg).add(noHeapSwitch)
+        .add(noFileDumpSwitch).add(windowRatioArg);
     cmd.parse(argc, argv);
 
     const std::string filename = filenameArg.getValue();
     const int delay = FloorAtZero(delayArg.getValue());
-    const bool noHeap = noHeapSwitch.getValue();
     const bool noFile = noFileDumpSwitch.getValue();
     const int ratio = FloorAtZero(windowRatioArg.getValue());
 
@@ -86,7 +82,7 @@ int main(int argc, char* argv[])
 
     std::cout << "Press CTRL^C to quit" << std::endl;
 
-    const auto DumpMemoryFunc = noHeap ? Chip8::Dump::DumpMemoryWithoutHeap : Chip8::Dump::DumpMemory;
+    const auto DumpMemoryFunc = noHeapSwitch.getValue() ? Chip8::Dump::DumpMemoryWithoutHeap : Chip8::Dump::DumpMemory;
     if (noFile) {
         while (true)
         {
